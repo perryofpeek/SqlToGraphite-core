@@ -5,9 +5,10 @@ properties {
   $Build_Solution = 'SqlToGraphite.sln'
   $Build_Configuration = 'Release'
   $Build_Artifacts = 'output'
+  $fullPath="src\SqlToGraphite.host\output"
 }
 
-task default -depends Test
+task default -depends Package
 
 task Test -depends Compile, Clean, StartOracle { 
  # write-output "hello"
@@ -21,6 +22,15 @@ task Compile -depends Clean {
 
 task Clean {   
   Exec {  C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe /p:OutDir=""$Build_Artifacts\"" /t:Clean $Build_Solution }  
+}
+
+
+task Ilmerge -depends Test {
+	Exec { tools\ilmerge /t:exe /out:output\sqlToGraphite.exe /targetplatform:v4 "$fullPath\SqlToGraphite.host.exe" "$fullPath\Graphite.dll" "$fullPath\log4net.dll" "$fullPath\SqlToGraphite.dll" "$fullPath\Topshelf.dll"};
+	Copy-Item  $fullPath\SqlToGraphite.host.exe.config  output;
+}
+
+task Package -depends Ilmerge {
 }
 
 

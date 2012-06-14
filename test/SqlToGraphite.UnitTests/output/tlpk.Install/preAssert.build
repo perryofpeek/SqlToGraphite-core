@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<project name="preAssert" basedir=".">
-  <target name="tlpk.preAssert" description="Assertions that are made before the command runs.">  	
-  	<DotNet.IsPresent version="4.0.30319" />
-  </target> 
-</project>
