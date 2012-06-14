@@ -8,10 +8,12 @@
 
 # exclude these ...
 
-# To ignore bin/debug & bin/release and ditto for obj
 [bB]in/
 [oO]bj/
 [nN][Dd]epend[Oo]ut
+
+[oO]utput/
+[o]utput/ 
 
 #standard visual studio 
 *.user
@@ -28,8 +30,4 @@ _ReSharper*/
 BuildArtifacts/
 BuildOutput.txt
 
-#donkey stuff
-/libs/
-
-#don't know 
-src/*.zip
+TestResult.xml
