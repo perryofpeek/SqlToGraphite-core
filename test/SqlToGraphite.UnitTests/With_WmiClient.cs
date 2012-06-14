@@ -1,0 +1,24 @@
+﻿using log4net;
+using NUnit.Framework;
+using Rhino.Mocks;
+
+namespace SqlToGraphite.UnitTests
+{
+    // ReSharper disable InconsistentNaming
+    [TestFixture]
+    public class With_WmiClient
+    {
+        [Test]
+        public void Should_get_wmi_data()
+        {
+            var log = MockRepository.GenerateMock<ILog>();
+            var taskParams = new TaskParams("path", "SELECT PercentFreeSpace, Name FROM Win32_PerfFormattedData_PerfDisk_LogicalDisk Where Name <> '_Total'", string.Empty, "wmi", "nme", "statsdudp");
+            var wmiClient = new WmiClient(log, taskParams);
+            var results = wmiClient.Get();
+            Assert.That(results[0].Value, Is.GreaterThan(0));
+            Assert.That(results[0].Name == "C" || results[0].Name == "D");
+            Assert.That(results[1].Value, Is.GreaterThan(0));
+            Assert.That(results[1].Name == "C" || results[1].Name == "D");
+        }
+    }
+}

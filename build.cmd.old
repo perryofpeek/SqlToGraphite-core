@@ -1,0 +1,15 @@
+echo "Compile" 
+C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe SqlToGraphite.sln /t:Rebuild /p:Configuration=Release
+
+echo "run unit tests"
+packages\NUnit.Runners.2.6.0.12051\tools\nunit-console-x86.exe .\test\SqlToGraphite.UnitTests\Bin\x86\Release\SqlToGraphite.UnitTests.dll
+packages\NUnit.Runners.2.6.0.12051\tools\nunit-console-x86.exe .\test\\SqlToGraphite.Host.UnitTests\bin\Release\SqlToGraphite.Host.UnitTests.dll
+
+echo "copy to output folder"
+rmdir /s/q output 
+mkdir output 
+
+xcopy .\Src\SqlToGraphite.host\bin\x86\Release\*.dll output
+xcopy .\Src\SqlToGraphite.host\bin\x86\Release\*.config output
+xcopy .\Src\SqlToGraphite.host\config.xml output
+

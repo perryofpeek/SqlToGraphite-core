@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SqlToGraphiteConfig>
+  
+  <Clients>
+    <Client name="statsdUdp1" port="1825" />
+    <Client name="graphiteTcp" port="2003" />
+  </Clients>
+
+  <WorkItems hostname="localhost" >
+    <TaskSet frequency="5000">
+      <Task  path="Test.Owain.wi.one"  sql="select 234 , DATEADD(day,11,GETDATE())"  connectionstring="Data Source=localhost;Initial Catalog=Master;User Id=sa;Password=!bcde1234;"  type="sqlServer"  name="name" client="statsdUdp1" />
+      <Task  path="Test.Owain.wi.two"  sql="select 100 , DATEADD(day,11,GETDATE())"  connectionstring="Data Source=localhost;Initial Catalog=Master;User Id=sa;Password=!bcde1234;"  type="sqlServer"  name="name" client="statsdUdp1" />     
+    </TaskSet>
+
+    <TaskSet frequency="3000">
+      <Task  path="Test.Owain.wi2.one"  sql="select 12 , DATEADD(day,11,GETDATE())"  connectionstring="Data Source=localhost;Initial Catalog=Master;User Id=sa;Password=!bcde1234;"  type="sqlServer"  name="name" client="statsdUdp1" />
+      <Task  path="Test.Owain.wi2.two"  sql="select 40 , DATEADD(day,11,GETDATE())"  connectionstring="Data Source=localhost;Initial Catalog=Master;User Id=sa;Password=!bcde1234;"  type="sqlServer"  name="name" client="statsdUdp1" />
+    </TaskSet>
+    
+    
+    <!--<TaskSet frequency="5000">
+      --><!--<Task  path="Test.Owain.wi.three"  sql="sql"  connectionstring="cs"  type="type"  name="name" client="statsdUdp" />
+      <Task  path="Test.Owain.wi.three"  sql="sql"  connectionstring="cs"  type="type"  name="name" client="graphiteTcp" />--><!--
+    </TaskSet>-->
+  </WorkItems>
+</SqlToGraphiteConfig>

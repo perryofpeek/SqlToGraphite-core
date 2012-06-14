@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<configuration>
+
+  <configSections>
+    <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler, log4net"/>
+    <section name="SqlToGraphite" type=" SqlToGraphite.host.SqlToGraphiteSection,  SqlToGraphite.host"  />
+  </configSections>
+  
+  <SqlToGraphite
+      Hostname = "metrics.london.ttldev.local"
+      ConfigUri = "http://tl-svn4/svn/deploy/trunk/metrics/Config/Bti/config.xml"
+      ConfigUsername = "metrics"
+      ConfigPassword= "m3tr1cs"
+      CheckConfigUpdatedEveryMinutes = "10"
+      MinutesBetweenRetryToGetConfigOnError = "2"
+      ConfigCacheLengthMinutes = "10"
+    />
+  
+  <log4net>
+    <appender name="ConsoleAppender" type="log4net.Appender.ConsoleAppender">
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%date [%thread] %-5level %logger [%property{NDC}] - %message%newline" />
+      </layout>
+    </appender>
+    <appender name="RollingLogFileAppender" type="log4net.Appender.RollingFileAppender">
+      <param name="File" value="logs\SqlToGraphite.log.txt"/>
+      <param name="AppendToFile" value="true"/>
+      <datePattern value="yyyyMMdd"/>
+      <rollingStyle value="Date"/>
+      <maximumFileSize value="10MB"/>
+      <maxSizeRollBackups value="100"/>
+      <layout type="log4net.Layout.PatternLayout">
+        <param name="Header" value="[Header]\r\n"/>
+        <param name="Footer" value="[Footer]\r\n"/>
+        <param name="ConversionPattern" value="%d [%t] %-5p %c %m%n"/>
+      </layout>
+      <lockingModel type="log4net.Appender.FileAppender+MinimalLock"/>
+    </appender>
+    <root>
+      <level value="INFO"/>
+      <appender-ref ref="ConsoleAppender" />
+      <appender-ref ref="RollingLogFileAppender"/>
+    </root>
+  </log4net>
+
+</configuration>

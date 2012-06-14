@@ -1,0 +1,72 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1E0CB7CF-692D-4800-811E-CB6CEF492526}"
+	ProjectSection(SolutionItems) = preProject
+		build.cmd = build.cmd
+		default.ps1 = default.ps1
+		..\properties.build = ..\properties.build
+		SqlToGraphite.nunit = SqlToGraphite.nunit
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{9530DA16-AA0C-472C-83A2-8F859F2A396A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{18069ED3-75A2-476D-8BEF-36FF14D8745F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlToGraphite.UnitTests", "test\SqlToGraphite.UnitTests\SqlToGraphite.UnitTests.csproj", "{71FB7374-8A75-49EA-B684-C606FD58968C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlToGraphite.host", "src\SqlToGraphite.host\SqlToGraphite.host.csproj", "{380F6AFF-E6EC-4F56-B35C-D73042724D21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlToGraphite", "src\SqlToGraphite\SqlToGraphite.csproj", "{D7B42279-98D3-4017-8AF9-A863B3B79E2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlToGraphite.Host.UnitTests", "test\SqlToGraphite.Host.UnitTests\SqlToGraphite.Host.UnitTests.csproj", "{726C6AD5-FE7E-44E5-B4D1-E92732F4705C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{71FB7374-8A75-49EA-B684-C606FD58968C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71FB7374-8A75-49EA-B684-C606FD58968C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71FB7374-8A75-49EA-B684-C606FD58968C}.Debug|x86.ActiveCfg = Debug|x86
+		{71FB7374-8A75-49EA-B684-C606FD58968C}.Debug|x86.Build.0 = Debug|x86
+		{71FB7374-8A75-49EA-B684-C606FD58968C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71FB7374-8A75-49EA-B684-C606FD58968C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71FB7374-8A75-49EA-B684-C606FD58968C}.Release|x86.ActiveCfg = Release|x86
+		{71FB7374-8A75-49EA-B684-C606FD58968C}.Release|x86.Build.0 = Release|x86
+		{380F6AFF-E6EC-4F56-B35C-D73042724D21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{380F6AFF-E6EC-4F56-B35C-D73042724D21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{380F6AFF-E6EC-4F56-B35C-D73042724D21}.Debug|x86.ActiveCfg = Debug|x86
+		{380F6AFF-E6EC-4F56-B35C-D73042724D21}.Debug|x86.Build.0 = Debug|x86
+		{380F6AFF-E6EC-4F56-B35C-D73042724D21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{380F6AFF-E6EC-4F56-B35C-D73042724D21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{380F6AFF-E6EC-4F56-B35C-D73042724D21}.Release|x86.ActiveCfg = Release|x86
+		{380F6AFF-E6EC-4F56-B35C-D73042724D21}.Release|x86.Build.0 = Release|x86
+		{D7B42279-98D3-4017-8AF9-A863B3B79E2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7B42279-98D3-4017-8AF9-A863B3B79E2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7B42279-98D3-4017-8AF9-A863B3B79E2F}.Debug|x86.ActiveCfg = Debug|x86
+		{D7B42279-98D3-4017-8AF9-A863B3B79E2F}.Debug|x86.Build.0 = Debug|x86
+		{D7B42279-98D3-4017-8AF9-A863B3B79E2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7B42279-98D3-4017-8AF9-A863B3B79E2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7B42279-98D3-4017-8AF9-A863B3B79E2F}.Release|x86.ActiveCfg = Release|x86
+		{D7B42279-98D3-4017-8AF9-A863B3B79E2F}.Release|x86.Build.0 = Release|x86
+		{726C6AD5-FE7E-44E5-B4D1-E92732F4705C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{726C6AD5-FE7E-44E5-B4D1-E92732F4705C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{726C6AD5-FE7E-44E5-B4D1-E92732F4705C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{726C6AD5-FE7E-44E5-B4D1-E92732F4705C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{726C6AD5-FE7E-44E5-B4D1-E92732F4705C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{726C6AD5-FE7E-44E5-B4D1-E92732F4705C}.Release|x86.ActiveCfg = Release|x86
+		{726C6AD5-FE7E-44E5-B4D1-E92732F4705C}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{71FB7374-8A75-49EA-B684-C606FD58968C} = {9530DA16-AA0C-472C-83A2-8F859F2A396A}
+		{726C6AD5-FE7E-44E5-B4D1-E92732F4705C} = {9530DA16-AA0C-472C-83A2-8F859F2A396A}
+		{380F6AFF-E6EC-4F56-B35C-D73042724D21} = {18069ED3-75A2-476D-8BEF-36FF14D8745F}
+		{D7B42279-98D3-4017-8AF9-A863B3B79E2F} = {18069ED3-75A2-476D-8BEF-36FF14D8745F}
+	EndGlobalSection
+EndGlobal

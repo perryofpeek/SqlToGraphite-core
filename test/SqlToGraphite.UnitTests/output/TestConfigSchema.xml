@@ -1,0 +1,49 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SqlToGraphiteConfig>
+  
+  <Clients>
+    <Client name='statsdUdp' port='1234' />
+    <Client name='nativetcp' port='1234' />
+  </Clients>
+
+  <templates>
+    <WorkItems Role='Default' >
+      <TaskSet frequency='1000'>
+        <Task  path='some.path'  sql='sql'  connectionstring='cs'  type='type'  name='name' client='client' port='12345'/>
+        <Task  path='some.path'  sql='sql'  connectionstring='cs'  type='type'  name='name' client='client' port='12345'/>
+      </TaskSet>
+      <TaskSet frequency='5000'>
+        <Task  path='some.path'  sql='sql'  connectionstring='cs'  type='type'  name='name' client='client' port='12345'/>
+        <Task  path='some.path'  sql='sql'  connectionstring='cs'  type='type'  name='name' client='client' port='12345'/>
+      </TaskSet>
+    </WorkItems>
+
+    <WorkItems Role='WebServer' >
+      <TaskSet frequency='1000'>
+        <Task  path='some.path'  sql='sql'  connectionstring='cs'  type='type'  name='name' client='client' port='12345'/>
+        <Task  path='some.path'  sql='sql'  connectionstring='cs'  type='type'  name='name' client='client' port='12345'/>
+      </TaskSet>
+      <TaskSet frequency='5000'>
+        <Task  path='some.path'  sql='sql'  connectionstring='cs'  type='type'  name='name' client='client' port='12345'/>
+        <Task  path='some.path'  sql='sql'  connectionstring='cs'  type='type'  name='name' client='client' port='12345'/>
+      </TaskSet>
+    </WorkItems>
+
+  </templates>
+  <hosts>
+    <host name='DEFAULT'>
+      <role name='Default'/>
+      <role name='Default'/>
+    </host>
+    <host name='Server1'>
+      <role name='WebServer' />
+    </host>
+    <host name='Server1'>
+      <role name='WebServer' />
+    </host>
+    <host name='Server2'>
+      <role name='WebServer' />
+    </host>
+  </hosts>
+  
+</SqlToGraphiteConfig>
