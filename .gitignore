@@ -29,5 +29,6 @@ _ReSharper*/
 [tT]est[rR]esults
 BuildArtifacts/
 BuildOutput.txt
-
+AssemblyInfo.cs
 TestResult.xml
+output
