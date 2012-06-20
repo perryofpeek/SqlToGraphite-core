@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<configuration>
+
+  <configSections>
+    <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler, SqlToGraphite"/>
+    <section name="SqlToGraphite" type=" SqlToGraphite.host.SqlToGraphiteSection,  SqlToGraphite"  />
+  </configSections>
+
+  <!-- ConfigUri = "file://C:/git/metrics/src/SqlToGraphite/src/SqlToGraphite.host/bin/x86/Debug/config.xml" -->
+  <!-- ConfigUri = "http://tl-svn1/svn/play/trunk/Farringdon/config.xml"      
+       ConfigUsername = "owainp"
+       ConfigPassword= "*Fish55"
+  -->
+  <SqlToGraphite
+      Hostname = "metrics.london.ttldev.local"      
+      ConfigUri = "file://C:/git/metrics/src/SqlToGraphite/src/SqlToGraphite.host/bin/x86/Debug/config.xml"
+      CheckConfigUpdatedEveryMinutes = "1"
+      MinutesBetweenRetryToGetConfigOnError = "1"
+      ConfigCacheLengthMinutes = "1"
+    />
+    <log4net>
+    <appender name="ConsoleAppender" type="log4net.Appender.ConsoleAppender">
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%date [%thread] %-5level %logger [%property{NDC}] - %message%newline" />
+      </layout>
+    </appender>
+    <appender name="RollingLogFileAppender" type="log4net.Appender.RollingFileAppender">
+      <param name="File" value="logs\SqlToGraphite.log.txt"/>
+      <param name="AppendToFile" value="true"/>
+      <datePattern value="yyyyMMdd"/>
+      <rollingStyle value="Date"/>
+      <maximumFileSize value="10MB"/>
+      <maxSizeRollBackups value="100"/>
+      <layout type="log4net.Layout.PatternLayout">
+        <param name="Header" value="[Header]\r\n"/>
+        <param name="Footer" value="[Footer]\r\n"/>
+        <param name="ConversionPattern" value="%d [%t] %-5p %c %m%n"/>
+      </layout>
+      <lockingModel type="log4net.Appender.FileAppender+MinimalLock"/>
+    </appender>
+    <root>
+      <level value="DEBUG"/>
+      <appender-ref ref="ConsoleAppender" />
+      <appender-ref ref="RollingLogFileAppender"/>
+    </root>
+  </log4net>
+
+</configuration>

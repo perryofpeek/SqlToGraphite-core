@@ -107,7 +107,10 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="App.config.Template" />
+    <None Include="app.config.Template">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
