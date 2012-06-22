@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SqlToGraphite</RootNamespace>
     <AssemblyName>SqlToGraphite</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
     <FileUpgradeFlags>
@@ -72,14 +72,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Graphite, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Graphite.NET.1.1\lib\net40\Graphite.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Graphite.NET.1.1\lib\net35\Graphite.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Statsd">
-      <HintPath>..\..\..\..\libs\Statsd\Statsd.dll</HintPath>
+      <HintPath>..\..\packages\log4net.2.0.0\lib\net35-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
