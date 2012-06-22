@@ -10,7 +10,7 @@ namespace SqlToGraphite.UnitTests
     [TestFixture]
     public class With_OracleClient
     {
-        private const string ConnectionString = "Data Source=localhost:1521/XE;User Id=owain;Password=!bcde1234;";
+        private const string ConnectionString = "Data Source=localhost:1521/XE;User Id=owain;Password=abcd1234;";
 
         [Test]
         public void Should_get_result()

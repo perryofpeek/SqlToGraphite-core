@@ -6,7 +6,7 @@ properties {
   $Build_Configuration = 'Release'
   $Build_Artifacts = 'output'
   $fullPath= 'src\SqlToGraphite.host\output'
-  $version = '1.1.0.0'
+  $version = '0.2.0.0'
 }
 
 task default -depends Package
@@ -20,8 +20,11 @@ task Compile -depends  Clean {
    Exec {  C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe /p:OutDir=""$Build_Artifacts\"" /t:Rebuild /p:Configuration=$Build_Configuration $Build_Solution }
 }
 
-task Clean {   
-  #rmdir $Build_Artifacts -Force -Recurse;
+task Clean {
+  if((test-path  $Build_Artifacts -pathtype container))
+  {
+	rmdir -Force -Recurse $Build_Artifacts;
+  }     
   Exec {  C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe /p:OutDir=""$Build_Artifacts\"" /t:Clean $Build_Solution }  
 }
 
@@ -46,14 +49,17 @@ task Init {
 }
 
 task Ilmerge -depends Test  {
-    mkdir $Build_Artifacts;
+    
+	mkdir $Build_Artifacts;
     #$var = "" + "$fullPath" + "" + "$fullPath" + "\log4net.dll " + "$fullPath" + "\SqlToGraphite.dll " + "$fullPath" + "\Topshelf.dll";
     #Write-Host $var;
     Exec { tools\ilmerge.exe /closed /t:exe /out:output\sqlToGraphite.exe /targetplatform:v4 src\SqlToGraphite.host\output\SqlToGraphite.host.exe src\SqlToGraphite.host\output\Graphite.dll  src\SqlToGraphite.host\output\Topshelf.dll src\SqlToGraphite.host\output\log4net.dll };
     Copy-Item  $fullPath\app.config.Template output\SqlToGraphite.exe.config;
 }
 
+#-depends Ilmerge
 task Package -depends Ilmerge {
+	Exec { "c:\Program Files (x86)\NSIS\makensis.exe sqlToGraphite.nsi" }
 }
 
 task StartOracle {
