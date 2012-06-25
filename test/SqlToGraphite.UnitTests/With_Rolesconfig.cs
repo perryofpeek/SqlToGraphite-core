@@ -28,7 +28,7 @@ namespace SqlToGraphite.UnitTests
             host.role[1] = new SqlToGraphiteConfigHostsHostRole { name = "a2" };
             sqlToGraphiteConfigHosts.Add(host);
 
-            var roleConfig = new RoleConfig(sqlToGraphiteConfigHosts);
+            var roleConfig = new RoleConfig(sqlToGraphiteConfigHosts, Environment.MachineName);
             var roleList = roleConfig.GetRoleList();
 
             Assert.That(roleList.Count, Is.EqualTo(2));
@@ -48,7 +48,7 @@ namespace SqlToGraphite.UnitTests
 
             sqlToGraphiteConfigHosts.Add(hosta);
             sqlToGraphiteConfigHosts.Add(hostb);
-            var roleConfig = new RoleConfig(sqlToGraphiteConfigHosts);
+            var roleConfig = new RoleConfig(sqlToGraphiteConfigHosts, Environment.MachineName);
             var roleList = roleConfig.GetRoleList();
 
             Assert.That(roleList.Count, Is.EqualTo(2));
@@ -71,7 +71,59 @@ namespace SqlToGraphite.UnitTests
             sqlToGraphiteConfigHosts.Add(hosta);
             sqlToGraphiteConfigHosts.Add(hostb);
             sqlToGraphiteConfigHosts.Add(hostc);
-            var roleConfig = new RoleConfig(sqlToGraphiteConfigHosts);
+            var roleConfig = new RoleConfig(sqlToGraphiteConfigHosts, Environment.MachineName);
+            var roleList = roleConfig.GetRoleList();
+
+            Assert.That(roleList.Count, Is.EqualTo(3));
+            Assert.That(roleList[0], Is.EqualTo("a1"));
+            Assert.That(roleList[1], Is.EqualTo("a2"));
+            Assert.That(roleList[2], Is.EqualTo("c1"));
+        }
+
+        [Test]
+        public void Should_get_all_roles_for_default_and_regex_of_the_machines_hostname_direct_match()
+        {
+            var machineName = "abc";
+            var hname = "abc";
+            var sqlToGraphiteConfigHosts = new List<SqlToGraphiteConfigHostsHost>();
+            var hosta = new SqlToGraphiteConfigHostsHost { name = "default", role = new SqlToGraphiteConfigHostsHostRole[2] };
+            var hostb = new SqlToGraphiteConfigHostsHost { name = "notThis", role = new SqlToGraphiteConfigHostsHostRole[1] };
+            var hostc = new SqlToGraphiteConfigHostsHost { name = hname, role = new SqlToGraphiteConfigHostsHostRole[1] };
+            hosta.role[0] = new SqlToGraphiteConfigHostsHostRole { name = "a1" };
+            hosta.role[1] = new SqlToGraphiteConfigHostsHostRole { name = "a2" };
+            hostb.role[0] = new SqlToGraphiteConfigHostsHostRole { name = "b1" };
+            hostc.role[0] = new SqlToGraphiteConfigHostsHostRole { name = "c1" };
+
+            sqlToGraphiteConfigHosts.Add(hosta);
+            sqlToGraphiteConfigHosts.Add(hostb);
+            sqlToGraphiteConfigHosts.Add(hostc);
+            var roleConfig = new RoleConfig(sqlToGraphiteConfigHosts, machineName);
+            var roleList = roleConfig.GetRoleList();
+
+            Assert.That(roleList.Count, Is.EqualTo(3));
+            Assert.That(roleList[0], Is.EqualTo("a1"));
+            Assert.That(roleList[1], Is.EqualTo("a2"));
+            Assert.That(roleList[2], Is.EqualTo("c1"));
+        }
+
+        [Test]
+        public void Should_get_all_roles_for_default_and_regex_of_the_machines_hostname_regex_match()
+        {
+            var machineName = "lonbti-bus01v";
+            var hname = ".*bus.*";
+            var sqlToGraphiteConfigHosts = new List<SqlToGraphiteConfigHostsHost>();
+            var hosta = new SqlToGraphiteConfigHostsHost { name = "default", role = new SqlToGraphiteConfigHostsHostRole[2] };
+            var hostb = new SqlToGraphiteConfigHostsHost { name = "notThis", role = new SqlToGraphiteConfigHostsHostRole[1] };
+            var hostc = new SqlToGraphiteConfigHostsHost { name = hname, role = new SqlToGraphiteConfigHostsHostRole[1] };
+            hosta.role[0] = new SqlToGraphiteConfigHostsHostRole { name = "a1" };
+            hosta.role[1] = new SqlToGraphiteConfigHostsHostRole { name = "a2" };
+            hostb.role[0] = new SqlToGraphiteConfigHostsHostRole { name = "b1" };
+            hostc.role[0] = new SqlToGraphiteConfigHostsHostRole { name = "c1" };
+
+            sqlToGraphiteConfigHosts.Add(hosta);
+            sqlToGraphiteConfigHosts.Add(hostb);
+            sqlToGraphiteConfigHosts.Add(hostc);
+            var roleConfig = new RoleConfig(sqlToGraphiteConfigHosts, machineName);
             var roleList = roleConfig.GetRoleList();
 
             Assert.That(roleList.Count, Is.EqualTo(3));
@@ -97,7 +149,7 @@ namespace SqlToGraphite.UnitTests
             sqlToGraphiteConfigHosts.Add(hostb);
             sqlToGraphiteConfigHosts.Add(hostc);
 
-            var roleConfig = new RoleConfig(sqlToGraphiteConfigHosts);
+            var roleConfig = new RoleConfig(sqlToGraphiteConfigHosts, Environment.MachineName);
             var roleList = roleConfig.GetRoleList();
 
             Assert.That(roleList.Count, Is.EqualTo(4));

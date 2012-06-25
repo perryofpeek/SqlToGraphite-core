@@ -8,9 +8,12 @@ namespace SqlToGraphite.Conf
     {
         private List<SqlToGraphiteConfigHostsHost> sqlToGraphiteConfigHosts;
 
-        public RoleConfig(List<SqlToGraphiteConfigHostsHost> sqlToGraphiteConfigHosts)
+        private readonly string hostname;
+
+        public RoleConfig(List<SqlToGraphiteConfigHostsHost> sqlToGraphiteConfigHosts, string hostname)
         {
             this.sqlToGraphiteConfigHosts = sqlToGraphiteConfigHosts;
+            this.hostname = hostname;
         }
 
         public List<string> GetRoleList()
@@ -22,7 +25,7 @@ namespace SqlToGraphite.Conf
                 {
                     rtn.AddRange(h.role.Select(role => role.name));
                 }
-                else if (h.name.ToLower() == Environment.MachineName.ToLower())
+                else if (System.Text.RegularExpressions.Regex.IsMatch(hostname, h.name, System.Text.RegularExpressions.RegexOptions.IgnoreCase))
                 {
                     rtn.AddRange(h.role.Select(role => role.name));
                 }

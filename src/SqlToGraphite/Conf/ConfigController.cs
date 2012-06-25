@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using log4net;
 
@@ -32,7 +33,7 @@ namespace SqlToGraphite.Conf
             if (configRepository.Validate())
             {
                 newConfig = true;
-                var roleConfig = new RoleConfig(configRepository.GetHosts());
+                var roleConfig = new RoleConfig(this.configRepository.GetHosts(), Environment.MachineName);
                 var templates = new Templates(configRepository.GetTemplates());
                 var setList = templates.GetTaskSetList(roleConfig.GetRoleList());
                 var taskList = configMapper.Map(setList, configRepository.GetClientList());
