@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Management;
-
 using log4net;
+using SqlToGraphite.Clients;
 
 namespace SqlToGraphite
 {
@@ -87,10 +87,21 @@ namespace SqlToGraphite
         private IEnumerable<ManagementObject> GetWmiObject(string query, string machineName, string rootPath)
         {
             try
-            {
-                var p = string.Format(@"\\{0}\{1}", machineName, rootPath);
-                log.Debug(string.Format("{0} {1}", p, query));
-                var searcher = new ManagementObjectSearcher(p, query);
+            {                
+                var conn = new ConnectionOptions();
+                var path = string.Format(@"\\{0}\{1}", machineName, rootPath);
+                if (!string.IsNullOrEmpty(taskParams.ConnectionString))
+                {
+                    var wmiConnectionStringParser = new WmiConnectionStringParser(taskParams.ConnectionString);
+                    conn.Username = wmiConnectionStringParser.Username;
+                    conn.Password = wmiConnectionStringParser.Password;
+                    path = string.Format(@"\\{0}\{1}", wmiConnectionStringParser.Hostname, rootPath);
+                }
+
+                var scope = new ManagementScope(path, conn);
+                log.Debug(string.Format("{0} {1}", path, query));
+                var queryObject = new ObjectQuery(query);
+                var searcher = new ManagementObjectSearcher(scope, queryObject);
                 return searcher.Get().Cast<ManagementObject>().ToList();
             }
             catch (Exception e)

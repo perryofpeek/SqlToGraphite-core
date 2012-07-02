@@ -4,71 +4,45 @@ VIAddVersionKey "CompanyName" "peek.org.uk"
 VIAddVersionKey "LegalCopyright" "© peek.org.uk 2012"
 VIAddVersionKey "FileDescription" "SqlToGraphite installer"
 OutFile SqlToGraphite-Setup.exe
-
 RequestExecutionLevel admin
 
 # uncomment the following line to make the installer silent by default.
-; SilentInstall silent
+SilentInstall silent
 
-Function .onInit
-  # `/SD IDYES' tells MessageBox to automatically choose IDYES if the installer is silent
-  # in this case, the installer can only be silent if the user used the /S switch or if
-  # you've uncommented line number 5
-  MessageBox MB_YESNO|MB_ICONQUESTION "Would you like the installer to be silent from now on?" \
-    /SD IDYES IDNO no IDYES yes
-
-  # SetSilent can only be used in .onInit and doesn't work well along with `SetSilent silent'
-
-  yes:
-    SetSilent silent
-    Goto done
-  no:
-    SetSilent normal
-  done:
-FunctionEnd
-
-Section
-  IfSilent 0 +2
-    MessageBox MB_OK|MB_ICONINFORMATION 'This is a "silent" installer'
-
-  # there is no need to use IfSilent for this one because the /SD switch takes care of that
-  MessageBox MB_OK|MB_ICONINFORMATION "This is not a silent installer" /SD IDOK
-
-  # when `SetOverwrite on' (which is the default) is used, the installer will show a message
-  # if it can't open a file for writing. On silent installers, the ignore option will be
-  # automatically selected. if `AllowSkipFiles off' (default is on) was used, there is no
-  # ignore option and the cancel option will be automatically selected.
-
-  # on is default
-  ; AllowSkipFiles on
-
-  # lock file
-  FileOpen $0 $TEMP\silentOverwrite w
-  # try to extract - will fail
-  File /oname=$TEMP\silentOverwrite silent.nsi
-  # unlcok
-  FileClose $0
-
-  # this will always show on silent installers because ignore is the option automatically
-  # selected when a file can't be opened for writing on a silent installer
-  MessageBox MB_OK|MB_ICONINFORMATION "This message box always shows if the installer is silent"
-
-  AllowSkipFiles off
-
-  # lock file
-  FileOpen $0 $TEMP\silentOverwrite w
-  # try to extract - will fail
-  File /oname=$TEMP\silentOverwrite silent.nsi
-  # unlcok
-  FileClose $0
+Section Main    
+    SetOutPath $PROGRAMFILES\SqlToGraphite
+    SetOverwrite on    
+	; Check to see if already installed
+	ClearErrors
+	ReadRegStr $0 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\SqlToGraphite" ""	
+	IfErrors 0 +2
+		DetailPrint "Installed aleady"
+		ExecWait '"$OUTDIR\uninstall.exe " _?=$OUTDIR /s '		
+			
+	DetailPrint "Now installing"				
+		File output\sqltographite.exe
+		File output\sqltographite.exe.config 
+		WriteUninstaller $OUTDIR\uninstall.exe  
+    
+		WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\SqlToGraphite" \
+                 "DisplayName" "SqlToGraphite record metrics in graphite"
+		WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\SqlToGraphite" \
+                 "QuietUninstallString" "$\"$INSTDIR\uninstall.exe$\" /S"
+		
+		ExecWait '"$OUTDIR\sqltographite.exe" install' $0
+		DetailPrint "Returned $0"
+		ExecWait '"Net" start SqlToGraphite' $0
+		DetailPrint "Returned $0"
 SectionEnd
 
-#SilentInstall silent
-#Section Main    
-#    SetOutPath $TEMP
-#    SetOverwrite on
-#    File output\sqltographite.exe
-#    File output\sqltographite.exe.config   
-#    ExecWait '"$OUTDIR\sqltographite.exe install"'
-#    ExecWait '"Net start SqlToGraphite"'    
-#SectionEnd
+Section "Uninstall"  
+  ExecWait '"Net" stop SqlToGraphite' $0
+  DetailPrint "Returned $0"
+  ExecWait '"$INSTDIR\sqltographite.exe" uninstall'
+  Delete $INSTDIR\sqltographite.exe
+  Delete $INSTDIR\sqltographite.exe.config
+  RMDir $INSTDIR\logs
+  Delete $INSTDIR\uninstall.exe ; delete self (see explanation below why this works)
+  RMDir $INSTDIR  
+  Quit  
+SectionEnd

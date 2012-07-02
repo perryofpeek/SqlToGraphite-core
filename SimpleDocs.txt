@@ -1,0 +1,10 @@
+
+Hostname uses Regular expressions to match against. 
+
+
+Wmi connections strings. 
+
+If the connection string is passed in then it will be used, otherwise it will use the local credentials on the local host. 
+The wmi connection string is of the format "Username=someUser;Password=abcd1234;hostname=somehost;
+
+if the hostname is not passed in there will be an expection thrown because it will try and user the credentails on local host which is not allowed. 

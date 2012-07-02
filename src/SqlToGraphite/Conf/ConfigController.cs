@@ -19,8 +19,6 @@ namespace SqlToGraphite.Conf
 
         public ConfigController(IConfigMapper configMapper, ILog log, IConfigRepository configRepository)
         {
-            this.dataClientFactory = dataClientFactory;
-            this.graphiteClientFactory = graphiteClientFactory;
             this.configMapper = configMapper;
             this.log = log;
             this.configRepository = configRepository;

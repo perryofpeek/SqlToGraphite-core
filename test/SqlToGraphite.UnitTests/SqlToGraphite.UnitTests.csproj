@@ -98,6 +98,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="With_WmiConnectionStringParser.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="With_Cache.cs" />
     <Compile Include="With_ConfigReader.cs" />

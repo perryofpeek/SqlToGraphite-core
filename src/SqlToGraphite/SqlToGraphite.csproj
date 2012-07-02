@@ -105,6 +105,7 @@
     <Compile Include="Clients\IKnownGraphiteClients.cs" />
     <Compile Include="Clients\KnownDataClients.cs" />
     <Compile Include="Clients\KnownGraphiteClients.cs" />
+    <Compile Include="Clients\WmiConnectionStringParser.cs" />
     <Compile Include="Conf\Cache.cs" />
     <Compile Include="Conf\Config.cs" />
     <Compile Include="ConfigMapper.cs" />
