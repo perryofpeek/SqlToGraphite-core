@@ -1,4 +1,14 @@
 
+
+Installation 
+
+slient install , you can run the setup multiple times, it will uninstall and reinstall. 
+
+Application configuration settings. 
+
+
+Configuration information. 
+
 Hostname uses Regular expressions to match against. 
 
 
