@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.OracleClient;
-
 using log4net;
+using SqlToGraphiteInterfaces;
 
 namespace SqlToGraphite
 {

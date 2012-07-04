@@ -4,6 +4,7 @@ using System.Linq;
 using System.Management;
 using log4net;
 using SqlToGraphite.Clients;
+using SqlToGraphiteInterfaces;
 
 namespace SqlToGraphite
 {

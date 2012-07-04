@@ -1,6 +1,9 @@
-﻿using log4net;
+﻿
+using log4net;
 using NUnit.Framework;
 using Rhino.Mocks;
+using SqlToGraphite.Plugin.SqlServer;
+using SqlToGraphiteInterfaces;
 
 namespace SqlToGraphite.UnitTests
 {
@@ -30,6 +33,11 @@ namespace SqlToGraphite.UnitTests
         [Test]
         public void Should_create_sql_server_client()
         {
+            //string[] files = Directory.GetFiles(Directory.GetCurrentDirectory(), "SqlToGraphite.Plugin.SqlServer.dll");
+            //foreach (string file in files)
+            //{
+            //    Assembly assembly = Assembly.LoadFile(file);
+            //}
             var taskParams = new TaskParams("path", "sql", "cs", "SqlServer", "name", "client");
             var o = this.dataClientFactory.Create(taskParams);
 

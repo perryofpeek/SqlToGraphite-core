@@ -1,3 +1,5 @@
+using SqlToGraphiteInterfaces;
+
 namespace SqlToGraphite
 {
     public class GraphiteUdpClient : IStatsClient

@@ -34,7 +34,7 @@ namespace SqlToGraphite.UnitTests
         [Test]
         public void Should_Process_multiple_tasks()
         {
-            int freq = 10;
+            int freq = 2;
             var task1 = MockRepository.GenerateMock<ITask>();
             task1.Expect(x => x.Process()).Repeat.Once();
             var task2 = MockRepository.GenerateMock<ITask>();

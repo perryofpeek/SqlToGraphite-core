@@ -1,5 +1,7 @@
 using Graphite.StatsD;
 
+using SqlToGraphiteInterfaces;
+
 namespace SqlToGraphite
 {
     public class StatsdClient : IStatsClient

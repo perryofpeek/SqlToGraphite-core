@@ -131,6 +131,14 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SqlToGraphite.Plugin.SqlServer\SqlToGraphite.Plugin.SqlServer.csproj">
+      <Project>{1EE73A57-4649-40CE-8DDD-17B3CAE8EBD9}</Project>
+      <Name>SqlToGraphite.Plugin.SqlServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SqlToGraphiteInterfaces\SqlToGraphiteInterfaces.csproj">
+      <Project>{B9B8475A-BF93-4D8C-819A-E2303DA40DD0}</Project>
+      <Name>SqlToGraphiteInterfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SqlToGraphite\SqlToGraphite.csproj">
       <Project>{D7B42279-98D3-4017-8AF9-A863B3B79E2F}</Project>
       <Name>SqlToGraphite</Name>

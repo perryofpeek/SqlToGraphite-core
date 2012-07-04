@@ -1,3 +1,5 @@
+using SqlToGraphiteInterfaces;
+
 namespace SqlToGraphite
 {
     public interface IDataClientFactory

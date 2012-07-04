@@ -1,4 +1,7 @@
+using System;
+
 using log4net;
+using SqlToGraphiteInterfaces;
 
 namespace SqlToGraphite
 {
@@ -26,7 +29,10 @@ namespace SqlToGraphite
 
             if (type == "sqlserver")
             {
-                return new SqlServerClient(log, taskParams);    
+                Type t = Type.GetType("SqlToGraphite.Plugin.SqlServer.SqlServerClient, SqlToGraphite.Plugin.SqlServer, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"); 
+                var obj = Activator.CreateInstance(t, new object[] { log, taskParams });
+                return (ISqlClient) obj;
+                //return new SqlServerClient(log, taskParams);    
             }
 
             throw new UnknownDataClientException(type);

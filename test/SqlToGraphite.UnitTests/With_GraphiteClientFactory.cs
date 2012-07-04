@@ -1,6 +1,7 @@
 ﻿using log4net;
 using NUnit.Framework;
 using Rhino.Mocks;
+using SqlToGraphiteInterfaces;
 
 namespace SqlToGraphite.UnitTests
 {

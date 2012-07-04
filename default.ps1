@@ -29,23 +29,48 @@ task Clean {
 }
 
 task Init {
+
+	$Company = "peek.org.uk";
+	$Description = "Graphite Service for collecting metrics";
+	$Product = "SqlToGraphite $version";
+	$Title = "SqlToGraphite $version";
+	$Copyright = "PerryOfPeek 2012";	
+
+	 Generate-Assembly-Info `
+        -file "src\SqlToGraphite.Plugin.SqlServer\Properties\AssemblyInfo.cs" `
+        -title $Title `
+        -description $Description `
+        -company $Company `
+        -product $Product `
+        -version $version `
+        -copyright $Copyright
+
     Generate-Assembly-Info `
         -file "src\SqlToGraphite.host\Properties\AssemblyInfo.cs" `
-        -title "SqlToGraphite $version" `
-        -description "Graphite Service for collecting metrics" `
-        -company "peek.org.uk" `
-        -product "SqlToGraphite $version" `
+        -title $Title `
+        -description $Description `
+        -company $Company `
+        -product $Product `
         -version $version `
-        -copyright "PerryOfPeek 2012"
+        -copyright $Copyright
+
+    Generate-Assembly-Info `
+        -file "src\SqlToGraphiteInterfaces\Properties\AssemblyInfo.cs" `
+        -title $Title `
+        -description $Description `
+        -company $Company `
+        -product $Product `
+        -version $version `
+        -copyright $Copyright
         
      Generate-Assembly-Info `
         -file "src\SqlToGraphite\Properties\AssemblyInfo.cs" `
-        -title "SqlToGraphite $version" `
-        -description "Graphite Service for collecting metrics" `
-        -company "peek.org.uk" `
-        -product "SqlToGraphite $version" `
+        -title $Title `
+        -description $Description `
+        -company $Company `
+        -product $Product `
         -version $version `
-        -copyright "PerryOfPeek 2012"    
+        -copyright $Copyright    
 }
 
 task Ilmerge -depends Test  {
@@ -53,7 +78,7 @@ task Ilmerge -depends Test  {
 	mkdir $Build_Artifacts;
     #$var = "" + "$fullPath" + "" + "$fullPath" + "\log4net.dll " + "$fullPath" + "\SqlToGraphite.dll " + "$fullPath" + "\Topshelf.dll";
     #Write-Host $var;
-    Exec { tools\ilmerge.exe /closed /t:exe /out:output\sqlToGraphite.exe /targetplatform:v4 src\SqlToGraphite.host\output\SqlToGraphite.host.exe src\SqlToGraphite.host\output\Graphite.dll  src\SqlToGraphite.host\output\Topshelf.dll src\SqlToGraphite.host\output\log4net.dll };
+    Exec { tools\ilmerge.exe /closed /t:exe /out:output\sqlToGraphite.exe /targetplatform:v4 src\SqlToGraphite.host\output\SqlToGraphite.host.exe src\SqlToGraphite.host\output\Graphite.dll src\SqlToGraphite.host\output\SqlToGraphite.Plugin.SqlServer.dll src\SqlToGraphite.host\output\SqlToGraphiteInterfaces.dll  src\SqlToGraphite.host\output\Topshelf.dll src\SqlToGraphite.host\output\log4net.dll };
     Copy-Item  $fullPath\app.config.Template output\SqlToGraphite.exe.config;
 }
 

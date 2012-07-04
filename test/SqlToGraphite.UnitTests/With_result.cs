@@ -2,6 +2,8 @@
 
 using NUnit.Framework;
 
+using SqlToGraphiteInterfaces;
+
 namespace SqlToGraphite.UnitTests
 {
     // ReSharper disable InconsistentNaming

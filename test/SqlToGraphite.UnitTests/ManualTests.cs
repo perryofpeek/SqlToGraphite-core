@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using log4net;
 using NUnit.Framework;
+using SqlToGraphiteInterfaces;
 
 namespace SqlToGraphite.UnitTests
 {
