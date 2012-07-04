@@ -102,7 +102,6 @@
     <Compile Include="Clients\IKnownGraphiteClients.cs" />
     <Compile Include="Clients\KnownDataClients.cs" />
     <Compile Include="Clients\KnownGraphiteClients.cs" />
-    <Compile Include="Clients\WmiConnectionStringParser.cs" />
     <Compile Include="Conf\Cache.cs" />
     <Compile Include="Conf\Config.cs" />
     <Compile Include="ConfigMapper.cs" />
@@ -132,7 +131,6 @@
     <Compile Include="Interfaces\ITaskBag.cs" />
     <Compile Include="Interfaces\ITaskSet.cs" />
     <Compile Include="Interfaces\IThread.cs" />
-    <Compile Include="Clients\OracleClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sleeper.cs" />
     <Compile Include="SqlGetter.cs" />
@@ -148,7 +146,6 @@
     <Compile Include="Conf\UnknownDataClientException.cs" />
     <Compile Include="Conf\UnknownGraphiteClientTypeException.cs" />
     <Compile Include="ConfigReader.cs" />
-    <Compile Include="Clients\WmiClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

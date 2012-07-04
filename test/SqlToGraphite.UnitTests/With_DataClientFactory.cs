@@ -2,7 +2,9 @@
 using log4net;
 using NUnit.Framework;
 using Rhino.Mocks;
+using SqlToGraphite.Plugin.Oracle;
 using SqlToGraphite.Plugin.SqlServer;
+using SqlToGraphite.Plugin.Wmi;
 using SqlToGraphiteInterfaces;
 
 namespace SqlToGraphite.UnitTests
@@ -14,6 +16,9 @@ namespace SqlToGraphite.UnitTests
         private ILog log;
 
         private IDataClientFactory dataClientFactory;
+        private const string SqlServerType = "SqlToGraphite.Plugin.SqlServer.SqlServerClient, SqlToGraphite.Plugin.SqlServer, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null";
+        private const string OracleType = "SqlToGraphite.Plugin.Oracle.OracleClient, SqlToGraphite.Plugin.Oracle, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null";
+        private const string WmiType = "SqlToGraphite.Plugin.Wmi.WmiClient, SqlToGraphite.Plugin.Wmi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null";
 
         [SetUp]
         public void SetUp()
@@ -33,12 +38,7 @@ namespace SqlToGraphite.UnitTests
         [Test]
         public void Should_create_sql_server_client()
         {
-            //string[] files = Directory.GetFiles(Directory.GetCurrentDirectory(), "SqlToGraphite.Plugin.SqlServer.dll");
-            //foreach (string file in files)
-            //{
-            //    Assembly assembly = Assembly.LoadFile(file);
-            //}
-            var taskParams = new TaskParams("path", "sql", "cs", "SqlServer", "name", "client");
+            var taskParams = new TaskParams("path", "sql", "cs", SqlServerType, "name", "client");
             var o = this.dataClientFactory.Create(taskParams);
 
             Assert.That(o, Is.Not.Null);
@@ -49,7 +49,7 @@ namespace SqlToGraphite.UnitTests
         [Test]
         public void Should_create_wmi_client()
         {
-            var taskParams = new TaskParams("path", "sql", "cs", "Wmi", "name", "client");
+            var taskParams = new TaskParams("path", "sql", "cs", WmiType, "name", "client");
             var o = this.dataClientFactory.Create(taskParams);
 
             Assert.That(o, Is.Not.Null);
@@ -60,7 +60,7 @@ namespace SqlToGraphite.UnitTests
         [Test]
         public void Should_create_oracle_client()
         {
-            var taskParams = new TaskParams("path", "sql", "cs", "Oracle", "name", "client");
+            var taskParams = new TaskParams("path", "sql", "cs", OracleType, "name", "client");
             var o = this.dataClientFactory.Create(taskParams);
 
             Assert.That(o, Is.Not.Null);
@@ -71,7 +71,7 @@ namespace SqlToGraphite.UnitTests
         [Test]
         public void Should_create_wmi_client_lowercase()
         {
-            var taskParams = new TaskParams("path", "sql", "cs", "wmi", "name", "client");
+            var taskParams = new TaskParams("path", "sql", "cs", WmiType, "name", "client");
             var o = this.dataClientFactory.Create(taskParams);
 
             Assert.That(o, Is.Not.Null);

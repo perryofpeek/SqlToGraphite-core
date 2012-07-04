@@ -98,8 +98,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="With_AssemblyLoader.cs" />
-    <Compile Include="With_WmiConnectionStringParser.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="With_Cache.cs" />
     <Compile Include="With_ConfigReader.cs" />
@@ -108,7 +106,6 @@
     <Compile Include="With_Rolesconfig.cs" />
     <Compile Include="With_KnownDataClients.cs" />
     <Compile Include="With_KnownGraphiteClients.cs" />
-    <Compile Include="With_OracleClient.cs" />
     <Compile Include="With_ConfigMapper.cs" />
     <Compile Include="With_GraphiteClientFactory.cs" />
     <Compile Include="ManualTests.cs" />
@@ -117,7 +114,6 @@
     <Compile Include="With_controller.cs" />
     <Compile Include="With_GraphiteClient.cs" />
     <Compile Include="With_result.cs" />
-    <Compile Include="With_SqlServerClient.cs" />
     <Compile Include="With_statsd_client.cs" />
     <Compile Include="With_task.cs" />
     <Compile Include="With_TaskBag.cs" />
@@ -125,16 +121,23 @@
     <Compile Include="With_TaskSet.cs" />
     <Compile Include="With_templates.cs" />
     <Compile Include="With_ThreadImpl.cs" />
-    <Compile Include="With_WmiClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\SqlToGraphite.host\SqlToGraphite.host.csproj">
       <Project>{380F6AFF-E6EC-4F56-B35C-D73042724D21}</Project>
       <Name>SqlToGraphite.host</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Src\SqlToGraphite.Plugin.Oracle\SqlToGraphite.Plugin.Oracle.csproj">
+      <Project>{22C76B9E-DA37-4DF9-9A02-F4F1636AEDDE}</Project>
+      <Name>SqlToGraphite.Plugin.Oracle</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\SqlToGraphite.Plugin.SqlServer\SqlToGraphite.Plugin.SqlServer.csproj">
       <Project>{1EE73A57-4649-40CE-8DDD-17B3CAE8EBD9}</Project>
       <Name>SqlToGraphite.Plugin.SqlServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\SqlToGraphite.Plugin.Wmi\SqlToGraphite.Plugin.Wmi.csproj">
+      <Project>{574D9188-DD86-41DB-A141-9542A84B2B46}</Project>
+      <Name>SqlToGraphite.Plugin.Wmi</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\SqlToGraphiteInterfaces\SqlToGraphiteInterfaces.csproj">
       <Project>{B9B8475A-BF93-4D8C-819A-E2303DA40DD0}</Project>
