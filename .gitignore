@@ -32,3 +32,4 @@ BuildOutput.txt
 AssemblyInfo.cs
 TestResult.xml
 output
+SqlToGraphite-Setup.exe

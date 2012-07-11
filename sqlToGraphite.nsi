@@ -192,6 +192,7 @@ Section Main
 	DetailPrint "Now installing"				
 		File output\sqltographite.exe
 		File output\sqltographite.exe.config 
+		File output\ConfigPatcher.exe
 		WriteUninstaller $OUTDIR\uninstall.exe  
     
 		WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\SqlToGraphite" \
@@ -199,14 +200,71 @@ Section Main
 		WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\SqlToGraphite" \
                  "QuietUninstallString" "$\"$INSTDIR\uninstall.exe$\" /S"
 		
-		Push "HOSTNAME"         ; push the search string onto the stack
+		Push "HOSTNAME"   ; push the search string onto the stack
 		Push "metrics"   ; push a default value onto the stack
 		Call GetParameterValue
 		Pop $2
 		Var /GLOBAL hostname 
-		StrCpy $hostname $2 
-
+		StrCpy $hostname "hostname=$2" 
 		DetailPrint "Value of hostname parameter is '$hostname'"
+
+		Push "USERNAME"   
+		Push ""   
+		Call GetParameterValue
+		Pop $2
+		Var /GLOBAL username 
+		StrCpy $username "username=$2" 
+		DetailPrint "Value of username parameter is '$username'"
+
+		Push "PASSWORD"   
+		Push ""   
+		Call GetParameterValue
+		Pop $2
+		Var /GLOBAL password 
+		StrCpy $password "password=$2" 
+		DetailPrint "Value of password parameter is '$password'"
+
+		Push "CONFIGUPDATE"   
+		Push "15"   
+		Call GetParameterValue
+		Pop $2
+		Var /GLOBAL configupdate 
+		StrCpy $configupdate "configupdate=$2" 
+		DetailPrint "Value of configupdate parameter is '$configupdate'"
+
+		Push "CONFIGRETRY"   
+		Push "15"   
+		Call GetParameterValue
+		Pop $2
+		Var /GLOBAL configRetry 
+		StrCpy $configRetry "configRetry=$2" 
+		DetailPrint "Value of configRetry parameter is '$configRetry'"
+
+		Push "CACHELENGTH"   
+		Push "15"   
+		Call GetParameterValue
+		Pop $2
+		Var /GLOBAL cachelength 
+		StrCpy $cachelength "cachelength=$2" 
+		DetailPrint "Value of cachelength parameter is '$cachelength'"
+
+		Push "CONFIGURI"   
+		Push "http://metrics/svn/config.xml"   
+		Call GetParameterValue
+		Pop $2
+		Var /GLOBAL configuri 
+		StrCpy $configuri "configuri=$2" 
+		DetailPrint "Value of configuri parameter is '$configuri'"
+
+		Push "PATH"   
+		Push "$OUTDIR\sqltographite.exe.config"   
+		Call GetParameterValue
+		Pop $2
+		Var /GLOBAL path 
+		StrCpy $path "path=$2" 
+		DetailPrint "Value of path parameter is '$path'"
+
+		ExecWait '"$OUTDIR\ConfigPatcher.exe" $hostname $username $password $configuri $cachelength $configretry $configupdate $path' $0
 
 		ExecWait '"$OUTDIR\sqltographite.exe" install' $0
 		DetailPrint "Returned $0"
@@ -217,8 +275,11 @@ SectionEnd
 Section "Uninstall"  
   ExecWait '"Net" stop SqlToGraphite' $0
   DetailPrint "Returned $0"
+  ExecWait '"taskkill" /f /IM sqltographite.exe' $0
+  DetailPrint "Returned $0"  
   ExecWait '"$INSTDIR\sqltographite.exe" uninstall'
   Delete $INSTDIR\sqltographite.exe
+  Delete $INSTDIR\configpatcher.exe
   Delete $INSTDIR\sqltographite.exe.config
   RMDir $INSTDIR\logs
   Delete $INSTDIR\uninstall.exe ; delete self (see explanation below why this works)

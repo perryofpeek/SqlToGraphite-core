@@ -101,6 +101,7 @@ task Ilmerge -depends Test  {
     #Write-Host $var;
     Exec { tools\ilmerge.exe /closed /t:exe /out:output\sqlToGraphite.exe /targetplatform:v4 src\SqlToGraphite.host\output\SqlToGraphite.host.exe src\SqlToGraphite.host\output\Graphite.dll src\SqlToGraphite.host\output\SqlToGraphite.Plugin.Oracle.dll src\SqlToGraphite.host\output\SqlToGraphite.Plugin.Wmi.dll src\SqlToGraphite.host\output\SqlToGraphite.Plugin.SqlServer.dll src\SqlToGraphite.host\output\SqlToGraphiteInterfaces.dll  src\SqlToGraphite.host\output\Topshelf.dll src\SqlToGraphite.host\output\log4net.dll };
     Copy-Item  $fullPath\app.config.Template output\SqlToGraphite.exe.config;
+	Copy-Item  src\ConfigPatcher\output\configpatcher.exe output\configpatcher.exe;
 }
 
 #-depends Ilmerge
