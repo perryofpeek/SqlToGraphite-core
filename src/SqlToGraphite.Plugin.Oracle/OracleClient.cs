@@ -9,22 +9,17 @@ using SqlToGraphiteInterfaces;
 
 namespace SqlToGraphite.Plugin.Oracle
 {
-    public class OracleClient : ISqlClient
+    public class OracleClient : PluginBase
     {
-        private readonly ILog log;
-
-        private readonly TaskParams taskParams;
-
-        public OracleClient(ILog log, TaskParams taskParams)
+        public OracleClient(ILog log, ITaskParams taskParams)
+            : base(log, taskParams)
         {
-            this.log = log;
-            this.taskParams = taskParams;
         }
 
-        public IList<IResult> Get()
+        public override IList<IResult> Get()
         {
             var rtn = new List<IResult>();
-            var dataSet = this.ExecuteQuery(this.taskParams.ConnectionString, this.taskParams.Sql);            
+            var dataSet = this.ExecuteQuery(this.TaskParams.ConnectionString, this.TaskParams.Sql);            
             foreach (DataRow row in dataSet.Tables[0].Rows)
             {
                 rtn.Add(this.Map(row));
@@ -56,13 +51,13 @@ namespace SqlToGraphite.Plugin.Oracle
                 }
             }
 
-            if (this.taskParams.Name != string.Empty && name == string.Empty)
+            if (this.TaskParams.Name != string.Empty && name == string.Empty)
             {
-                name = this.taskParams.Name;
+                name = this.TaskParams.Name;
             }
 
-            this.log.Debug(string.Format("Got [{1}] {0}", value, dateTime));
-            return new Result(value, name, dateTime, this.taskParams.Path);
+            this.Log.Debug(string.Format("Got [{1}] {0}", value, dateTime));
+            return new Result(value, name, dateTime, this.TaskParams.Path);
         }
 
         public DataSet ExecuteQuery(string connectionString, string sql)
@@ -72,8 +67,8 @@ namespace SqlToGraphite.Plugin.Oracle
             {
                 connection.ConnectionString = connectionString;
                 connection.Open();
-                Console.WriteLine("State: {0}", connection.State);
-                Console.WriteLine("ConnectionString: {0}", connection.ConnectionString);
+                //Console.WriteLine("State: {0}", connection.State);
+                //Console.WriteLine("ConnectionString: {0}", connection.ConnectionString);
                 var command = connection.CreateCommand();                
                 command.CommandText = sql;
                 command.ExecuteReader();

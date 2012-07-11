@@ -7,28 +7,23 @@ using SqlToGraphiteInterfaces;
 
 namespace SqlToGraphite.Plugin.SqlServer
 {
-    public class SqlServerClient : ISqlClient
+    public class SqlServerClient : PluginBase
     {
-        private readonly ILog log;
-
-        private readonly ITaskParams taskParams;
-
         public SqlServerClient(ILog log, ITaskParams taskParams)
-        {
-            this.log = log;
-            this.taskParams = taskParams;
+            : base(log, taskParams)
+        {           
         }
 
-        public IList<IResult> Get()
+        public override IList<IResult> Get()
         {
             var rtn = new List<IResult>();
             var connection = new SqlConnection();
             try
             {
-                connection.ConnectionString = this.taskParams.ConnectionString;
-                this.log.Debug(string.Format("running {0}", this.taskParams.Sql));
+                connection.ConnectionString = this.TaskParams.ConnectionString;
+                this.Log.Debug(string.Format("running {0}", this.TaskParams.Sql));
                 connection.Open();
-                var records = GetRecords(this.taskParams.Sql, connection);
+                var records = GetRecords(this.TaskParams.Sql, connection);
                 do
                 {
                     while (records.Read())
@@ -41,7 +36,7 @@ namespace SqlToGraphite.Plugin.SqlServer
             }
             catch (Exception ex)
             {
-                this.log.Error(ex.Message, ex);
+                this.Log.Error(ex.Message, ex);
             }
             finally
             {
@@ -74,13 +69,13 @@ namespace SqlToGraphite.Plugin.SqlServer
                 }
             }
 
-            if (this.taskParams.Name != string.Empty && name == string.Empty)
+            if (this.TaskParams.Name != string.Empty && name == string.Empty)
             {
-                name = this.taskParams.Name;
+                name = this.TaskParams.Name;
             }
 
-            this.log.Debug(string.Format("Got [{1}] {0}", value, dateTime));
-            return new Result(value, name, dateTime, this.taskParams.Path);
+            this.Log.Debug(string.Format("Got [{1}] {0}", value, dateTime));
+            return new Result(value, name, dateTime, this.TaskParams.Path);
         }
 
         private static SqlDataReader GetRecords(string sql, SqlConnection connection)

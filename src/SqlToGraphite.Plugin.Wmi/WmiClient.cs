@@ -9,30 +9,25 @@ using SqlToGraphiteInterfaces;
 
 namespace SqlToGraphite.Plugin.Wmi
 {
-    public class WmiClient : ISqlClient
+    public class WmiClient : PluginBase 
     {
-        private readonly ILog log;
-
-        private readonly TaskParams taskParams;
+        private readonly string machineName;
 
         public const string RootPath = @"root\CIMV2";
 
-        public string MachineName { get; set; }
-
-        public WmiClient(ILog log, TaskParams taskParams)
+        public WmiClient(ILog log, ITaskParams taskParams)
+            : base(log, taskParams)
         {
-            this.log = log;
-            this.taskParams = taskParams;
-            this.MachineName = Environment.MachineName;
+            this.machineName = Environment.MachineName; ;
         }
 
-        public IList<IResult> Get()
+        public override IList<IResult> Get()
         {
             var rtn = new List<IResult>();
 
             try
             {
-                foreach (ManagementObject o in this.GetWmiObject(this.taskParams.Sql, this.MachineName, RootPath))
+                foreach (ManagementObject o in this.GetWmiObject(this.TaskParams.Sql, this.machineName, RootPath))
                 {
                     var value = -1;
                     var dateTime = DateTime.Now;
@@ -61,15 +56,15 @@ namespace SqlToGraphite.Plugin.Wmi
                         }
                     }
 
-                    this.log.Debug(string.Format("Name {0} value {1} datetime {2}", name, value, dateTime));
-                    rtn.Add(new Result(value, name, dateTime, this.taskParams.Path));
+                    this.Log.Debug(string.Format("Name {0} value {1} datetime {2}", name, value, dateTime));
+                    rtn.Add(new Result(value, name, dateTime, this.TaskParams.Path));
                 }
             }
             catch (ManagementException e)
             {
-                this.log.Error(string.Format("Error with {0} {1} {2}", this.taskParams.Type, this.taskParams.Path, this.taskParams.Sql));
-                this.log.Error(e.Message);
-                this.log.Error(e.StackTrace);
+                this.Log.Error(string.Format("Error with {0} {1} {2}", this.TaskParams.Type, this.TaskParams.Path, this.TaskParams.Sql));
+                this.Log.Error(e.Message);
+                this.Log.Error(e.StackTrace);
             }
 
             return rtn;
@@ -92,23 +87,23 @@ namespace SqlToGraphite.Plugin.Wmi
             {                
                 var conn = new ConnectionOptions();
                 var path = string.Format(@"\\{0}\{1}", machineName, rootPath);
-                if (!string.IsNullOrEmpty(this.taskParams.ConnectionString))
+                if (!string.IsNullOrEmpty(this.TaskParams.ConnectionString))
                 {
-                    var wmiConnectionStringParser = new WmiConnectionStringParser(this.taskParams.ConnectionString);
+                    var wmiConnectionStringParser = new WmiConnectionStringParser(this.TaskParams.ConnectionString);
                     conn.Username = wmiConnectionStringParser.Username;
                     conn.Password = wmiConnectionStringParser.Password;
                     path = string.Format(@"\\{0}\{1}", wmiConnectionStringParser.Hostname, rootPath);
                 }
 
                 var scope = new ManagementScope(path, conn);
-                this.log.Debug(string.Format("{0} {1}", path, query));
+                this.Log.Debug(string.Format("{0} {1}", path, query));
                 var queryObject = new ObjectQuery(query);
                 var searcher = new ManagementObjectSearcher(scope, queryObject);
                 return searcher.Get().Cast<ManagementObject>().ToList();
             }
             catch (Exception e)
             {
-                this.log.Debug(e);
+                this.Log.Debug(e);
                 throw;
             }
         }
