@@ -4,17 +4,15 @@ using NUnit.Framework;
 
 using Rhino.Mocks;
 
-using SqlToGraphite.Plugin.Wmi;
-
 using SqlToGraphiteInterfaces;
 
-namespace SqlToGrpahite.Plugin.Wmi.UnitTests
+namespace SqlToGraphite.Plugin.Wmi.UnitTests
 {
     // ReSharper disable InconsistentNaming
     [TestFixture]
     public class With_WmiClient
     {
-        [Test]
+        [Test, Ignore()]
         public void Should_get_wmi_data()
         {
             var log = MockRepository.GenerateMock<ILog>();

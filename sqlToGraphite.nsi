@@ -199,11 +199,14 @@ Section Main
 		WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\SqlToGraphite" \
                  "QuietUninstallString" "$\"$INSTDIR\uninstall.exe$\" /S"
 		
-		Push "OUTPUT"         ; push the search string onto the stack
-		Push "DefaultValue"   ; push a default value onto the stack
+		Push "HOSTNAME"         ; push the search string onto the stack
+		Push "metrics"   ; push a default value onto the stack
 		Call GetParameterValue
 		Pop $2
-		DetailPrint "Value of OUTPUT parameter is '$2'"
+		Var /GLOBAL hostname 
+		StrCpy $hostname $2 
+
+		DetailPrint "Value of hostname parameter is '$hostname'"
 
 		ExecWait '"$OUTDIR\sqltographite.exe" install' $0
 		DetailPrint "Returned $0"
