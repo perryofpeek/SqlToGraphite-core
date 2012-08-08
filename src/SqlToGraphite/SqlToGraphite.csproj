@@ -111,6 +111,7 @@
     <Compile Include="Conf\IConfigController.cs" />
     <Compile Include="Conf\IConfigRepository.cs" />
     <Compile Include="Conf\RoleConfig.cs" />
+    <Compile Include="Conf\TaskProperties.cs" />
     <Compile Include="Conf\Templates.cs" />
     <Compile Include="GraphiteClient.cs" />
     <Compile Include="GraphiteClientFactory.cs" />

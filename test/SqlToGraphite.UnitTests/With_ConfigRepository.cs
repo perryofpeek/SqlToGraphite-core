@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 using log4net;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -83,6 +85,111 @@ namespace SqlToGraphite.UnitTests
             cache.VerifyAllExpectations();
         }
 
+        [Test]
+        public void Should_add_clients()
+        {
+            repository.AddClient("name", "23");
+            var clients = repository.GetClients();
+            Assert.That(clients.Count, Is.EqualTo(1));
+            Assert.That(clients[0].name, Is.EqualTo("name"));
+        }
+
+        [Test]
+        public void Should_add_host()
+        {
+            var name = Guid.NewGuid().ToString();
+            var roles = new List<string> { "a1", "b1" };
+            //Test
+            repository.AddHost(name, roles);
+            //Assert
+            var hosts = repository.GetHosts();
+            Assert.That(hosts.Count, Is.EqualTo(1));
+            Assert.That(hosts[0].name, Is.EqualTo(name));
+            Assert.That(hosts[0].role[0].name, Is.EqualTo("a1"));
+            Assert.That(hosts[0].role[1].name, Is.EqualTo("b1"));
+        }
+
+        [Test]
+        public void Should_add_task_to_role()
+        {
+            var t = new TaskProperties("someRole", "1000", "client", "cs", "name", "path", "23", "select * ", "some type of plugin");
+            //Test
+            repository.AddTask(t);
+            //Assert
+            var templates = repository.GetTemplates();
+            Assert.That(templates.Count, Is.EqualTo(1));
+            Assert.That(templates[0].Role, Is.EqualTo(t.Role));
+            Assert.That(templates[0].TaskSet[0].frequency, Is.EqualTo(t.Frequency));
+            var task = templates[0].TaskSet[0].Task[0];
+            AssertThatTaskEqualToTaskProperty(t, task);
+        }
+
+        private static void AssertThatTaskEqualToTaskProperty(
+            TaskProperties t, SqlToGraphiteConfigTemplatesWorkItemsTaskSetTask task)
+        {
+            Assert.That(task.client, Is.EqualTo(t.Client));
+            Assert.That(task.connectionstring, Is.EqualTo(t.Connectionstring));
+            Assert.That(task.name, Is.EqualTo(t.Name));
+            Assert.That(task.path, Is.EqualTo(t.Path));
+            Assert.That(task.port, Is.EqualTo(t.Port));
+            Assert.That(task.sql, Is.EqualTo(t.Sql));
+            Assert.That(task.type, Is.EqualTo(t.Type));
+        }
+
+        [Test]
+        public void Should_add_task_to_new_role()
+        {
+            var t0 = new TaskProperties("someRole1", "1000", "client", "cs", "name", "path", "23", "select * ", "some type of plugin");
+            var t1 = new TaskProperties("someRole2", "1000", "client", "cs", "name", "path", "23", "select * ", "some type of plugin");
+            //Test
+            repository.AddTask(t0);
+            repository.AddTask(t1);
+            //Assert
+            var templates = repository.GetTemplates();
+            Assert.That(templates.Count, Is.EqualTo(2));
+            Assert.That(templates[0].Role, Is.EqualTo(t0.Role));
+            Assert.That(templates[1].Role, Is.EqualTo(t1.Role));
+            Assert.That(templates[0].TaskSet[0].frequency, Is.EqualTo(t0.Frequency));
+            AssertThatTaskEqualToTaskProperty(t0, templates[0].TaskSet[0].Task[0]);
+            AssertThatTaskEqualToTaskProperty(t0, templates[1].TaskSet[0].Task[0]);
+        }
+
+        [Test]
+        public void Should_add_second_task_to_same_role_different_frequency()
+        {
+            var t0 = new TaskProperties("someRole1", "1000", "client", "cs", "name", "path", "23", "select * ", "some type of plugin");
+            var t1 = new TaskProperties("someRole1", "2000", "client", "cs", "name", "path", "23", "select * ", "some type of plugin");
+            //Test
+            repository.AddTask(t0);
+            repository.AddTask(t1);
+            //Assert
+            var templates = repository.GetTemplates();
+            Assert.That(templates.Count, Is.EqualTo(1));
+            Assert.That(templates[0].Role, Is.EqualTo(t0.Role));
+            Assert.That(templates[0].TaskSet[0].frequency, Is.EqualTo(t0.Frequency));
+            Assert.That(templates[0].TaskSet[1].frequency, Is.EqualTo(t1.Frequency));
+            AssertThatTaskEqualToTaskProperty(t0, templates[0].TaskSet[0].Task[0]);
+            AssertThatTaskEqualToTaskProperty(t1, templates[0].TaskSet[1].Task[0]);
+        }
+
+        [Test]
+        public void Should_add_second_task_to_same_role_same_frequency()
+        {
+            var t0 = new TaskProperties("someRole1", "1000", "client", "cs", "name", "path", "23", "select * ", "some type of plugin");
+            var t1 = new TaskProperties("someRole1", "1000", "client", "cs", "name", "path", "23", "select * 1", "some type of plugin");
+            //Test
+            repository.AddTask(t0);
+            repository.AddTask(t1);
+            //Assert
+            var templates = repository.GetTemplates();
+            Assert.That(templates.Count, Is.EqualTo(1));
+            Assert.That(templates[0].Role, Is.EqualTo(t0.Role));
+            Assert.That(templates[0].TaskSet[0].frequency, Is.EqualTo(t0.Frequency));
+            AssertThatTaskEqualToTaskProperty(t0, templates[0].TaskSet[0].Task[0]);
+            AssertThatTaskEqualToTaskProperty(t1, templates[0].TaskSet[0].Task[1]);
+            Assert.That(templates[0].TaskSet[0].frequency, Is.EqualTo(t1.Frequency));
+        }
+      
         [Test]
         public void Should_read_config_and_get_clients_dictionary()
         {

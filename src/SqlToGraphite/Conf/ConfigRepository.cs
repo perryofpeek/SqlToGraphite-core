@@ -40,6 +40,10 @@ namespace SqlToGraphite.Conf
             this.sleep = sleep;
             this.log = log;
             this.errorReadingConfigSleepTime = errorReadingConfigSleepTime;
+            clients = new List<SqlToGraphiteConfigClientsClient>();
+            clientList = new GraphiteClients();
+            hosts = new List<SqlToGraphiteConfigHostsHost>();
+            this.templates = new List<SqlToGraphiteConfigTemplatesWorkItems>();
         }
 
         public void Load()
@@ -210,6 +214,114 @@ namespace SqlToGraphite.Conf
         public GraphiteClients GetClientList()
         {
             return this.clientList;
+        }
+
+        public void AddClient(string name, string port)
+        {
+            var x = new SqlToGraphiteConfigClientsClient { name = name, port = port };
+            this.clients.Add(x);
+        }
+
+        public void AddHost(string name, List<string> roles)
+        {
+            var host = new SqlToGraphiteConfigHostsHost();
+            host.name = name;
+            host.role = new SqlToGraphiteConfigHostsHostRole[roles.Count];
+            var i = 0;
+            foreach (var role in roles)
+            {
+                host.role[i] = new SqlToGraphiteConfigHostsHostRole();
+                host.role[i].name = role;
+                i++;
+            }
+
+            this.hosts.Add(host);
+        }
+
+        public void AddWorkItem(SqlToGraphiteConfigTemplatesWorkItems workItem)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddTask(TaskProperties taskProperties)
+        {
+            //findRole. 
+            var taskSet = new List<SqlToGraphiteConfigTemplatesWorkItemsTaskSet>();
+            var added = false;
+            foreach (var template in this.templates)
+            {
+                added = this.AddIfRolesAreTheSame(taskProperties, added, template);
+            }
+
+            if (!added)
+            {
+                var taskSetItem = CreateTaskSetItem(taskProperties);
+                taskSet.Add(taskSetItem);
+                this.templates.Add(new SqlToGraphiteConfigTemplatesWorkItems { TaskSet = taskSet.ToArray(), Role = taskProperties.Role });
+            }
+        }
+
+        private bool AddIfRolesAreTheSame(TaskProperties taskProperties, bool added, SqlToGraphiteConfigTemplatesWorkItems template)
+        {
+            if (template.Role == taskProperties.Role)
+            {
+                foreach (var t in template.TaskSet)
+                {
+                    added = AddTaskIfFrequencyIsTheSame(taskProperties, t);
+                }
+
+                if (!added)
+                {
+                    added = this.AddTaskToNewFrequency(taskProperties, template);
+                }
+            }
+
+            return added;
+        }
+
+        private bool AddTaskToNewFrequency(TaskProperties taskProperties, SqlToGraphiteConfigTemplatesWorkItems template)
+        {
+            bool added = false;
+            var l = new List<SqlToGraphiteConfigTemplatesWorkItemsTaskSet>(template.TaskSet) { this.CreateTaskSetItem(taskProperties) };
+            added = true;
+            template.TaskSet = l.ToArray();
+            return added;
+        }
+
+        private static bool AddTaskIfFrequencyIsTheSame(TaskProperties taskProperties, SqlToGraphiteConfigTemplatesWorkItemsTaskSet t)
+        {
+            bool added = false;
+            if (t.frequency == taskProperties.Frequency)
+            {
+                var tasks = new List<SqlToGraphiteConfigTemplatesWorkItemsTaskSetTask>(t.Task);
+                tasks.Add(CreateTask(taskProperties));
+                added = true;
+                t.Task = tasks.ToArray();
+            }
+
+            return added;
+        }
+
+        private SqlToGraphiteConfigTemplatesWorkItemsTaskSet CreateTaskSetItem(TaskProperties taskProperties)
+        {
+            var taskSetItem = new SqlToGraphiteConfigTemplatesWorkItemsTaskSet { frequency = taskProperties.Frequency, Task = new SqlToGraphiteConfigTemplatesWorkItemsTaskSetTask[1] };
+            taskSetItem.Task[0] = CreateTask(taskProperties);
+            return taskSetItem;
+        }
+
+        private static SqlToGraphiteConfigTemplatesWorkItemsTaskSetTask CreateTask(TaskProperties taskProperties)
+        {
+            var newtask = new SqlToGraphiteConfigTemplatesWorkItemsTaskSetTask
+                {
+                    client = taskProperties.Client,
+                    connectionstring = taskProperties.Connectionstring,
+                    name = taskProperties.Name,
+                    path = taskProperties.Path,
+                    port = taskProperties.Port,
+                    sql = taskProperties.Sql,
+                    type = taskProperties.Type
+                };
+            return newtask;
         }
     }
 }
