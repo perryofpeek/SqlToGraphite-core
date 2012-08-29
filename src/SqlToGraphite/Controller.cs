@@ -16,7 +16,7 @@ namespace SqlToGraphite
 
         public Controller(ITaskSet taskSet, ISleep sleep, IStop stop, ILog log)
         {
-            this.config = config;
+            //this.config = config;
             this.taskSet = taskSet;
             this.sleep = sleep;
             this.stop = stop;

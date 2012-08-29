@@ -7,10 +7,6 @@ namespace SqlToGraphite.Conf
 {
     public class ConfigController : IConfigController
     {
-        private readonly IDataClientFactory dataClientFactory;
-
-        private readonly IGraphiteClientFactory graphiteClientFactory;
-
         private readonly IConfigMapper configMapper;
 
         private readonly ILog log;

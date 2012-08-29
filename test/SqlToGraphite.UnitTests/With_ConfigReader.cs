@@ -10,7 +10,7 @@ namespace SqlToGraphite.UnitTests
     [TestFixture]
     public class With_ConfigReader
     {
-        private ConfigReader configRepository;
+        private ConfigHttpReader configHttpRepository;
 
         private string diskPath;
 
@@ -20,14 +20,14 @@ namespace SqlToGraphite.UnitTests
             var filename = Guid.NewGuid().ToString();
             diskPath = @"c:\" + filename;
             var uriPath = "file:///C:/" + filename;
-            configRepository = new ConfigReader(uriPath, string.Empty, string.Empty);
+            this.configHttpRepository = new ConfigHttpReader(uriPath, string.Empty, string.Empty);
         }
 
         [Test]
         public void Should_get_config()
         {
             File.WriteAllText(diskPath, "test123");
-            var s = configRepository.GetXml();
+            var s = this.configHttpRepository.GetXml();
             Assert.That(s, Is.EqualTo("test123"));
             File.Delete(diskPath);
         }
@@ -36,7 +36,7 @@ namespace SqlToGraphite.UnitTests
         public void Should_get_config_as_Xml_Doc()
         {
             File.WriteAllText(diskPath, "<root />");
-            var xmlDocument = configRepository.GetXml();
+            var xmlDocument = this.configHttpRepository.GetXml();
             Assert.That(xmlDocument, Is.EqualTo("<root />"));
             File.Delete(diskPath);
         }
@@ -45,8 +45,8 @@ namespace SqlToGraphite.UnitTests
         public void Should_return_true_if_config_has_changed()
         {
             File.WriteAllText(diskPath, "<root />");
-            var xmlDocument = configRepository.GetXml();
-            Assert.That(configRepository.HasChanged(), Is.EqualTo(true));
+            var xmlDocument = this.configHttpRepository.GetXml();
+            Assert.That(this.configHttpRepository.HasChanged(), Is.EqualTo(true));
             Assert.That(xmlDocument, Is.EqualTo("<root />"));
             File.Delete(diskPath);
         }
@@ -55,11 +55,11 @@ namespace SqlToGraphite.UnitTests
         public void Should_return_false_if_config_has_changed()
         {
             File.WriteAllText(diskPath, "<root />");
-            var xmlDocument = configRepository.GetXml();
-            Assert.That(configRepository.HasChanged(), Is.EqualTo(true));
+            var xmlDocument = this.configHttpRepository.GetXml();
+            Assert.That(this.configHttpRepository.HasChanged(), Is.EqualTo(true));
             // Test
-            xmlDocument = configRepository.GetXml();
-            Assert.That(configRepository.HasChanged(), Is.EqualTo(false));
+            xmlDocument = this.configHttpRepository.GetXml();
+            Assert.That(this.configHttpRepository.HasChanged(), Is.EqualTo(false));
             Assert.That(xmlDocument, Is.EqualTo("<root />"));
             File.Delete(diskPath);
         }

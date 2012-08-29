@@ -102,14 +102,18 @@
     <Compile Include="Clients\IKnownGraphiteClients.cs" />
     <Compile Include="Clients\KnownDataClients.cs" />
     <Compile Include="Clients\KnownGraphiteClients.cs" />
+    <Compile Include="ConfigFileWriter.cs" />
     <Compile Include="Conf\Cache.cs" />
     <Compile Include="Conf\Config.cs" />
     <Compile Include="ConfigMapper.cs" />
     <Compile Include="Conf\ConfigController.cs" />
     <Compile Include="Conf\ConfigRepository.cs" />
+    <Compile Include="Conf\ConfigPersister.cs" />
     <Compile Include="Conf\ICache.cs" />
     <Compile Include="Conf\IConfigController.cs" />
     <Compile Include="Conf\IConfigRepository.cs" />
+    <Compile Include="Conf\IConfigPersister.cs" />
+    <Compile Include="Conf\IConfigWriter.cs" />
     <Compile Include="Conf\RoleConfig.cs" />
     <Compile Include="Conf\TaskProperties.cs" />
     <Compile Include="Conf\Templates.cs" />
@@ -146,7 +150,7 @@
     <Compile Include="ThreadImpl.cs" />
     <Compile Include="Conf\UnknownDataClientException.cs" />
     <Compile Include="Conf\UnknownGraphiteClientTypeException.cs" />
-    <Compile Include="ConfigReader.cs" />
+    <Compile Include="ConfigHttpReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

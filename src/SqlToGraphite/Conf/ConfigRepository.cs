@@ -9,9 +9,11 @@ namespace SqlToGraphite.Conf
 {
     public class ConfigRepository : IConfigRepository
     {
+        private readonly IConfigPersister configPersister;
+
         private readonly IConfigReader configReader;
 
-        private readonly KnownGraphiteClients knownGraphiteClients;
+        private readonly IKnownGraphiteClients knownGraphiteClients;
 
         private readonly ICache cache;
 
@@ -32,7 +34,7 @@ namespace SqlToGraphite.Conf
         public const string FailedToFindTemplates = "Failed to find any templates defined";
         public const string UnknownClient = "unknown client defined";
 
-        public ConfigRepository(IConfigReader configReader, KnownGraphiteClients knownGraphiteClients, ICache cache, ISleep sleep, ILog log, int errorReadingConfigSleepTime)
+        public ConfigRepository(IConfigReader configReader, IKnownGraphiteClients knownGraphiteClients, ICache cache, ISleep sleep, ILog log, int errorReadingConfigSleepTime)
         {
             this.configReader = configReader;
             this.knownGraphiteClients = knownGraphiteClients;
@@ -44,6 +46,12 @@ namespace SqlToGraphite.Conf
             clientList = new GraphiteClients();
             hosts = new List<SqlToGraphiteConfigHostsHost>();
             this.templates = new List<SqlToGraphiteConfigTemplatesWorkItems>();
+        }
+
+        public ConfigRepository(IConfigReader configReader, IKnownGraphiteClients knownGraphiteClients, ICache cache, ISleep sleep, ILog log, int errorReadingConfigSleepTime, IConfigPersister configPersister)
+            : this(configReader, knownGraphiteClients, cache, sleep, log, errorReadingConfigSleepTime)
+        {
+            this.configPersister = configPersister;
         }
 
         public void Load()
@@ -126,6 +134,14 @@ namespace SqlToGraphite.Conf
             }
         }
 
+        private static string SerializeConfig(SqlToGraphiteConfig config)
+        {
+            var stringStream = new StringWriter();
+            var ser = new System.Xml.Serialization.XmlSerializer(typeof(SqlToGraphiteConfig));
+            ser.Serialize(stringStream, config);
+            return stringStream.ToString();
+        }
+
         private static SqlToGraphiteConfig GetConfig(IConfigReader configReader)
         {
             var ser = new System.Xml.Serialization.XmlSerializer(typeof(SqlToGraphiteConfig));
@@ -199,7 +215,7 @@ namespace SqlToGraphite.Conf
             }
         }
 
-        private void AddKnownClient(KnownGraphiteClients knownGraphiteClients, SqlToGraphiteConfigClientsClient client)
+        private void AddKnownClient(IKnownGraphiteClients knownGraphiteClients, SqlToGraphiteConfigClientsClient client)
         {
             if (knownGraphiteClients.IsKnown(client.name))
             {
@@ -240,7 +256,7 @@ namespace SqlToGraphite.Conf
 
         public void AddWorkItem(SqlToGraphiteConfigTemplatesWorkItems workItem)
         {
-            throw new NotImplementedException();
+            templates.Add(workItem);
         }
 
         public void AddTask(TaskProperties taskProperties)
@@ -259,6 +275,11 @@ namespace SqlToGraphite.Conf
                 taskSet.Add(taskSetItem);
                 this.templates.Add(new SqlToGraphiteConfigTemplatesWorkItems { TaskSet = taskSet.ToArray(), Role = taskProperties.Role });
             }
+        }
+
+        public void Save()
+        {
+            this.configPersister.Save(this.clients, this.templates, this.hosts);
         }
 
         private bool AddIfRolesAreTheSame(TaskProperties taskProperties, bool added, SqlToGraphiteConfigTemplatesWorkItems template)

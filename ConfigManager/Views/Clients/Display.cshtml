@@ -1,0 +1,14 @@
+﻿@model ConfigManager.Models.ClientsViewModel
+
+<br />
+Configured clients. 
+<br />
+<br />
+<table >
+    <tr><td>Name</td><td>Port</td></tr>            
+    @foreach (var item in Model.Clients) {
+        <tr><td>@item.Name</td><td>@item.Port</td></tr>            
+    }   
+</table>
+<br />
+<br />

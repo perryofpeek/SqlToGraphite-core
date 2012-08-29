@@ -1,0 +1,14 @@
+﻿@model ConfigManager.Models.ClientsViewModelClient
+           
+@{
+    ViewBag.Title = "Add";
+}
+
+<h2>Add</h2>
+
+Add new Client 
+@using (Html.BeginForm("Add","Clients",FormMethod.Post))
+{    
+    @Html.EditorForModel()    
+    <input type = "submit" value = "Save" name = "ClientPort" />     
+}

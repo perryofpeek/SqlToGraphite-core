@@ -1,0 +1,32 @@
+  <AnalyseParams>
+    <TargetExecutable>packages\NUnit.Runners.2.6.0.12051\tools\nunit-console-x86.exe </TargetExecutable>
+    <TargetArguments>/nologo /config=SqlToGraphite.UnitTests.dll.config SqlToGraphite.UnitTests.dll</TargetArguments>
+    <TargetWorkingDir>test\SqlToGraphite.UnitTests\output\</TargetWorkingDir>
+    <TempDir></TempDir>
+    <Output>CoverageReport.html</Output>
+    <ReportType><!-- [HTML|JSON|XML|NDependXML]. A type of the report. XML by default. -->HTML</ReportType>
+    <InheritConsole>True<!-- [True|False] Lets the application being analysed to inherit dotCover console. True by default. --> </InheritConsole>
+    
+    <!-- Coverage filters. It's possible to use asterisks as wildcard symbols.
+    <Filters>
+      <IncludeFilters>
+        <FilterEntry>
+          <ModuleMask> Module mask. </ModuleMask>
+          <ClassMask> Class mask. </ClassMask>
+          <FunctionMask> Function mask. </FunctionMask>
+        </FilterEntry>
+      </IncludeFilters>
+      <ExcludeFilters>
+        <FilterEntry>...</FilterEntry>
+        <FilterEntry>...</FilterEntry>
+        <FilterEntry>...</FilterEntry>
+      </ExcludeFilters>
+    </Filters>
+    -->
+    <!-- Attribute filters. It's possible to use asterisks as wildcard symbols.
+    <AttributeFilters>
+      <AttributeFilterEntry>...</AttributeFilterEntry>
+      <AttributeFilterEntry>...</AttributeFilterEntry>
+    </AttributeFilters>
+    -->
+  </AnalyseParams>

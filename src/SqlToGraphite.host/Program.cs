@@ -18,7 +18,7 @@ namespace SqlToGraphite.host
             IDataClientFactory dataClientFactory = new DataClientFactory(log);
             IGraphiteClientFactory graphiteClientFactory = new GraphiteClientFactory(log);
             var configMapper = new ConfigMapper(configuration.Hostname, stop, dataClientFactory, graphiteClientFactory, log);
-            var configReader = new ConfigReader(configuration.ConfigUri,configuration.ConfigUsername,configuration.ConfigPassword);
+            var configReader = new ConfigHttpReader(configuration.ConfigUri,configuration.ConfigUsername,configuration.ConfigPassword);
             var cache = new Cache(cacheLength, log);
             var sleeper = new Sleeper();
             var knownGraphiteClients = new KnownGraphiteClients();

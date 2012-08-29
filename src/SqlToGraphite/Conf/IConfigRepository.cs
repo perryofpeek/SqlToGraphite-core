@@ -17,5 +17,15 @@ namespace SqlToGraphite.Conf
         bool Validate();
 
         GraphiteClients GetClientList();
+
+        void AddClient(string name, string port);
+
+        void AddHost(string name, List<string> roles);
+
+        void AddWorkItem(SqlToGraphiteConfigTemplatesWorkItems workItem);
+
+        void AddTask(TaskProperties taskProperties);
+
+        void Save();
     }
 }

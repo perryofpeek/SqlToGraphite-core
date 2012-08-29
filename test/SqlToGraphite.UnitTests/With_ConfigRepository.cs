@@ -25,6 +25,7 @@ namespace SqlToGraphite.UnitTests
         private ISleep sleep;
         private ILog log;
         private ConfigRepository repository;
+        private IConfigPersister configPersister;
 
         private int sleepTime;
         [SetUp]
@@ -35,12 +36,37 @@ namespace SqlToGraphite.UnitTests
             cache = MockRepository.GenerateMock<ICache>();
             sleep = MockRepository.GenerateMock<ISleep>();
             log = MockRepository.GenerateMock<ILog>();
-            repository = new ConfigRepository(this.reader, new KnownGraphiteClients(), this.cache, this.sleep, this.log, sleepTime);
+            configPersister = MockRepository.GenerateMock<IConfigPersister>();
+            repository = new ConfigRepository(this.reader, new KnownGraphiteClients(), this.cache, this.sleep, this.log, sleepTime, configPersister);
         }
 
         private string Add(string input, string data)
         {
             return input.Replace(End, string.Format("{0}{1}", data, End));
+        }
+
+        [Test]
+        public void Should_save_config()
+        {
+            var configPersister = MockRepository.GenerateMock<IConfigPersister>();
+
+            repository.AddClient("name", "1234");
+            var template = new SqlToGraphiteConfigTemplatesWorkItems();
+            template.Role = "role";
+            template.TaskSet = new SqlToGraphiteConfigTemplatesWorkItemsTaskSet[1];
+            template.TaskSet[0] = new SqlToGraphiteConfigTemplatesWorkItemsTaskSet();
+            template.TaskSet[0].frequency = "100";
+            var hosts = new SqlToGraphiteConfigHosts();
+            hosts.host = new SqlToGraphiteConfigHostsHost[1];
+            hosts.host[0] = new SqlToGraphiteConfigHostsHost { name = "test", role = new SqlToGraphiteConfigHostsHostRole[1] };
+            hosts.host[0].role[0] = new SqlToGraphiteConfigHostsHostRole { name = "name" };
+            repository.AddWorkItem(template);
+            //configPersister.Expect(x => x.Save();
+            //Act 
+            repository.Save();
+            //Assert.
+            //configPersister.VerifyAllExpectations();
+            Assert.Fail("Fix this nasty bit of code and the smell of the repository");
         }
 
         [Test]
@@ -189,7 +215,7 @@ namespace SqlToGraphite.UnitTests
             AssertThatTaskEqualToTaskProperty(t1, templates[0].TaskSet[0].Task[1]);
             Assert.That(templates[0].TaskSet[0].frequency, Is.EqualTo(t1.Frequency));
         }
-      
+
         [Test]
         public void Should_read_config_and_get_clients_dictionary()
         {
