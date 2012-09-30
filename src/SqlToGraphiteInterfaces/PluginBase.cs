@@ -19,6 +19,11 @@ namespace SqlToGraphiteInterfaces
             this.TaskParams = taskParams;           
         }
 
+        protected PluginBase()
+        {
+            throw new NotImplementedException();
+        }
+
         public abstract IList<IResult> Get();
     }
 }
