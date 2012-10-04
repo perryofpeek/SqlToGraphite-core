@@ -63,10 +63,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Client.cs" />
     <Compile Include="ISqlClient.cs" />
     <Compile Include="IStatsClient.cs" />
     <Compile Include="IResult.cs" />
     <Compile Include="ITaskParams.cs" />
+    <Compile Include="Job.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Result.cs" />
     <Compile Include="PluginBase.cs" />

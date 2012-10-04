@@ -99,7 +99,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigUiTest.cs" />
+    <Compile Include="Config_Clients.cs" />
+    <Compile Include="Config_Hosts.cs" />
+    <Compile Include="Config_Jobs.cs" />
+    <Compile Include="Config_Templates.cs" />
     <Compile Include="Helper.cs" />
+    <Compile Include="SpikeTest.cs" />
     <Compile Include="With_Cache.cs" />
     <Compile Include="With_ConfigReader.cs" />
     <Compile Include="With_ConfigRepository.cs" />

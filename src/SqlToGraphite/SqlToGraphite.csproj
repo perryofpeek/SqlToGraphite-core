@@ -96,6 +96,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\CannotAddAnotherInstanceOfTypeException.cs" />
+    <Compile Include="Config\ClientNotDefinedException.cs" />
+    <Compile Include="Config\GraphiteTcpClient.cs" />
+    <Compile Include="Config\GraphiteUdpClient.cs" />
+    <Compile Include="Config\Host.cs" />
+    <Compile Include="Config\JobNotDefinedForTaskException.cs" />
+    <Compile Include="Config\ListOfUniqueType.cs" />
+    <Compile Include="Config\Role.cs" />
+    <Compile Include="Config\RoleNotDefinedForHostException.cs" />
+    <Compile Include="Config\SqlToGraphiteConfig.cs" />
+    <Compile Include="Config\Task.cs" />
+    <Compile Include="Config\TaskSet.cs" />
+    <Compile Include="Config\Template.cs" />
+    <Compile Include="Config\WorkItems.cs" />
+    <Compile Include="GenericSerializer.cs" />
     <Compile Include="ClientNotFoundException.cs" />
     <Compile Include="Clients\GraphiteUdpClient.cs" />
     <Compile Include="Clients\IKnownDataClients.cs" />
@@ -147,6 +162,8 @@
     <Compile Include="TaskBag.cs" />
     <Compile Include="TaskManager.cs" />
     <Compile Include="TaskSet.cs" />
+    <Compile Include="Temp\SqlServer.cs" />
+    <Compile Include="Temp\WmiPlugin.cs" />
     <Compile Include="ThreadImpl.cs" />
     <Compile Include="Conf\UnknownDataClientException.cs" />
     <Compile Include="Conf\UnknownGraphiteClientTypeException.cs" />

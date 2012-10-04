@@ -1,6 +1,8 @@
 ﻿using System.IO;
 using System.Xml;
 
+using ConfigSpike.Config;
+
 namespace SqlToGraphite.UnitTests
 {
     public class Helper
@@ -21,6 +23,13 @@ namespace SqlToGraphite.UnitTests
             var rtn = new XmlDocument();
             rtn.LoadXml(configXml);
             return rtn;
+        }
+
+        public static ConfigSpike.Config.SqlToGraphiteConfig SerialiseDeserialise(ConfigSpike.Config.SqlToGraphiteConfig hh)
+        {
+            var xml = GenericSerializer.Serialize<ConfigSpike.Config.SqlToGraphiteConfig>(hh);
+            var sqlToGraphiteConfig = GenericSerializer.Deserialize<ConfigSpike.Config.SqlToGraphiteConfig>(xml);
+            return sqlToGraphiteConfig;
         }
     }
 }
