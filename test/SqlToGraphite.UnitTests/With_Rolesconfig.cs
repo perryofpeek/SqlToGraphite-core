@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using ConfigSpike.Config;
+
 using NUnit.Framework;
 
 using SqlToGraphite.Conf;
@@ -22,10 +24,10 @@ namespace SqlToGraphite.UnitTests
         [Test]
         public void Should_get_all_roles_for_default_only()
         {
-            var sqlToGraphiteConfigHosts = new List<SqlToGraphiteConfigHostsHost>();
-            var host = new SqlToGraphiteConfigHostsHost { name = "default", role = new SqlToGraphiteConfigHostsHostRole[2] };
-            host.role[0] = new SqlToGraphiteConfigHostsHostRole { name = "a1" };
-            host.role[1] = new SqlToGraphiteConfigHostsHostRole { name = "a2" };
+            var sqlToGraphiteConfigHosts = new List<Host>();
+            var host = new Host { Name = "default", Roles = new List<Role>() };
+            host.Roles.Add(new Role { Name = "a1" });
+            host.Roles.Add(new Role { Name = "a2" });
             sqlToGraphiteConfigHosts.Add(host);
 
             var roleConfig = new RoleConfig(sqlToGraphiteConfigHosts, Environment.MachineName);
@@ -39,12 +41,12 @@ namespace SqlToGraphite.UnitTests
         [Test]
         public void Should_get_all_roles_for_default_and_not_host()
         {
-            var sqlToGraphiteConfigHosts = new List<SqlToGraphiteConfigHostsHost>();
-            var hosta = new SqlToGraphiteConfigHostsHost { name = "default", role = new SqlToGraphiteConfigHostsHostRole[2] };
-            var hostb = new SqlToGraphiteConfigHostsHost { name = "notThis", role = new SqlToGraphiteConfigHostsHostRole[1] };
-            hosta.role[0] = new SqlToGraphiteConfigHostsHostRole { name = "a1" };
-            hosta.role[1] = new SqlToGraphiteConfigHostsHostRole { name = "a2" };
-            hostb.role[0] = new SqlToGraphiteConfigHostsHostRole { name = "b1" };
+            var sqlToGraphiteConfigHosts = new List<Host>();
+            var hosta = new Host { Name = "default", Roles = new List<Role>() };
+            var hostb = new Host { Name = "notThis", Roles = new List<Role>() };
+            hosta.Roles.Add(new Role { Name = "a1" });
+            hosta.Roles.Add(new Role { Name = "a2" });
+            hostb.Roles.Add(new Role { Name = "b1" });
 
             sqlToGraphiteConfigHosts.Add(hosta);
             sqlToGraphiteConfigHosts.Add(hostb);
@@ -59,15 +61,15 @@ namespace SqlToGraphite.UnitTests
         [Test]
         public void Should_get_all_roles_for_default_and_host()
         {
-            var sqlToGraphiteConfigHosts = new List<SqlToGraphiteConfigHostsHost>();
-            var hosta = new SqlToGraphiteConfigHostsHost { name = "default", role = new SqlToGraphiteConfigHostsHostRole[2] };
-            var hostb = new SqlToGraphiteConfigHostsHost { name = "notThis", role = new SqlToGraphiteConfigHostsHostRole[1] };
-            var hostc = new SqlToGraphiteConfigHostsHost { name = hostName, role = new SqlToGraphiteConfigHostsHostRole[1] };
-            hosta.role[0] = new SqlToGraphiteConfigHostsHostRole { name = "a1" };
-            hosta.role[1] = new SqlToGraphiteConfigHostsHostRole { name = "a2" };
-            hostb.role[0] = new SqlToGraphiteConfigHostsHostRole { name = "b1" };
-            hostc.role[0] = new SqlToGraphiteConfigHostsHostRole { name = "c1" };
-
+            var sqlToGraphiteConfigHosts = new List<Host>();
+            var hosta = new Host { Name = "default", Roles = new List<Role>() };
+            var hostb = new Host { Name = "notThis", Roles = new List<Role>() };
+            var hostc = new Host { Name = hostName, Roles = new List<Role>() };
+            hosta.Roles.Add(new Role { Name = "a1" });
+            hosta.Roles.Add(new Role { Name = "a2" });
+            hostb.Roles.Add(new Role { Name = "b1" });
+            hostc.Roles.Add(new Role { Name = "c1" });
+            
             sqlToGraphiteConfigHosts.Add(hosta);
             sqlToGraphiteConfigHosts.Add(hostb);
             sqlToGraphiteConfigHosts.Add(hostc);
@@ -85,14 +87,15 @@ namespace SqlToGraphite.UnitTests
         {
             var machineName = "abc";
             var hname = "abc";
-            var sqlToGraphiteConfigHosts = new List<SqlToGraphiteConfigHostsHost>();
-            var hosta = new SqlToGraphiteConfigHostsHost { name = "default", role = new SqlToGraphiteConfigHostsHostRole[2] };
-            var hostb = new SqlToGraphiteConfigHostsHost { name = "notThis", role = new SqlToGraphiteConfigHostsHostRole[1] };
-            var hostc = new SqlToGraphiteConfigHostsHost { name = hname, role = new SqlToGraphiteConfigHostsHostRole[1] };
-            hosta.role[0] = new SqlToGraphiteConfigHostsHostRole { name = "a1" };
-            hosta.role[1] = new SqlToGraphiteConfigHostsHostRole { name = "a2" };
-            hostb.role[0] = new SqlToGraphiteConfigHostsHostRole { name = "b1" };
-            hostc.role[0] = new SqlToGraphiteConfigHostsHostRole { name = "c1" };
+            var sqlToGraphiteConfigHosts = new List<Host>();
+            var hosta = new Host { Name = "default", Roles = new List<Role>() };
+            var hostb = new Host { Name = "notThis", Roles = new List<Role>() };
+            var hostc = new Host { Name = hname, Roles = new List<Role>() };
+
+            hosta.Roles.Add(new Role { Name = "a1" });
+            hosta.Roles.Add(new Role { Name = "a2" });
+            hostb.Roles.Add(new Role { Name = "b1" });
+            hostc.Roles.Add(new Role { Name = "c1" });
 
             sqlToGraphiteConfigHosts.Add(hosta);
             sqlToGraphiteConfigHosts.Add(hostb);
@@ -111,15 +114,14 @@ namespace SqlToGraphite.UnitTests
         {
             var machineName = "lonbti-bus01v";
             var hname = ".*bus.*";
-            var sqlToGraphiteConfigHosts = new List<SqlToGraphiteConfigHostsHost>();
-            var hosta = new SqlToGraphiteConfigHostsHost { name = "default", role = new SqlToGraphiteConfigHostsHostRole[2] };
-            var hostb = new SqlToGraphiteConfigHostsHost { name = "notThis", role = new SqlToGraphiteConfigHostsHostRole[1] };
-            var hostc = new SqlToGraphiteConfigHostsHost { name = hname, role = new SqlToGraphiteConfigHostsHostRole[1] };
-            hosta.role[0] = new SqlToGraphiteConfigHostsHostRole { name = "a1" };
-            hosta.role[1] = new SqlToGraphiteConfigHostsHostRole { name = "a2" };
-            hostb.role[0] = new SqlToGraphiteConfigHostsHostRole { name = "b1" };
-            hostc.role[0] = new SqlToGraphiteConfigHostsHostRole { name = "c1" };
-
+            var sqlToGraphiteConfigHosts = new List<Host>();
+            var hosta = new Host { Name = "default", Roles = new List<Role>() };
+            var hostb = new Host { Name = "notThis", Roles = new List<Role>() };
+            var hostc = new Host { Name = hname, Roles = new List<Role>() };
+            hosta.Roles.Add(new Role { Name = "a1" });
+            hosta.Roles.Add(new Role { Name = "a2" });
+            hostb.Roles.Add(new Role { Name = "b1" });
+            hostc.Roles.Add(new Role { Name = "c1" });
             sqlToGraphiteConfigHosts.Add(hosta);
             sqlToGraphiteConfigHosts.Add(hostb);
             sqlToGraphiteConfigHosts.Add(hostc);
@@ -135,15 +137,15 @@ namespace SqlToGraphite.UnitTests
         [Test]
         public void Should_get_all_roles_for_default_and_two_host_list()
         {
-            var sqlToGraphiteConfigHosts = new List<SqlToGraphiteConfigHostsHost>();
-            var hosta = new SqlToGraphiteConfigHostsHost { name = "default", role = new SqlToGraphiteConfigHostsHostRole[2] };
-            var hostb = new SqlToGraphiteConfigHostsHost { name = "notThis", role = new SqlToGraphiteConfigHostsHostRole[1] };
-            var hostc = new SqlToGraphiteConfigHostsHost { name = hostName, role = new SqlToGraphiteConfigHostsHostRole[2] };
-            hosta.role[0] = new SqlToGraphiteConfigHostsHostRole { name = "a1" };
-            hosta.role[1] = new SqlToGraphiteConfigHostsHostRole { name = "a2" };
-            hostb.role[0] = new SqlToGraphiteConfigHostsHostRole { name = "b1" };
-            hostc.role[0] = new SqlToGraphiteConfigHostsHostRole { name = "c1" };
-            hostc.role[1] = new SqlToGraphiteConfigHostsHostRole { name = "c2" };
+            var sqlToGraphiteConfigHosts = new List<Host>();
+            var hosta = new Host { Name = "default", Roles = new List<Role>() };
+            var hostb = new Host { Name = "notThis", Roles = new List<Role>() };
+            var hostc = new Host { Name = hostName, Roles = new List<Role>() };
+            hosta.Roles.Add(new Role { Name = "a1" });
+            hosta.Roles.Add(new Role { Name = "a2" });
+            hostb.Roles.Add(new Role { Name = "b1" });
+            hostc.Roles.Add(new Role { Name = "c1" });
+            hostc.Roles.Add(new Role { Name = "c2" }); 
 
             sqlToGraphiteConfigHosts.Add(hosta);
             sqlToGraphiteConfigHosts.Add(hostb);

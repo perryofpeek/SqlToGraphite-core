@@ -110,6 +110,7 @@
     <Compile Include="Config\TaskSet.cs" />
     <Compile Include="Config\Template.cs" />
     <Compile Include="Config\WorkItems.cs" />
+    <Compile Include="Conf\TaskDetails.cs" />
     <Compile Include="GenericSerializer.cs" />
     <Compile Include="ClientNotFoundException.cs" />
     <Compile Include="Clients\GraphiteUdpClient.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="GraphiteParams.cs" />
     <Compile Include="IConfigMapper.cs" />
     <Compile Include="IConfigReader.cs" />
+    <Compile Include="IGenericSerializer.cs" />
     <Compile Include="Interfaces\IConfig.cs" />
     <Compile Include="Interfaces\IGraphiteClientFactory.cs" />
     <Compile Include="DataClientFactory.cs" />
@@ -155,13 +157,12 @@
     <Compile Include="Sleeper.cs" />
     <Compile Include="SqlGetter.cs" />
     <Compile Include="Conf\Configuration.cs" />
-    <Compile Include="Conf\SqlToGraphiteConfig.cs" />
     <Compile Include="Clients\StatsdClient.cs" />
     <Compile Include="Stop.cs" />
     <Compile Include="Task.cs" />
     <Compile Include="TaskBag.cs" />
     <Compile Include="TaskManager.cs" />
-    <Compile Include="TaskSet.cs" />
+    <Compile Include="TaskSetWithProcess.cs" />
     <Compile Include="Temp\SqlServer.cs" />
     <Compile Include="Temp\WmiPlugin.cs" />
     <Compile Include="ThreadImpl.cs" />

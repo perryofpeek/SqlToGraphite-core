@@ -1,6 +1,6 @@
 using System;
 
-public abstract class Job
+public abstract class Job : IJob
 {
     public abstract string Name { get; set; }
 

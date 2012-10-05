@@ -1,16 +1,17 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using ConfigSpike.Config;
 
 namespace SqlToGraphite.Conf
 {
     public class RoleConfig
     {
-        private List<SqlToGraphiteConfigHostsHost> sqlToGraphiteConfigHosts;
+        private List<Host> sqlToGraphiteConfigHosts;
 
         private readonly string hostname;
 
-        public RoleConfig(List<SqlToGraphiteConfigHostsHost> sqlToGraphiteConfigHosts, string hostname)
+        public RoleConfig(List<Host> sqlToGraphiteConfigHosts, string hostname)
         {
             this.sqlToGraphiteConfigHosts = sqlToGraphiteConfigHosts;
             this.hostname = hostname;
@@ -21,13 +22,13 @@ namespace SqlToGraphite.Conf
             var rtn = new List<string>();
             foreach (var h in sqlToGraphiteConfigHosts)
             {
-                if (h.name.ToLower() == "default")
+                if (h.Name.ToLower() == "default")
                 {
-                    rtn.AddRange(h.role.Select(role => role.name));
+                    rtn.AddRange(h.Roles.Select(role => role.Name));
                 }
-                else if (System.Text.RegularExpressions.Regex.IsMatch(hostname, h.name, System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                else if (System.Text.RegularExpressions.Regex.IsMatch(hostname, h.Name, System.Text.RegularExpressions.RegexOptions.IgnoreCase))
                 {
-                    rtn.AddRange(h.role.Select(role => role.name));
+                    rtn.AddRange(h.Roles.Select(role => role.Name));
                 }
             }
 

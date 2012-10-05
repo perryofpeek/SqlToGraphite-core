@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+
+using ConfigSpike;
+using ConfigSpike.Config;
+
 using log4net;
 using SqlToGraphite.Clients;
 
@@ -23,9 +27,11 @@ namespace SqlToGraphite.Conf
 
         private readonly int errorReadingConfigSleepTime;
 
-        private List<SqlToGraphiteConfigClientsClient> clients;
-        private List<SqlToGraphiteConfigTemplatesWorkItems> templates;
-        private List<SqlToGraphiteConfigHostsHost> hosts;
+        private readonly IGenericSerializer genericSerializer;
+
+        //private List<Client> clients;
+        //private List<WorkItems> templates;
+        //private List<Host> hosts;
         private List<string> errors;
         private GraphiteClients clientList;
         public const string FailedToLoadAnyConfiguration = "Failed to load any configuration";
@@ -34,7 +40,9 @@ namespace SqlToGraphite.Conf
         public const string FailedToFindTemplates = "Failed to find any templates defined";
         public const string UnknownClient = "unknown client defined";
 
-        public ConfigRepository(IConfigReader configReader, IKnownGraphiteClients knownGraphiteClients, ICache cache, ISleep sleep, ILog log, int errorReadingConfigSleepTime)
+        private SqlToGraphiteConfig masterConfig;
+
+        public ConfigRepository(IConfigReader configReader, IKnownGraphiteClients knownGraphiteClients, ICache cache, ISleep sleep, ILog log, int errorReadingConfigSleepTime, IGenericSerializer genericSerializer)
         {
             this.configReader = configReader;
             this.knownGraphiteClients = knownGraphiteClients;
@@ -42,14 +50,16 @@ namespace SqlToGraphite.Conf
             this.sleep = sleep;
             this.log = log;
             this.errorReadingConfigSleepTime = errorReadingConfigSleepTime;
-            clients = new List<SqlToGraphiteConfigClientsClient>();
+            this.genericSerializer = genericSerializer;
+            //    clients = new List<Client>();
             clientList = new GraphiteClients();
-            hosts = new List<SqlToGraphiteConfigHostsHost>();
-            this.templates = new List<SqlToGraphiteConfigTemplatesWorkItems>();
+            //    hosts = new List<Host>();
+            //    this.templates = new List<WorkItems>();
+            this.masterConfig = new SqlToGraphiteConfig();
         }
 
-        public ConfigRepository(IConfigReader configReader, IKnownGraphiteClients knownGraphiteClients, ICache cache, ISleep sleep, ILog log, int errorReadingConfigSleepTime, IConfigPersister configPersister)
-            : this(configReader, knownGraphiteClients, cache, sleep, log, errorReadingConfigSleepTime)
+        public ConfigRepository(IConfigReader configReader, IKnownGraphiteClients knownGraphiteClients, ICache cache, ISleep sleep, ILog log, int errorReadingConfigSleepTime, IConfigPersister configPersister, IGenericSerializer genericSerializer)
+            : this(configReader, knownGraphiteClients, cache, sleep, log, errorReadingConfigSleepTime, genericSerializer)
         {
             this.configPersister = configPersister;
         }
@@ -59,13 +69,13 @@ namespace SqlToGraphite.Conf
             if (cache.HasExpired())
             {
                 log.Debug("Cache has expired");
-                var graphiteConfig = new SqlToGraphiteConfig();
-                while (graphiteConfig.Items == null)
+                SqlToGraphiteConfig graphiteConfig = null;
+                while (graphiteConfig == null)
                 {
                     try
                     {
                         graphiteConfig = GetConfig(configReader);
-                        if (graphiteConfig.Items == null)
+                        if (graphiteConfig == null)
                         {
                             log.Error(FailedToLoadAnyConfiguration);
                             this.errors.Add(FailedToLoadAnyConfiguration);
@@ -79,8 +89,9 @@ namespace SqlToGraphite.Conf
                     }
                 }
 
+                this.masterConfig = graphiteConfig;
                 Init();
-                this.ParseConfigItems(graphiteConfig);
+                //this.ParseConfigItems(graphiteConfig);
                 cache.ResetCache();
             }
         }
@@ -91,71 +102,71 @@ namespace SqlToGraphite.Conf
             this.sleep.Sleep(errorReadingConfigSleepTime);
         }
 
-        private void ParseConfigItems(SqlToGraphiteConfig graphiteConfig)
+        //private void ParseConfigItems(SqlToGraphiteConfig graphiteConfig)
+        //{
+        //    foreach (var setting in graphiteConfig.Items)
+        //    {
+        //        this.AddTypes(setting);
+        //    }
+        //}
+
+        //private void AddTypes(object setting)
+        //{
+        //    this.AddClients(setting);
+        //    this.AddTemplates(setting);
+        //    this.AddHosts(setting);
+        //}
+
+        //private void AddHosts(object setting)
+        //{
+        //    if (setting.GetType() == typeof(SqlToGraphiteConfigHosts))
+        //    {
+        //        var x = (SqlToGraphiteConfigHosts)setting;
+        //        this.hosts.AddRange(x.host);
+        //    }
+        //}
+
+        //private void AddTemplates(object setting)
+        //{
+        //    if (setting.GetType() == typeof(SqlToGraphiteConfigTemplates))
+        //    {
+        //        var x = (SqlToGraphiteConfigTemplates)setting;
+        //        this.templates.AddRange(x.WorkItems);
+        //    }
+        //}
+
+        //private void AddClients(object setting)
+        //{
+        //    if (setting.GetType() == typeof(SqlToGraphiteConfigClients))
+        //    {
+        //        var x = (SqlToGraphiteConfigClients)setting;
+        //        this.clients.AddRange(x.Client);
+        //        this.AddAllClients();
+        //    }
+        //}
+        //private static string SerializeConfig(SqlToGraphiteConfig config)
+        //{
+        //    var stringStream = new StringWriter();
+        //    var ser = new System.Xml.Serialization.XmlSerializer(typeof(SqlToGraphiteConfig));
+        //    ser.Serialize(stringStream, config);
+        //    return stringStream.ToString();
+        //}
+        private SqlToGraphiteConfig GetConfig(IConfigReader configReader)
         {
-            foreach (var setting in graphiteConfig.Items)
-            {
-                this.AddTypes(setting);
-            }
+            var xml = configReader.GetXml();
+            return genericSerializer.Deserialize<SqlToGraphiteConfig>(xml);
         }
 
-        private void AddTypes(object setting)
-        {
-            this.AddClients(setting);
-            this.AddTemplates(setting);
-            this.AddHosts(setting);
-        }
+        //private XmlReader ReadConfig(IConfigReader configReader)
+        //{
 
-        private void AddHosts(object setting)
-        {
-            if (setting.GetType() == typeof(SqlToGraphiteConfigHosts))
-            {
-                var x = (SqlToGraphiteConfigHosts)setting;
-                this.hosts.AddRange(x.host);
-            }
-        }
-
-        private void AddTemplates(object setting)
-        {
-            if (setting.GetType() == typeof(SqlToGraphiteConfigTemplates))
-            {
-                var x = (SqlToGraphiteConfigTemplates)setting;
-                this.templates.AddRange(x.WorkItems);
-            }
-        }
-
-        private void AddClients(object setting)
-        {
-            if (setting.GetType() == typeof(SqlToGraphiteConfigClients))
-            {
-                var x = (SqlToGraphiteConfigClients)setting;
-                this.clients.AddRange(x.Client);
-                this.AddAllClients();
-            }
-        }
-
-        private static string SerializeConfig(SqlToGraphiteConfig config)
-        {
-            var stringStream = new StringWriter();
-            var ser = new System.Xml.Serialization.XmlSerializer(typeof(SqlToGraphiteConfig));
-            ser.Serialize(stringStream, config);
-            return stringStream.ToString();
-        }
-
-        private static SqlToGraphiteConfig GetConfig(IConfigReader configReader)
-        {
-            var ser = new System.Xml.Serialization.XmlSerializer(typeof(SqlToGraphiteConfig));
-            var rdr = XmlReader.Create(new StringReader(configReader.GetXml()));
-            var o = ser.Deserialize(rdr);
-            var c = (SqlToGraphiteConfig)o;
-            return c;
-        }
-
+        //    return XmlReader.Create(new StringReader(xml));
+        //}
         private void Init()
         {
-            this.clients = new List<SqlToGraphiteConfigClientsClient>();
-            this.templates = new List<SqlToGraphiteConfigTemplatesWorkItems>();
-            this.hosts = new List<SqlToGraphiteConfigHostsHost>();
+            //this.clients = new List<SqlToGraphiteConfigClientsClient>();
+            //this.templates = new List<SqlToGraphiteConfigTemplatesWorkItems>();
+            //this.hosts = new List<SqlToGraphiteConfigHostsHost>();
             this.errors = new List<string>();
             clientList = new GraphiteClients();
         }
@@ -168,37 +179,38 @@ namespace SqlToGraphite.Conf
             }
         }
 
-        public List<SqlToGraphiteConfigClientsClient> GetClients()
+        public ListOfUniqueType<IClient> GetClients()
         {
-            return clients;
+            return this.masterConfig.Clients;
         }
 
-        public List<SqlToGraphiteConfigTemplatesWorkItems> GetTemplates()
+        public List<Template> GetTemplates()
         {
-            return templates;
+            return this.masterConfig.Templates;
         }
 
-        public List<SqlToGraphiteConfigHostsHost> GetHosts()
+        public List<Host> GetHosts()
         {
-            return hosts;
+            return this.masterConfig.Hosts;
         }
 
         public bool Validate()
         {
+            this.masterConfig.Validate();
             var rtn = true;
-            if (templates.Count == 0)
+            if (masterConfig.Templates.Count == 0)
             {
                 errors.Add(FailedToFindTemplates);
                 rtn = false;
             }
 
-            if (hosts.Count == 0)
+            if (masterConfig.Hosts.Count == 0)
             {
                 errors.Add(FailedToFindHosts);
                 rtn = false;
             }
 
-            if (clients.Count == 0)
+            if (masterConfig.Clients.Count == 0)
             {
                 errors.Add(FailedToFindClients);
                 rtn = false;
@@ -207,84 +219,94 @@ namespace SqlToGraphite.Conf
             return rtn;
         }
 
-        private void AddAllClients()
-        {
-            foreach (var client in this.GetClients())
-            {
-                this.AddKnownClient(knownGraphiteClients, client);
-            }
-        }
-
-        private void AddKnownClient(IKnownGraphiteClients knownGraphiteClients, SqlToGraphiteConfigClientsClient client)
-        {
-            if (knownGraphiteClients.IsKnown(client.name))
-            {
-                this.clientList.Add(client.name, client.port);
-            }
-            else
-            {
-                Errors.Add(string.Format("{0} {1}", UnknownClient, client.name));
-            }
-        }
-
+        //private void AddAllClients()
+        //{
+        //    foreach (var client in this.GetClients())
+        //    {
+        //        this.AddKnownClient(knownGraphiteClients, client);
+        //    }
+        //}
+        //private void AddKnownClient(IKnownGraphiteClients knownGraphiteClients, SqlToGraphiteConfigClientsClient client)
+        //{
+        //    if (knownGraphiteClients.IsKnown(client.name))
+        //    {
+        //        this.clientList.Add(client.name, client.port);
+        //    }
+        //    else
+        //    {
+        //        Errors.Add(string.Format("{0} {1}", UnknownClient, client.name));
+        //    }
+        //}
         public GraphiteClients GetClientList()
         {
             return this.clientList;
         }
 
-        public void AddClient(string name, string port)
+        public void AddClient(IClient client)
         {
-            var x = new SqlToGraphiteConfigClientsClient { name = name, port = port };
-            this.clients.Add(x);
+            this.masterConfig.Clients.Add(client);
         }
 
-        public void AddHost(string name, List<string> roles)
+        public void AddHost(string name, List<Role> roles)
         {
-            var host = new SqlToGraphiteConfigHostsHost();
-            host.name = name;
-            host.role = new SqlToGraphiteConfigHostsHostRole[roles.Count];
-            var i = 0;
-            foreach (var role in roles)
-            {
-                host.role[i] = new SqlToGraphiteConfigHostsHostRole();
-                host.role[i].name = role;
-                i++;
-            }
-
-            this.hosts.Add(host);
+            var host = new Host();
+            host.Name = name;
+            host.Roles = roles;
+            //var i = 0;
+            //foreach (var role in roles)
+            //{
+            //    host.role[i] = new SqlToGraphiteConfigHostsHostRole();
+            //    host.role[i].name = role;
+            //    i++;
+            //}
+            this.masterConfig.Hosts.Add(host);
         }
 
-        public void AddWorkItem(SqlToGraphiteConfigTemplatesWorkItems workItem)
+        public void AddWorkItem(WorkItems workItem)
         {
-            templates.Add(workItem);
+            this.masterConfig.Templates[0].WorkItems.Add(workItem);
+            // throw new ApplicationException("this is not right at all needs to be a proper list thing");
         }
 
-        public void AddTask(TaskProperties taskProperties)
+        public void AddJob(IJob job)
+        {
+            this.masterConfig.Jobs.Add(job);
+        }
+
+        public void AddTask(TaskDetails taskProperties)
         {
             //findRole. 
-            var taskSet = new List<SqlToGraphiteConfigTemplatesWorkItemsTaskSet>();
+            //var tasks = new List<ConfigSpike.Config.Task>();
             var added = false;
-            foreach (var template in this.templates)
+            foreach (var template in this.masterConfig.Templates)
             {
-                added = this.AddIfRolesAreTheSame(taskProperties, added, template);
+                foreach (var wi in template.WorkItems)
+                {
+                    added = this.AddIfRolesAreTheSame(taskProperties, added, wi);
+                }
             }
 
             if (!added)
             {
                 var taskSetItem = CreateTaskSetItem(taskProperties);
-                taskSet.Add(taskSetItem);
-                this.templates.Add(new SqlToGraphiteConfigTemplatesWorkItems { TaskSet = taskSet.ToArray(), Role = taskProperties.Role });
+                if (masterConfig.Templates.Count == 0)
+                {
+                    masterConfig.Templates.Add(new Template());
+                }
+
+                var workItem = new WorkItems { RoleName = taskProperties.Role, TaskSet = new List<TaskSet> { taskSetItem } };
+                this.masterConfig.Templates[0].WorkItems.Add(workItem);
             }
         }
 
         public void Save()
         {
-            this.configPersister.Save(this.clients, this.templates, this.hosts);
+            this.configPersister.Save(this.masterConfig);
         }
 
-        private bool AddIfRolesAreTheSame(TaskProperties taskProperties, bool added, SqlToGraphiteConfigTemplatesWorkItems template)
+        private bool AddIfRolesAreTheSame(TaskDetails taskProperties, bool added, WorkItems template)
         {
-            if (template.Role == taskProperties.Role)
+            if (template.RoleName == taskProperties.Role)
             {
                 foreach (var t in template.TaskSet)
                 {
@@ -300,49 +322,42 @@ namespace SqlToGraphite.Conf
             return added;
         }
 
-        private bool AddTaskToNewFrequency(TaskProperties taskProperties, SqlToGraphiteConfigTemplatesWorkItems template)
+        private bool AddTaskToNewFrequency(TaskDetails taskProperties, WorkItems template)
         {
-            bool added = false;
-            var l = new List<SqlToGraphiteConfigTemplatesWorkItemsTaskSet>(template.TaskSet) { this.CreateTaskSetItem(taskProperties) };
-            added = true;
-            template.TaskSet = l.ToArray();
-            return added;
+            template.TaskSet.Add(this.CreateTaskSetItem(taskProperties));
+            return true;
         }
 
-        private static bool AddTaskIfFrequencyIsTheSame(TaskProperties taskProperties, SqlToGraphiteConfigTemplatesWorkItemsTaskSet t)
+        private static bool AddTaskIfFrequencyIsTheSame(TaskDetails taskProperties, TaskSet t)
         {
             bool added = false;
-            if (t.frequency == taskProperties.Frequency)
+            if (t.Frequency == taskProperties.Frequency)
             {
-                var tasks = new List<SqlToGraphiteConfigTemplatesWorkItemsTaskSetTask>(t.Task);
-                tasks.Add(CreateTask(taskProperties));
+                t.Tasks.Add(CreateTask(taskProperties));
+                //var tasks = new List<Task>(t.Tasks);
+                //tasks.Add();
                 added = true;
-                t.Task = tasks.ToArray();
+                //t.Task = tasks.ToArray();
             }
 
             return added;
         }
 
-        private SqlToGraphiteConfigTemplatesWorkItemsTaskSet CreateTaskSetItem(TaskProperties taskProperties)
+        private TaskSet CreateTaskSetItem(TaskDetails taskProperties)
         {
-            var taskSetItem = new SqlToGraphiteConfigTemplatesWorkItemsTaskSet { frequency = taskProperties.Frequency, Task = new SqlToGraphiteConfigTemplatesWorkItemsTaskSetTask[1] };
-            taskSetItem.Task[0] = CreateTask(taskProperties);
+            var tasks = new List<ConfigSpike.Config.Task> { CreateTask(taskProperties) };
+            var taskSetItem = new TaskSet { Frequency = taskProperties.Frequency, Tasks = tasks };
             return taskSetItem;
         }
 
-        private static SqlToGraphiteConfigTemplatesWorkItemsTaskSetTask CreateTask(TaskProperties taskProperties)
+        private static ConfigSpike.Config.Task CreateTask(TaskDetails taskProperties)
         {
-            var newtask = new SqlToGraphiteConfigTemplatesWorkItemsTaskSetTask
-                {
-                    client = taskProperties.Client,
-                    connectionstring = taskProperties.Connectionstring,
-                    name = taskProperties.Name,
-                    path = taskProperties.Path,
-                    port = taskProperties.Port,
-                    sql = taskProperties.Sql,
-                    type = taskProperties.Type
-                };
-            return newtask;
+            return new ConfigSpike.Config.Task { JobName = taskProperties.JobName };
+        }
+
+        public List<IJob> GetJobs()
+        {
+            return this.masterConfig.Jobs;
         }
     }
 }

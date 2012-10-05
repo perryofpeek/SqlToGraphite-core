@@ -2,7 +2,7 @@
 
 namespace ConfigSpike
 {
-    public abstract class Client
+    public abstract class Client : IClient
     {
         [XmlAttribute]
         public abstract string ClientName { get; set; }

@@ -1,5 +1,8 @@
 using System.Collections.Generic;
 
+using ConfigSpike;
+using ConfigSpike.Config;
+
 namespace SqlToGraphite.Conf
 {
     public interface IConfigRepository
@@ -8,24 +11,26 @@ namespace SqlToGraphite.Conf
 
         List<string> Errors { get; }
 
-        List<SqlToGraphiteConfigClientsClient> GetClients();
+        ListOfUniqueType<IClient> GetClients();
 
-        List<SqlToGraphiteConfigTemplatesWorkItems> GetTemplates();
+        List<Template> GetTemplates();
 
-        List<SqlToGraphiteConfigHostsHost> GetHosts();
+        List<Host> GetHosts();
 
         bool Validate();
 
         GraphiteClients GetClientList();
 
-        void AddClient(string name, string port);
+        void AddClient(IClient client);
 
-        void AddHost(string name, List<string> roles);
+        void AddHost(string name, List<Role> roles);
 
-        void AddWorkItem(SqlToGraphiteConfigTemplatesWorkItems workItem);
+        void AddWorkItem(WorkItems workItem);
 
-        void AddTask(TaskProperties taskProperties);
+        void AddTask(TaskDetails taskProperties);
 
         void Save();
+
+        List<IJob> GetJobs();
     }
 }

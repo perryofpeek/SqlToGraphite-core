@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+
+using ConfigSpike.Config;
+
 using log4net;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -32,18 +35,22 @@ namespace SqlToGraphite.UnitTests
         {
             string hostname = "hostname";
             var configMapper = new ConfigMapper(hostname, stop, dataClientFactory, graphiteClientFactory, log);
-            var taskSet = new List<SqlToGraphiteConfigTemplatesWorkItemsTaskSet>();
-            var x = new SqlToGraphiteConfigTemplatesWorkItemsTaskSet { frequency = "100", Task = new SqlToGraphiteConfigTemplatesWorkItemsTaskSetTask[1] };
-            x.Task[0] = new SqlToGraphiteConfigTemplatesWorkItemsTaskSetTask
-                {
-                    client = "client",
-                    connectionstring = "cs",
-                    name = "name",
-                    path = "path",
-                    port = "1234",
-                    sql = "sql",
-                    type = "typr"
-                };
+            var taskSet = new List<ConfigSpike.Config.TaskSet>();
+            var x = new ConfigSpike.Config.TaskSet { Frequency = 100, Tasks = new List<ConfigSpike.Config.Task>() };
+            var t = new ConfigSpike.Config.Task();
+            t.JobName = "ooh";
+            x.Tasks.Add(t);
+
+            //x.Task[0] = new SqlToGraphiteConfigTemplatesWorkItemsTaskSetTask
+            //    {
+            //        client = "client",
+            //        connectionstring = "cs",
+            //        name = "name",
+            //        path = "path",
+            //        port = "1234",
+            //        sql = "sql",
+            //        type = "typr"
+            //    };
             taskSet.Add(x);
             var clients = new GraphiteClients();
             var ex = Assert.Throws<ClientNotFoundException>(() => configMapper.Map(taskSet, clients));
@@ -57,18 +64,19 @@ namespace SqlToGraphite.UnitTests
             var client = "someClient";
             var freq = 100;
             var configMapper = new ConfigMapper(hostname, stop, dataClientFactory, graphiteClientFactory, log);
-            var taskSet = new List<SqlToGraphiteConfigTemplatesWorkItemsTaskSet>();
-            var x = new SqlToGraphiteConfigTemplatesWorkItemsTaskSet { frequency = freq.ToString(), Task = new SqlToGraphiteConfigTemplatesWorkItemsTaskSetTask[1] };
-            x.Task[0] = new SqlToGraphiteConfigTemplatesWorkItemsTaskSetTask
-            {
-                client = client,
-                connectionstring = "cs",
-                name = "name",
-                path = "path",
-                port = "1234",
-                sql = "sql",
-                type = "type"
-            };
+            var taskSet = new List<TaskSet>();
+            var x = new TaskSet { Frequency = freq, Tasks = new List<ConfigSpike.Config.Task>() };
+            x.Tasks.Add(new ConfigSpike.Config.Task() { JobName = "fred" });
+            //x.Task[0] = new SqlToGraphiteConfigTemplatesWorkItemsTaskSetTask
+            //{
+            //    client = client,
+            //    connectionstring = "cs",
+            //    name = "name",
+            //    path = "path",
+            //    port = "1234",
+            //    sql = "sql",
+            //    type = "type"
+            //};
             taskSet.Add(x);
             var clients = new GraphiteClients();
             clients.Add(client, "1234");

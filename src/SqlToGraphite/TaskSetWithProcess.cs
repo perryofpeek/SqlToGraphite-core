@@ -4,11 +4,11 @@ using System.Threading;
 
 namespace SqlToGraphite
 {
-    public class TaskSet : ITaskSet
+    public class TaskSetWithProcess : ITaskSet
     {
         private readonly IStop stop;
 
-        public TaskSet(IList<ITask> tasks, IStop stop, int frequency)
+        public TaskSetWithProcess(IList<ITask> tasks, IStop stop, int frequency)
         {
             this.stop = stop;
             this.Tasks = tasks;

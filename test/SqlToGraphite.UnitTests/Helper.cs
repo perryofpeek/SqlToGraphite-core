@@ -27,8 +27,9 @@ namespace SqlToGraphite.UnitTests
 
         public static ConfigSpike.Config.SqlToGraphiteConfig SerialiseDeserialise(ConfigSpike.Config.SqlToGraphiteConfig hh)
         {
-            var xml = GenericSerializer.Serialize<ConfigSpike.Config.SqlToGraphiteConfig>(hh);
-            var sqlToGraphiteConfig = GenericSerializer.Deserialize<ConfigSpike.Config.SqlToGraphiteConfig>(xml);
+            var genericSerializer = new GenericSerializer();
+            var xml = genericSerializer.Serialize<ConfigSpike.Config.SqlToGraphiteConfig>(hh);
+            var sqlToGraphiteConfig = genericSerializer.Deserialize<ConfigSpike.Config.SqlToGraphiteConfig>(xml);
             return sqlToGraphiteConfig;
         }
     }

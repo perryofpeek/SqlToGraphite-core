@@ -1,4 +1,8 @@
+using System;
 using System.Collections.Generic;
+
+using ConfigSpike.Config;
+
 using log4net;
 using SqlToGraphiteInterfaces;
 
@@ -25,37 +29,42 @@ namespace SqlToGraphite
             ConfigMapper.log = log;
         }
 
-        public IList<ITaskSet> Map(List<SqlToGraphiteConfigTemplatesWorkItemsTaskSet> list, GraphiteClients clients)
+        public IList<ITaskSet> Map(List<ConfigSpike.Config.TaskSet> list, GraphiteClients clients)
         {
             var taskSets = new List<ITaskSet>();
-            foreach (SqlToGraphiteConfigTemplatesWorkItemsTaskSet taskSet in list)
+            foreach (ConfigSpike.Config.TaskSet taskSet in list)
             {
-                var fequency = int.Parse(taskSet.frequency);
+                var fequency = taskSet.Frequency;
+
                 var tasks = this.MapTasks(hostname, taskSet, clients);
-                taskSets.Add(new TaskSet(tasks, stop, fequency));
+                taskSets.Add(new TaskSetWithProcess(tasks, stop, fequency));
+                throw new ApplicationException("this is not right");
             }
 
             return taskSets;
         }
 
-        private IList<ITask> MapTasks(string hostName, SqlToGraphiteConfigTemplatesWorkItemsTaskSet workItem, GraphiteClients clients)
+        private IList<ITask> MapTasks(string hostName, ConfigSpike.Config.TaskSet workItem, GraphiteClients clients)
         {
             var tasks = new List<ITask>();
-            foreach (var item in workItem.Task)
+            throw new ApplicationException("this needs to get the job");
+            foreach (var item in workItem.Tasks)
             {
-                var c = clients.Get(item.client);
-                tasks.Add(CreateTask(hostName, c, item));
+                var c = clients.Get(item.JobName);
+                //    tasks.Add(CreateTask(hostName, c, item));
             }
 
             return tasks;
         }
 
-        private Task CreateTask(string hostName, GraphiteClient client, SqlToGraphiteConfigTemplatesWorkItemsTaskSetTask item)
+        private Task CreateTask(string hostName, GraphiteClient client, ConfigSpike.Config.Task item)
         {
             var graphiteParams = new GraphiteParams(hostName, client.Port);
-            var taskParams = new TaskParams(item.path, item.sql, item.connectionstring, item.type, item.name, item.client);
-            var task = new Task(taskParams, this.dataClientFactory, this.graphiteClientFactory, graphiteParams, log);
-            return task;
-        }        
+            //var taskParams = new TaskParams(item.path, item.sql, item.connectionstring, item.type, item.name, item.client);
+            //var task = new Task(taskParams, this.dataClientFactory, this.graphiteClientFactory, graphiteParams, log);
+            throw new ApplicationException("this needs to be fixed to work.");
+            return null;
+            // task;
+        }
     }
 }

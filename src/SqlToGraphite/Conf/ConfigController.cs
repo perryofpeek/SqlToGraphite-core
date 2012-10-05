@@ -28,10 +28,11 @@ namespace SqlToGraphite.Conf
             {
                 newConfig = true;
                 var roleConfig = new RoleConfig(this.configRepository.GetHosts(), Environment.MachineName);
-                var templates = new Templates(configRepository.GetTemplates());
-                var setList = templates.GetTaskSetList(roleConfig.GetRoleList());
-                var taskList = configMapper.Map(setList, configRepository.GetClientList());
-                return taskList;
+               // var templates = new Templates(configRepository.GetTemplates());
+               // var setList = templates.GetTaskSetList(roleConfig.GetRoleList());
+                throw new ApplicationException("this is not right?");                
+                //var taskList = configMapper.Map(setList, configRepository.GetClientList());
+                //return taskList;
             }
 
             return null;

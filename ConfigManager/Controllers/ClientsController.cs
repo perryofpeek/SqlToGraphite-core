@@ -26,7 +26,7 @@ namespace ConfigManager.Controllers
         {
             configRepository.Load();
             var clientList = configRepository.GetClients();
-            var clients = clientList.Select(item => new ClientsViewModelClient(item.name, Convert.ToInt32(item.port))).ToList();
+            var clients = clientList.Select(item => new ClientsViewModelClient(item.ClientName, Convert.ToInt32(item.Port))).ToList();
             var displayClientsViewModel = new ClientsViewModel(clients);
             return View(displayClientsViewModel);
         }
@@ -35,7 +35,7 @@ namespace ConfigManager.Controllers
         {
             configRepository.Load();
             var clientList = configRepository.GetClients();
-            var clients = clientList.Select(item => new ClientsViewModelClient(item.name, Convert.ToInt32(item.port))).ToList();
+            var clients = clientList.Select(item => new ClientsViewModelClient(item.ClientName, Convert.ToInt32(item.Port))).ToList();
             var displayClientsViewModel = new ClientsViewModel(clients);
             return View(displayClientsViewModel);
         }
@@ -53,7 +53,7 @@ namespace ConfigManager.Controllers
             {
                 // Attempt to register the user
                     configRepository.Load();
-                    configRepository.AddClient(client.Name, client.Port.ToString());       
+                   // configRepository.AddClient(client.Name, client.Port.ToString());       
                     configRepository.Save();
                     return RedirectToAction("Index", "Clients");
                    

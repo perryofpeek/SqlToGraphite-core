@@ -1,28 +1,27 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
+using ConfigSpike;
+using ConfigSpike.Config;
+
 namespace SqlToGraphite.Conf
 {
     public class ConfigPersister : IConfigPersister
     {
         private readonly IConfigWriter configWriter;
 
-        public ConfigPersister(IConfigWriter configWriter)
+        private readonly IGenericSerializer genericSerializer;
+
+        public ConfigPersister(IConfigWriter configWriter, IGenericSerializer genericSerializer)
         {
             this.configWriter = configWriter;
+            this.genericSerializer = genericSerializer;
         }
 
-        public void Save(List<SqlToGraphiteConfigClientsClient> clients, List<SqlToGraphiteConfigTemplatesWorkItems> templates, List<SqlToGraphiteConfigHostsHost> hosts)
+        public void Save(SqlToGraphiteConfig config)
         {
-            var sqlToGraphiteConfig = new SqlToGraphiteConfig { Items = new object[3] };
-            sqlToGraphiteConfig.Items[0] = new SqlToGraphiteConfigClients { Client = clients.ToArray() };
-            sqlToGraphiteConfig.Items[1] = new SqlToGraphiteConfigTemplates { WorkItems = templates.ToArray() };
-            sqlToGraphiteConfig.Items[2] = new SqlToGraphiteConfigHosts { host = hosts.ToArray() };
-
-            var stringStream = new StringWriter();
-            var ser = new System.Xml.Serialization.XmlSerializer(typeof(SqlToGraphiteConfig));
-            ser.Serialize(stringStream, sqlToGraphiteConfig);
-            configWriter.Save(stringStream.ToString());
+            var data = genericSerializer.Serialize(config);
+            configWriter.Save(data);
         }
     }
 }

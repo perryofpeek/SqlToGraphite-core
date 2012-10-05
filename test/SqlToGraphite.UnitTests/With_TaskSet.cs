@@ -23,7 +23,7 @@ namespace SqlToGraphite.UnitTests
             IStop stop = MockRepository.GenerateMock<IStop>();
             stop.Expect(x => x.ShouldStop()).Return(false).Repeat.Once();
             stop.Expect(x => x.ShouldStop()).Return(true).Repeat.Once();
-            var taskSet = new TaskSet(tasks, stop, freq);
+            var taskSet = new TaskSetWithProcess(tasks, stop, freq);
 
             taskSet.Process();
 
@@ -43,7 +43,7 @@ namespace SqlToGraphite.UnitTests
             IStop stop = MockRepository.GenerateMock<IStop>();
             stop.Expect(x => x.ShouldStop()).Return(false).Repeat.Once();
             stop.Expect(x => x.ShouldStop()).Return(true).Repeat.Once();
-            var taskSet = new TaskSet(tasks, stop, freq);
+            var taskSet = new TaskSetWithProcess(tasks, stop, freq);
 
             taskSet.Process();
 
@@ -64,7 +64,7 @@ namespace SqlToGraphite.UnitTests
             var stop = MockRepository.GenerateMock<IStop>();
             stop.Expect(x => x.ShouldStop()).Return(false).Repeat.Once();
             stop.Expect(x => x.ShouldStop()).Return(true).Repeat.Once();
-            var taskSet = new TaskSet(tasks, stop, freq);
+            var taskSet = new TaskSetWithProcess(tasks, stop, freq);
 
             taskSet.Process();
 

@@ -54,10 +54,11 @@ namespace ConfigSpike
                 template.WorkItems.Add(wi);
 
                 hh.Templates.Add(template);
-                hh.Clients = new ListOfUniqueType<Client> { c1, c2 };
-                string xml = GenericSerializer.Serialize<ConfigSpike.Config.SqlToGraphiteConfig>(hh);
+                hh.Clients = new ListOfUniqueType<IClient> { c1, c2 };
+                var genericSerializer = new GenericSerializer();
+                string xml = genericSerializer.Serialize<ConfigSpike.Config.SqlToGraphiteConfig>(hh);
                 Console.WriteLine(xml);
-                var sqlToGraphiteConfig = GenericSerializer.Deserialize<ConfigSpike.Config.SqlToGraphiteConfig>(xml);
+                var sqlToGraphiteConfig = genericSerializer.Deserialize<ConfigSpike.Config.SqlToGraphiteConfig>(xml);
                 foreach (var job in sqlToGraphiteConfig.Jobs)
                 {
                     Console.WriteLine(job.Type);

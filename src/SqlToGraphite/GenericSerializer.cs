@@ -9,7 +9,7 @@
     /// <summary>
     /// A generic class used to serialize objects.
     /// </summary>
-    public class GenericSerializer
+    public class GenericSerializer : IGenericSerializer
     {
         /// <summary>
         /// Serializes the given object.
@@ -17,7 +17,7 @@
         /// <typeparam name="T">The type of the object to be serialized.</typeparam>
         /// <param name="obj">The object to be serialized.</param>
         /// <returns>String representation of the serialized object.</returns>
-        public static string Serialize<T>(T obj)
+        public string Serialize<T>(T obj)
         {
             XmlSerializer xs = null;
             StringWriter sw = null;
@@ -43,7 +43,7 @@
             }
         }
 
-        public static string Serialize<T>(T obj, Type[] extraTypes)
+        public string Serialize<T>(T obj, Type[] extraTypes)
         {
             XmlSerializer xs = null;
             StringWriter sw = null;
@@ -75,7 +75,7 @@
         /// <typeparam name="T">The type of the object to be serialized.</typeparam>
         /// <param name="obj">The object to be serialized.</param>
         /// <param name="writer">The writer to be used for output in the serialization.</param>
-        public static void Serialize<T>(T obj, XmlWriter writer)
+        public void Serialize<T>(T obj, XmlWriter writer)
         {
             XmlSerializer xs = new XmlSerializer(typeof(T));
             xs.Serialize(writer, obj);
@@ -88,7 +88,7 @@
         /// <param name="obj">The object to be serialized.</param>
         /// <param name="writer">The writer to be used for output in the serialization.</param>
         /// <param name="extraTypes"><c>Type</c> array of additional object types to serialize.</param>
-        public static void Serialize<T>(T obj, XmlWriter writer, Type[] extraTypes)
+        public void Serialize<T>(T obj, XmlWriter writer, Type[] extraTypes)
         {
             XmlSerializer xs = new XmlSerializer(typeof(T), extraTypes);
             xs.Serialize(writer, obj);
@@ -100,7 +100,7 @@
         /// <typeparam name="T">The type of the object to be deserialized.</typeparam>
         /// <param name="reader">The reader used to retrieve the serialized object.</param>
         /// <returns>The deserialized object of type T.</returns>
-        public static T Deserialize<T>(XmlReader reader)
+        public T Deserialize<T>(XmlReader reader)
         {
             XmlSerializer xs = new XmlSerializer(typeof(T));
             return (T)xs.Deserialize(reader);
@@ -114,7 +114,7 @@
         /// <param name="extraTypes"><c>Type</c> array
         ///           of additional object types to deserialize.</param>
         /// <returns>The deserialized object of type T.</returns>
-        public static T Deserialize<T>(XmlReader reader, Type[] extraTypes)
+        public T Deserialize<T>(XmlReader reader, Type[] extraTypes)
         {
             XmlSerializer xs = new XmlSerializer(typeof(T), extraTypes);
             return (T)xs.Deserialize(reader);
@@ -126,7 +126,7 @@
         /// <typeparam name="T">The type of the object to be deserialized.</typeparam>
         /// <param name="xml">The XML file containing the serialized object.</param>
         /// <returns>The deserialized object of type T.</returns>
-        public static T Deserialize<T>(string xml)
+        public T Deserialize<T>(string xml)
         {
             if (string.IsNullOrEmpty(xml))
             {
@@ -155,7 +155,7 @@
             }
         }
 
-        public static T Deserialize<T>(string xml, Type[] extraTypes)
+        public T Deserialize<T>(string xml, Type[] extraTypes)
         {
             if (xml == null || xml == string.Empty)
             {
@@ -184,7 +184,7 @@
             }
         }
 
-        public static void SaveAs<T>(T obj, string fileName, Encoding encoding, Type[] extraTypes)
+        public void SaveAs<T>(T obj, string fileName, Encoding encoding, Type[] extraTypes)
         {
             if (File.Exists(fileName))
             {
@@ -209,28 +209,28 @@
                 {
                     Serialize<T>(obj, writer);
                 }
-            
+
                 writer.Flush();
                 document.Save(writer);
             }
         }
-        
-        public static void SaveAs<T>(T obj, string fileName, Type[] extraTypes)
+
+        public void SaveAs<T>(T obj, string fileName, Type[] extraTypes)
         {
             SaveAs<T>(obj, fileName, Encoding.UTF8, extraTypes);
         }
-        
-        public static void SaveAs<T>(T obj, string fileName, Encoding encoding)
+
+        public void SaveAs<T>(T obj, string fileName, Encoding encoding)
         {
             SaveAs<T>(obj, fileName, encoding, null);
         }
-        
-        public static void SaveAs<T>(T obj, string fileName)
+
+        public void SaveAs<T>(T obj, string fileName)
         {
             SaveAs<T>(obj, fileName, Encoding.UTF8);
         }
 
-        public static T Open<T>(string fileName, Type[] extraTypes)
+        public T Open<T>(string fileName, Type[] extraTypes)
         {
             T obj = default(T);
             if (File.Exists(fileName))
@@ -253,7 +253,7 @@
             return obj;
         }
 
-        public static T Open<T>(string fileName)
+        public T Open<T>(string fileName)
         {
             return Open<T>(fileName, null);
         }

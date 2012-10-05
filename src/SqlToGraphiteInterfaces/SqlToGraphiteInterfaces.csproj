@@ -64,6 +64,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
+    <Compile Include="IClient.cs" />
+    <Compile Include="IJob.cs" />
     <Compile Include="ISqlClient.cs" />
     <Compile Include="IStatsClient.cs" />
     <Compile Include="IResult.cs" />

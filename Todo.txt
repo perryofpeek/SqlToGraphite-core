@@ -1,0 +1,1 @@
+1. while (graphiteConfig.Jobs.Count == 0) this sucks as a way to check if we have loaded a new config. 
