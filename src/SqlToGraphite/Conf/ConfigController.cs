@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using ConfigSpike.Config;
+
 using log4net;
 
 namespace SqlToGraphite.Conf
@@ -20,7 +23,7 @@ namespace SqlToGraphite.Conf
             this.configRepository = configRepository;
         }
 
-        public IList<ITaskSet> GetTaskList(string path)
+        public IList<IRunTaskSet> GetTaskList(string path)
         {
             newConfig = false;
             configRepository.Load();
@@ -28,11 +31,23 @@ namespace SqlToGraphite.Conf
             {
                 newConfig = true;
                 var roleConfig = new RoleConfig(this.configRepository.GetHosts(), Environment.MachineName);
-               // var templates = new Templates(configRepository.GetTemplates());
-               // var setList = templates.GetTaskSetList(roleConfig.GetRoleList());
-                throw new ApplicationException("this is not right?");                
-                //var taskList = configMapper.Map(setList, configRepository.GetClientList());
-                //return taskList;
+                var templates = configRepository.GetTemplates();
+                var roleList = roleConfig.GetRoleListToRunOnThisMachine();
+
+                var setList = new List<TaskSet>();
+                foreach (var template in templates)
+                {
+                    foreach (var wi in template.WorkItems)
+                    {
+                        if (roleList.Contains(wi.RoleName))
+                        {
+                            setList.AddRange(wi.TaskSet.ToArray());
+                        }
+                    }
+                }
+
+                var taskList = configMapper.Map(setList, configRepository.GetClientList());
+                return taskList;
             }
 
             return null;

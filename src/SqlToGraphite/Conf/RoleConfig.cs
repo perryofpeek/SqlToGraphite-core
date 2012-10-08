@@ -17,7 +17,7 @@ namespace SqlToGraphite.Conf
             this.hostname = hostname;
         }
 
-        public List<string> GetRoleList()
+        public List<string> GetRoleListToRunOnThisMachine()
         {
             var rtn = new List<string>();
             foreach (var h in sqlToGraphiteConfigHosts)

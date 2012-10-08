@@ -31,7 +31,7 @@ namespace SqlToGraphite.UnitTests
             sqlToGraphiteConfigHosts.Add(host);
 
             var roleConfig = new RoleConfig(sqlToGraphiteConfigHosts, Environment.MachineName);
-            var roleList = roleConfig.GetRoleList();
+            var roleList = roleConfig.GetRoleListToRunOnThisMachine();
 
             Assert.That(roleList.Count, Is.EqualTo(2));
             Assert.That(roleList[0], Is.EqualTo("a1"));
@@ -51,7 +51,7 @@ namespace SqlToGraphite.UnitTests
             sqlToGraphiteConfigHosts.Add(hosta);
             sqlToGraphiteConfigHosts.Add(hostb);
             var roleConfig = new RoleConfig(sqlToGraphiteConfigHosts, Environment.MachineName);
-            var roleList = roleConfig.GetRoleList();
+            var roleList = roleConfig.GetRoleListToRunOnThisMachine();
 
             Assert.That(roleList.Count, Is.EqualTo(2));
             Assert.That(roleList[0], Is.EqualTo("a1"));
@@ -74,7 +74,7 @@ namespace SqlToGraphite.UnitTests
             sqlToGraphiteConfigHosts.Add(hostb);
             sqlToGraphiteConfigHosts.Add(hostc);
             var roleConfig = new RoleConfig(sqlToGraphiteConfigHosts, Environment.MachineName);
-            var roleList = roleConfig.GetRoleList();
+            var roleList = roleConfig.GetRoleListToRunOnThisMachine();
 
             Assert.That(roleList.Count, Is.EqualTo(3));
             Assert.That(roleList[0], Is.EqualTo("a1"));
@@ -101,7 +101,7 @@ namespace SqlToGraphite.UnitTests
             sqlToGraphiteConfigHosts.Add(hostb);
             sqlToGraphiteConfigHosts.Add(hostc);
             var roleConfig = new RoleConfig(sqlToGraphiteConfigHosts, machineName);
-            var roleList = roleConfig.GetRoleList();
+            var roleList = roleConfig.GetRoleListToRunOnThisMachine();
 
             Assert.That(roleList.Count, Is.EqualTo(3));
             Assert.That(roleList[0], Is.EqualTo("a1"));
@@ -126,7 +126,7 @@ namespace SqlToGraphite.UnitTests
             sqlToGraphiteConfigHosts.Add(hostb);
             sqlToGraphiteConfigHosts.Add(hostc);
             var roleConfig = new RoleConfig(sqlToGraphiteConfigHosts, machineName);
-            var roleList = roleConfig.GetRoleList();
+            var roleList = roleConfig.GetRoleListToRunOnThisMachine();
 
             Assert.That(roleList.Count, Is.EqualTo(3));
             Assert.That(roleList[0], Is.EqualTo("a1"));
@@ -152,7 +152,7 @@ namespace SqlToGraphite.UnitTests
             sqlToGraphiteConfigHosts.Add(hostc);
 
             var roleConfig = new RoleConfig(sqlToGraphiteConfigHosts, Environment.MachineName);
-            var roleList = roleConfig.GetRoleList();
+            var roleList = roleConfig.GetRoleListToRunOnThisMachine();
 
             Assert.That(roleList.Count, Is.EqualTo(4));
             Assert.That(roleList[0], Is.EqualTo("a1"));

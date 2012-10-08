@@ -11,19 +11,29 @@ namespace SqlToGraphite.Plugin.Oracle
 {
     public class OracleClient : PluginBase
     {
-        public OracleClient(ILog log, ITaskParams taskParams)
+        public OracleClient()
+        {
+        }
+
+        public OracleClient(ILog log, Job taskParams)
             : base(log, taskParams)
         {
         }
 
+        public override string Name { get; set; }
+
+        public override string ClientName { get; set; }
+
+        public override string Type { get; set; }
+
         public override IList<IResult> Get()
         {
             var rtn = new List<IResult>();
-            var dataSet = this.ExecuteQuery(this.TaskParams.ConnectionString, this.TaskParams.Sql);            
-            foreach (DataRow row in dataSet.Tables[0].Rows)
-            {
-                rtn.Add(this.Map(row));
-            }
+            //var dataSet = this.ExecuteQuery(this.TaskParams.ConnectionString, this.TaskParams.Sql);            
+            //foreach (DataRow row in dataSet.Tables[0].Rows)
+            //{
+            //    rtn.Add(this.Map(row));
+            //}
 
             return rtn;
         }
@@ -57,7 +67,9 @@ namespace SqlToGraphite.Plugin.Oracle
             }
 
             this.Log.Debug(string.Format("Got [{1}] {0}", value, dateTime));
-            return new Result(value, name, dateTime, this.TaskParams.Path);
+
+            //return new Result(value, name, dateTime, this.TaskParams.Path);
+            return new Result(value, name, dateTime, null);
         }
 
         public DataSet ExecuteQuery(string connectionString, string sql)

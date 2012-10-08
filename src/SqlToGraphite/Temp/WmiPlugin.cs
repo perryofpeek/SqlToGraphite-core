@@ -1,43 +1,32 @@
 using System;
+using System.Collections.Generic;
+using log4net;
+using SqlToGraphiteInterfaces;
 
-public class WmiPlugin : Job
+public class WmiPlugin : PluginBase
 {
+    public WmiPlugin(ILog log, Job taskParams)
+        : base(log, taskParams)
+    {
+        this.WireUpProperties(taskParams, this);
+    }
+
     public WmiPlugin()
     {
-        this.ClientName = "graphiteUdp";        
-        this.Sql = "Black Lab";
-        this.Name = "GetTracsDeliveryTypes";
-        this.Type = this.GetType().AssemblyQualifiedName;
-        this.Hostname = "SomeConnection";
     }
 
-    public override string Name
-    {
-        get;
-        set;
-    }
+    public override string Name { get; set; }
 
-    public override string ClientName
-    {
-        get;
-        set;
-    }
+    public override string ClientName { get; set; }
 
-    public string Sql
-    {
-        get;
-        set;
-    }
+    public string Sql { get; set; }
 
-    public string Hostname
-    {
-        get;
-        set;
-    }
+    public string Hostname { get; set; }
 
-    public override string Type 
+    public override string Type { get; set; }
+
+    public override IList<IResult> Get()
     {
-        get;
-        set;
-    }    
+        throw new NotImplementedException();
+    }
 }

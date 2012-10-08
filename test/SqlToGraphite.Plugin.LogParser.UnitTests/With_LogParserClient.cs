@@ -45,7 +45,8 @@ namespace SqlToGraphite.Plugin.LogParser.UnitTests
             string type = "Plugin-type"; ;
             string name = "alldaylong365" + ""; ;
             string client = "statsdudp"; ;
-            var taskParam = new TaskParams(path, sql, connectionString, type, name, client);
+            //var taskParam = new TaskParams(path, sql, connectionString, type, name, client);
+            Job taskParam = null;
             var logParserClient = new IisLogParserClient(logMock, taskParam);
             var result = logParserClient.Get();
             Assert.That(result[0].Value, Is.EqualTo(1000));

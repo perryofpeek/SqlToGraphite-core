@@ -31,7 +31,9 @@ namespace SqlToGraphite.UnitTests
         public void Should_throw_UnknownDataClientException()
         {
             var taskParams = new TaskParams("path", "sql", "cs", "unknown", "name", "client");
-            var ex = Assert.Throws<UnknownDataClientException>(() => this.dataClientFactory.Create(taskParams));
+            Job job = new SqlServer();
+            
+            var ex = Assert.Throws<UnknownDataClientException>(() => this.dataClientFactory.Create(job));
             Assert.That(ex.Message, Is.EqualTo(string.Format("{0}", "unknown")));
         }
 
@@ -39,7 +41,8 @@ namespace SqlToGraphite.UnitTests
         public void Should_create_sql_server_client()
         {
             var taskParams = new TaskParams("path", "sql", "cs", SqlServerType, "name", "client");
-            var o = this.dataClientFactory.Create(taskParams);
+            Job job = new SqlServer();
+            var o = this.dataClientFactory.Create(job);
 
             Assert.That(o, Is.Not.Null);
             Assert.That(o, Is.TypeOf(typeof(SqlServerClient)));
@@ -49,8 +52,9 @@ namespace SqlToGraphite.UnitTests
         [Test]
         public void Should_create_wmi_client()
         {
+            Job job = new SqlServer();
             var taskParams = new TaskParams("path", "sql", "cs", WmiType, "name", "client");
-            var o = this.dataClientFactory.Create(taskParams);
+            var o = this.dataClientFactory.Create(job);
 
             Assert.That(o, Is.Not.Null);
             Assert.That(o, Is.TypeOf(typeof(WmiClient)));
@@ -60,8 +64,9 @@ namespace SqlToGraphite.UnitTests
         [Test]
         public void Should_create_oracle_client()
         {
+            Job job = new SqlServer();
             var taskParams = new TaskParams("path", "sql", "cs", OracleType, "name", "client");
-            var o = this.dataClientFactory.Create(taskParams);
+            var o = this.dataClientFactory.Create(job);
 
             Assert.That(o, Is.Not.Null);
             Assert.That(o, Is.TypeOf(typeof(OracleClient)));
@@ -71,8 +76,9 @@ namespace SqlToGraphite.UnitTests
         [Test]
         public void Should_create_wmi_client_lowercase()
         {
+            Job job = new SqlServer();
             var taskParams = new TaskParams("path", "sql", "cs", WmiType, "name", "client");
-            var o = this.dataClientFactory.Create(taskParams);
+            var o = this.dataClientFactory.Create(job);
 
             Assert.That(o, Is.Not.Null);
             Assert.That(o, Is.TypeOf(typeof(WmiClient)));

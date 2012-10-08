@@ -104,7 +104,7 @@
     <Compile Include="Config_Jobs.cs" />
     <Compile Include="Config_Templates.cs" />
     <Compile Include="Helper.cs" />
-    <Compile Include="SpikeTest.cs" />
+    <Compile Include="Config_generation.cs" />
     <Compile Include="With_Cache.cs" />
     <Compile Include="With_ConfigReader.cs" />
     <Compile Include="With_ConfigRepository.cs" />

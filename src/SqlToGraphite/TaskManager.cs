@@ -21,7 +21,7 @@ namespace SqlToGraphite
 
         private readonly int configurationReReadTime;
 
-        public IList<ITaskSet> TaskSets { get; set; }
+        public IList<IRunTaskSet> TaskSets { get; set; }
 
         public TaskManager(ILog log, IConfigController configController, string path, IStop stop, ISleep sleep, int configurationReReadTime)
         {

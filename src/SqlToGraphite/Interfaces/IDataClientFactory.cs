@@ -4,6 +4,6 @@ namespace SqlToGraphite
 {
     public interface IDataClientFactory
     {
-        ISqlClient Create(TaskParams taskParams);
+        ISqlClient Create(Job job);
     }
 }

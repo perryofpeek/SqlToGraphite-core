@@ -2,6 +2,7 @@
 using log4net;
 using NUnit.Framework;
 using Rhino.Mocks;
+using SqlToGraphite.Plugin.SqlServer;
 using SqlToGraphiteInterfaces;
 
 namespace SqlToGraphite.UnitTests
@@ -35,15 +36,17 @@ namespace SqlToGraphite.UnitTests
         {
             var result = MockRepository.GenerateMock<IResult>();
             var resultList = new List<IResult> { result };
-            var param = new TaskParams("path", "sql", "cs", "SqlServer", "name", "client");
+           // var param = new Job("path", "sql", "cs", "SqlServer", "name", "client");
+            var param = new SqlServer();
+            var client = new ConfigSpike.GraphiteTcpClient();
             this.dataClientFactory.Expect(x => x.Create(param)).Return(this.sqlClient);
             this.sqlClient.Expect(x => x.Get()).Return(resultList);
             statsClient.Expect(x => x.Send(result));
             var graphiteParams = new GraphiteParams("host", 1234);
-            this.graphiteClientFactory.Expect(x => x.Create(graphiteParams, param)).Return(this.statsClient);
-            ITask task = new Task(param, this.dataClientFactory, this.graphiteClientFactory, graphiteParams, log);
+            this.graphiteClientFactory.Expect(x => x.Create(client)).Return(this.statsClient);
+            IRunTask runTask = new RunableRunTask(param, this.dataClientFactory, this.graphiteClientFactory, graphiteParams, this.log, client);
             //Test
-            task.Process();
+            runTask.Process();
             //Assert
             this.sqlClient.VerifyAllExpectations();
             this.dataClientFactory.VerifyAllExpectations();
@@ -54,19 +57,21 @@ namespace SqlToGraphite.UnitTests
         [Test]
         public void Should_run_task_sending_two_results()
         {
+            var job = new SqlServer();
+            var client = new ConfigSpike.GraphiteTcpClient();
             var result1 = MockRepository.GenerateMock<IResult>();
             var result2 = MockRepository.GenerateMock<IResult>();
             var resultList = new List<IResult> { result1, result2 };
             var param = new TaskParams("path", "sql", "cs", "SqlServer", "name", "client");
             var graphiteParams = new GraphiteParams("host", 1234);
-            this.dataClientFactory.Expect(x => x.Create(param)).Return(this.sqlClient);
-            this.graphiteClientFactory.Expect(x => x.Create(graphiteParams, param)).Return(this.statsClient);
+            this.dataClientFactory.Expect(x => x.Create(job)).Return(this.sqlClient);
+            this.graphiteClientFactory.Expect(x => x.Create(client)).Return(this.statsClient);
             this.sqlClient.Expect(x => x.Get()).Return(resultList);
             statsClient.Expect(x => x.Send(result1)).Repeat.Once();
             statsClient.Expect(x => x.Send(result2)).Repeat.Once();
-            ITask task = new Task(param, this.dataClientFactory, this.graphiteClientFactory, graphiteParams, log);
+            IRunTask runTask = new RunableRunTask(job, this.dataClientFactory, this.graphiteClientFactory, graphiteParams, this.log, client);
             //Test
-            task.Process();
+            runTask.Process();
             //Assert
             this.sqlClient.VerifyAllExpectations();
             this.dataClientFactory.VerifyAllExpectations();

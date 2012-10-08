@@ -14,7 +14,7 @@ namespace SqlToGraphite.UnitTests
 
         private IStop stop;
 
-        private ITaskSet taskSet;
+        private IRunTaskSet runTaskSet;
 
         private Controller controller;
 
@@ -24,26 +24,26 @@ namespace SqlToGraphite.UnitTests
             logMock = MockRepository.GenerateMock<ILog>();
             sleep = MockRepository.GenerateMock<ISleep>();
             stop = MockRepository.GenerateMock<IStop>();
-            taskSet = MockRepository.GenerateMock<ITaskSet>();
+            this.runTaskSet = MockRepository.GenerateMock<IRunTaskSet>();
         }
 
         [Test]
         public void Should_run_task_set()
         {
             var length = 500;
-            taskSet.Expect(x => x.Frequency).Return(length);
-            controller = new Controller(taskSet, sleep, stop, logMock);
+            this.runTaskSet.Expect(x => x.Frequency).Return(length);
+            controller = new Controller(this.runTaskSet, sleep, stop, logMock);
             stop.Expect(x => x.ShouldStop()).Return(false).Repeat.Once();
             stop.Expect(x => x.ShouldStop()).Return(true).Repeat.Once();            
             sleep.Expect(x => x.SleepSeconds(length));
-            taskSet.Expect(x => x.Process());
+            this.runTaskSet.Expect(x => x.Process());
             //Test
             controller.Process();
 
             //Assert
             sleep.VerifyAllExpectations();
             stop.VerifyAllExpectations();
-            taskSet.VerifyAllExpectations();
+            this.runTaskSet.VerifyAllExpectations();
         }
     }
 }

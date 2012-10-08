@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Xml;
-
 using ConfigSpike;
 using ConfigSpike.Config;
-
 using log4net;
 using SqlToGraphite.Clients;
+using SqlToGraphite.UnitTests;
 
 namespace SqlToGraphite.Conf
 {
@@ -179,7 +176,7 @@ namespace SqlToGraphite.Conf
             }
         }
 
-        public ListOfUniqueType<IClient> GetClients()
+        public ListOfUniqueType<Client> GetClients()
         {
             return this.masterConfig.Clients;
         }
@@ -242,7 +239,7 @@ namespace SqlToGraphite.Conf
             return this.clientList;
         }
 
-        public void AddClient(IClient client)
+        public void AddClient(Client client)
         {
             this.masterConfig.Clients.Add(client);
         }
@@ -268,7 +265,7 @@ namespace SqlToGraphite.Conf
             // throw new ApplicationException("this is not right at all needs to be a proper list thing");
         }
 
-        public void AddJob(IJob job)
+        public void AddJob(Job job)
         {
             this.masterConfig.Jobs.Add(job);
         }
@@ -355,9 +352,35 @@ namespace SqlToGraphite.Conf
             return new ConfigSpike.Config.Task { JobName = taskProperties.JobName };
         }
 
-        public List<IJob> GetJobs()
+        public List<Job> GetJobs()
         {
             return this.masterConfig.Jobs;
+        }
+
+        public Job GetJob(string jobName)
+        {
+            foreach (var job in this.masterConfig.Jobs)
+            {
+                if (job.Name == jobName)
+                {
+                    return job;
+                }
+            }
+
+            throw new JobNotFoundException();
+        }
+
+        public Client GetClient(string clientName)
+        {
+            foreach (var client in this.masterConfig.Clients)
+            {
+                if (client.ClientName == clientName)
+                {
+                    return client;
+                }
+            }
+
+            throw new ClientNotFoundException(string.Format("Client {0} is not found", clientName));
         }
     }
 }

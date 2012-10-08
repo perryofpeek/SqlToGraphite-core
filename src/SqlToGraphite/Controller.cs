@@ -6,7 +6,7 @@ namespace SqlToGraphite
     {
         private readonly HostConfiguration config;
 
-        private readonly ITaskSet taskSet;
+        private readonly IRunTaskSet runTaskSet;
 
         private readonly ISleep sleep;
 
@@ -14,10 +14,10 @@ namespace SqlToGraphite
 
         private readonly ILog log;
 
-        public Controller(ITaskSet taskSet, ISleep sleep, IStop stop, ILog log)
+        public Controller(IRunTaskSet runTaskSet, ISleep sleep, IStop stop, ILog log)
         {
             //this.config = config;
-            this.taskSet = taskSet;
+            this.runTaskSet = runTaskSet;
             this.sleep = sleep;
             this.stop = stop;
             this.log = log;
@@ -34,9 +34,9 @@ namespace SqlToGraphite
             log.Debug("Processing");
             while (!stop.ShouldStop())
             {                
-                taskSet.Process();
-                log.Debug(string.Format("sleep {0}", taskSet.Frequency));
-                sleep.SleepSeconds(taskSet.Frequency);
+                this.runTaskSet.Process();
+                log.Debug(string.Format("sleep {0}", this.runTaskSet.Frequency));
+                sleep.SleepSeconds(this.runTaskSet.Frequency);
             }
         }
 

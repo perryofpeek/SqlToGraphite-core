@@ -1,6 +1,6 @@
 namespace SqlToGraphite
 {
-    public interface ITask
+    public interface IRunTask
     {
         void Process();
     }

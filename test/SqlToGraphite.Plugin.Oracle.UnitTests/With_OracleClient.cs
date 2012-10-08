@@ -21,7 +21,8 @@ namespace SqlToGraphite.Plugin.Oracle.UnitTests
         {
             var name = Guid.NewGuid().ToString();
             var sql = string.Format("SELECT level, '{0}',  to_date('2012-FEB-03 00:00:01', 'YYYY-MON-DD HH24:MI:SS') FROM    dual CONNECT BY  level <= 100", name);
-            var param = new TaskParams("path", sql, ConnectionString, "Oracle", name, "Statsdudp");
+            //var param = new TaskParams("path", sql, ConnectionString, "Oracle", name, "Statsdudp");
+            Job param = null;
             var log = MockRepository.GenerateMock<ILog>();
             var client = new OracleClient(log, param);
             //Test
@@ -37,7 +38,8 @@ namespace SqlToGraphite.Plugin.Oracle.UnitTests
         {
             var name = Guid.NewGuid().ToString();
             var sql = string.Format("SELECT  '{0}',  to_date('2012-FEB-03 00:00:01', 'YYYY-MON-DD HH24:MI:SS'),level FROM    dual CONNECT BY  level <= 100", name);
-            var param = new TaskParams("path", sql, ConnectionString, "Oracle", name, "Statsdudp");
+            //var param = new TaskParams("path", sql, ConnectionString, "Oracle", name, "Statsdudp");
+            Job param = null;
             var log = MockRepository.GenerateMock<ILog>();
             var client = new OracleClient(log, param);
             //Test
@@ -53,8 +55,9 @@ namespace SqlToGraphite.Plugin.Oracle.UnitTests
         {
             var name = Guid.NewGuid().ToString();
             var sql = string.Format("SELECT  '{0}',  to_date('2012-FEB-03 00:00:01', 'YYYY-MON-DD HH24:MI:SS') , 234 FROM    dual CONNECT BY  level <= 1", name);
-            var param = new TaskParams("path", sql, ConnectionString, "Oracle", name, "Statsdudp");
+            //var param = new TaskParams("path", sql, ConnectionString, "Oracle", name, "Statsdudp");
             var log = MockRepository.GenerateMock<ILog>();
+            Job param = null;
             var client = new OracleClient(log, param);
             //Test
             var results = client.Get();
@@ -71,7 +74,8 @@ namespace SqlToGraphite.Plugin.Oracle.UnitTests
         {
             var name = Guid.NewGuid().ToString();
             var sql = string.Format("SELECT  '{0}',  to_date('2012-FEB-03 00:00:01', 'YYYY-MON-DD HH24:MI:SS') , 234 FROM    dual CONNECT BY  level <= 1", name);
-            var param = new TaskParams("path", sql, ConnectionString, "Oracle", name, "Statsdudp");            
+            //var param = new TaskParams("path", sql, ConnectionString, "Oracle", name, "Statsdudp");
+            Job param = null;
             var log = MockRepository.GenerateMock<ILog>();
             var client = new OracleClient(log, param);
             //Test
@@ -86,8 +90,9 @@ namespace SqlToGraphite.Plugin.Oracle.UnitTests
         [Test]
         public void Should_get_multiple_results()
         {
-            var param = new TaskParams("path", "SELECT  23 , 'name' FROM    dual CONNECT BY  level <= 8", ConnectionString, "SqlServer", "name", "statsdudp");
+            //var param = new TaskParams("path", "SELECT  23 , 'name' FROM    dual CONNECT BY  level <= 8", ConnectionString, "SqlServer", "name", "statsdudp");
             var log = MockRepository.GenerateMock<ILog>();
+            Job param = null;
             var client = new OracleClient(log, param);
             var results = client.Get();
             Assert.That(results.Count, Is.EqualTo(8));

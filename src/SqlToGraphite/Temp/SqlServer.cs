@@ -1,26 +1,25 @@
 using System;
+using System.Collections.Generic;
+using log4net;
+using SqlToGraphiteInterfaces;
 
-public class SqlServer : Job
+public class SqlServer : PluginBase
 {
-    public SqlServer()
+    public SqlServer(ILog log, Job taskParams) : base(log, taskParams)
     {
-        this.Type = this.GetType().AssemblyQualifiedName;
-        //this.Client = "graphiteTcp";
-        //this.HasTail = false;
-        //this.Name = "GetCpuLoadAverage";
+        this.WireUpProperties(taskParams, this);
     }
 
-    public override string Name
+    public SqlServer() : base()
     {
-        get;
-        set;
     }
 
-    public override string ClientName
-    {
-        get;
-        set;
-    }
+    public string ConnectionString { get; set; }
 
-    public override string Type { get; set; }    
+    public string Sql { get; set; }
+
+    public override IList<IResult> Get()
+    {
+        return new List<IResult>();
+    }
 }

@@ -20,7 +20,8 @@ namespace SqlToGraphite.Plugin.SqlServer.UnitTests
         public void Should_get_result()
         {
             var name = Guid.NewGuid().ToString();
-            var param = new TaskParams("path", "SELECT COUNT(*) as count FROM [master].[dbo].[spt_monitor]", ConnectionString, "SqlServer", name, "Statsdudp");
+            //var param = new TaskParams("path", "SELECT COUNT(*) as count FROM [master].[dbo].[spt_monitor]", ConnectionString, "SqlServer", name, "Statsdudp");
+            Job param = null;
             var log = MockRepository.GenerateMock<ILog>();
             var sqlServerClient = new SqlServerClient(log, param);
             //Test
@@ -35,8 +36,8 @@ namespace SqlToGraphite.Plugin.SqlServer.UnitTests
         public void Should_get_result_with_date()
         {
             var name = Guid.NewGuid().ToString();
-            var param = new TaskParams(
-                "path", "SELECT 234 , DATEADD(day,11,GETDATE())", ConnectionString, "SqlServer", name, "statsdudp");
+            Job param = null;
+            //var param = new TaskParams("path", "SELECT 234 , DATEADD(day,11,GETDATE())", ConnectionString, "SqlServer", name, "statsdudp");
 
             var log = MockRepository.GenerateMock<ILog>();
             var sqlServerClient = new SqlServerClient(log, param);
@@ -57,7 +58,8 @@ namespace SqlToGraphite.Plugin.SqlServer.UnitTests
         public void Should_get_result_with_date_and_name_set_in_select()
         {
             var name = Guid.NewGuid().ToString();
-            var param = new TaskParams("path", "SELECT 234 , DATEADD(day,11,GETDATE()), 'someName'", ConnectionString, "SqlServer", name, "statsdudp");
+            Job param = null;
+            //var param = new TaskParams("path", "SELECT 234 , DATEADD(day,11,GETDATE()), 'someName'", ConnectionString, "SqlServer", name, "statsdudp");
             var log = MockRepository.GenerateMock<ILog>();
             var sqlServerClient = new SqlServerClient(log, param);
             //Test
@@ -73,7 +75,8 @@ namespace SqlToGraphite.Plugin.SqlServer.UnitTests
         [Test]
         public void Should_get_results()
         {
-            var param = new TaskParams("path", "SELECT [dbms_id] FROM [msdb].[dbo].[MSdbms]", ConnectionString, "SqlServer", "name", "statsdudp");
+            Job param = null;
+            //var param = new TaskParams("path", "SELECT [dbms_id] FROM [msdb].[dbo].[MSdbms]", ConnectionString, "SqlServer", "name", "statsdudp");
             var log = MockRepository.GenerateMock<ILog>();
             var sqlServerClient = new SqlServerClient(log, param);
             var results = sqlServerClient.Get();

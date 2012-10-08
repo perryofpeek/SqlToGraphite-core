@@ -15,7 +15,11 @@ namespace SqlToGraphite.Plugin.LogParser
 {
     public class IisLogParserClient : PluginBase
     {
-        public IisLogParserClient(ILog log, ITaskParams taskParams)
+        public IisLogParserClient()
+        {
+        }
+
+        public IisLogParserClient(ILog log, Job taskParams)
             : base(log, taskParams)
         {
         }
@@ -87,8 +91,16 @@ namespace SqlToGraphite.Plugin.LogParser
             }
 
             this.Log.Debug(string.Format("Got [{1}] {0}", value, dateTime));
-            return new Result(value, name, dateTime, this.TaskParams.Path);
+            
+            //return new Result(value, name, dateTime, this.TaskParams.Path);
+            return null;
         }
+
+        public override string Name { get; set; }
+
+        public override string ClientName { get; set; }
+
+        public override string Type { get; set; }
 
         public override IList<IResult> Get()
         {
@@ -101,13 +113,13 @@ namespace SqlToGraphite.Plugin.LogParser
                 iCheckpoint = CheckpointFile
             };
 
-            var records = logParser.Execute(this.TaskParams.Sql, w3Clog);
-            while (!records.atEnd())
-            {
-                var record = records.getRecord();
-                rtn.Add(this.Map(record));
-                records.moveNext();
-            }
+            //var records = logParser.Execute(this.TaskParams.Sql, w3Clog);
+            //while (!records.atEnd())
+            //{
+            //    var record = records.getRecord();
+            //    rtn.Add(this.Map(record));
+            //    records.moveNext();
+            //}
             return rtn;
         }
 

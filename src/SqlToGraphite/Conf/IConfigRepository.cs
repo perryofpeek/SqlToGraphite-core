@@ -11,7 +11,7 @@ namespace SqlToGraphite.Conf
 
         List<string> Errors { get; }
 
-        ListOfUniqueType<IClient> GetClients();
+        ListOfUniqueType<Client> GetClients();
 
         List<Template> GetTemplates();
 
@@ -21,7 +21,7 @@ namespace SqlToGraphite.Conf
 
         GraphiteClients GetClientList();
 
-        void AddClient(IClient client);
+        void AddClient(Client client);
 
         void AddHost(string name, List<Role> roles);
 
@@ -31,6 +31,10 @@ namespace SqlToGraphite.Conf
 
         void Save();
 
-        List<IJob> GetJobs();
+        List<Job> GetJobs();
+
+        Job GetJob(string jobName);
+
+        Client GetClient(string clientName);
     }
 }

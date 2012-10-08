@@ -6,6 +6,6 @@ namespace SqlToGraphite
 {
     public interface IConfigMapper
     {
-        IList<ITaskSet> Map(List<TaskSet> list, GraphiteClients clients);
+        IList<IRunTaskSet> Map(List<TaskSet> list, GraphiteClients clients);
     }
 }

@@ -4,7 +4,7 @@ namespace SqlToGraphite.Conf
 {
     public interface IConfigController
     {
-        IList<ITaskSet> GetTaskList(string path);
+        IList<IRunTaskSet> GetTaskList(string path);
 
         IList<IThread> GetTaskThreads(string path);
 

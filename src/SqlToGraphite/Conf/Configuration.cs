@@ -6,10 +6,10 @@ namespace SqlToGraphite
     {
         public HostConfiguration()
         {
-            Tasks = new List<Task>();
+            Tasks = new List<RunableRunTask>();
         }
 
-        public IList<Task> Tasks { get; set; }
+        public IList<RunableRunTask> Tasks { get; set; }
 
         public string Hostname { get; set; }
 

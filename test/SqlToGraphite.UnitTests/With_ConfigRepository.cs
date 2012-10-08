@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using ConfigSpike.Config;
-
 using log4net;
 using NUnit.Framework;
 using Rhino.Mocks;
 using SqlToGraphite.Clients;
 using SqlToGraphite.Conf;
+using SqlToGraphite.Plugin.SqlServer;
 
 namespace SqlToGraphite.UnitTests
 {

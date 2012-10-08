@@ -110,6 +110,7 @@
     <Compile Include="Config\TaskSet.cs" />
     <Compile Include="Config\Template.cs" />
     <Compile Include="Config\WorkItems.cs" />
+    <Compile Include="Conf\JobNotFoundException.cs" />
     <Compile Include="Conf\TaskDetails.cs" />
     <Compile Include="GenericSerializer.cs" />
     <Compile Include="ClientNotFoundException.cs" />
@@ -149,9 +150,9 @@
     <Compile Include="Interfaces\IDataClientFactory.cs" />
     <Compile Include="Interfaces\ISleep.cs" />
     <Compile Include="Interfaces\IStop.cs" />
-    <Compile Include="Interfaces\ITask.cs" />
+    <Compile Include="Interfaces\IRunTask.cs" />
     <Compile Include="Interfaces\ITaskBag.cs" />
-    <Compile Include="Interfaces\ITaskSet.cs" />
+    <Compile Include="Interfaces\IRunTaskSet.cs" />
     <Compile Include="Interfaces\IThread.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sleeper.cs" />
@@ -159,11 +160,10 @@
     <Compile Include="Conf\Configuration.cs" />
     <Compile Include="Clients\StatsdClient.cs" />
     <Compile Include="Stop.cs" />
-    <Compile Include="Task.cs" />
+    <Compile Include="RunableRunTask.cs" />
     <Compile Include="TaskBag.cs" />
     <Compile Include="TaskManager.cs" />
-    <Compile Include="TaskSetWithProcess.cs" />
-    <Compile Include="Temp\SqlServer.cs" />
+    <Compile Include="RunTaskSetWithProcess.cs" />
     <Compile Include="Temp\WmiPlugin.cs" />
     <Compile Include="ThreadImpl.cs" />
     <Compile Include="Conf\UnknownDataClientException.cs" />

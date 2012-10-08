@@ -19,13 +19,14 @@ namespace SqlToGraphite.host
             var stop = new Stop();
             IDataClientFactory dataClientFactory = new DataClientFactory(log);
             IGraphiteClientFactory graphiteClientFactory = new GraphiteClientFactory(log);
-            var configMapper = new ConfigMapper(configuration.Hostname, stop, dataClientFactory, graphiteClientFactory, log);
+            
             var configReader = new ConfigHttpReader(configuration.ConfigUri,configuration.ConfigUsername,configuration.ConfigPassword);
             var cache = new Cache(cacheLength, log);
             var sleeper = new Sleeper();
             var knownGraphiteClients = new KnownGraphiteClients();
             var genericSer = new GenericSerializer();
             var cr = new ConfigRepository(configReader, knownGraphiteClients, cache, sleeper, log, configuration.MinutesBetweenRetryToGetConfigOnError, genericSer);
+            var configMapper = new ConfigMapper(configuration.Hostname, stop, dataClientFactory, graphiteClientFactory, log, cr);
             var configController = new ConfigController(configMapper, log, cr);
             return new TaskManager(log, configController, configuration.ConfigUri, stop, sleeper, configuration.CheckConfigUpdatedEveryMinutes);
         }

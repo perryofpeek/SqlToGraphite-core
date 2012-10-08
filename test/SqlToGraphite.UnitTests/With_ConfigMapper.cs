@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
-
 using ConfigSpike.Config;
-
 using log4net;
 using NUnit.Framework;
 using Rhino.Mocks;
+using SqlToGraphite.Conf;
 
 // ReSharper disable InconsistentNaming
 namespace SqlToGraphite.UnitTests
@@ -16,6 +14,8 @@ namespace SqlToGraphite.UnitTests
         private IDataClientFactory dataClientFactory;
 
         private IGraphiteClientFactory graphiteClientFactory;
+
+        private IConfigRepository configRepository;
 
         private IStop stop;
 
@@ -34,7 +34,7 @@ namespace SqlToGraphite.UnitTests
         public void Should_throw_exception_if_graphite_client_is_unknown()
         {
             string hostname = "hostname";
-            var configMapper = new ConfigMapper(hostname, stop, dataClientFactory, graphiteClientFactory, log);
+            var configMapper = new ConfigMapper(hostname, this.stop, this.dataClientFactory, this.graphiteClientFactory, this.log, configRepository);
             var taskSet = new List<ConfigSpike.Config.TaskSet>();
             var x = new ConfigSpike.Config.TaskSet { Frequency = 100, Tasks = new List<ConfigSpike.Config.Task>() };
             var t = new ConfigSpike.Config.Task();
@@ -63,7 +63,7 @@ namespace SqlToGraphite.UnitTests
             string hostname = "hostname";
             var client = "someClient";
             var freq = 100;
-            var configMapper = new ConfigMapper(hostname, stop, dataClientFactory, graphiteClientFactory, log);
+            var configMapper = new ConfigMapper(hostname, this.stop, this.dataClientFactory, this.graphiteClientFactory, this.log, configRepository);
             var taskSet = new List<TaskSet>();
             var x = new TaskSet { Frequency = freq, Tasks = new List<ConfigSpike.Config.Task>() };
             x.Tasks.Add(new ConfigSpike.Config.Task() { JobName = "fred" });
@@ -84,7 +84,7 @@ namespace SqlToGraphite.UnitTests
             Assert.That(taskList.Count, Is.EqualTo(1));
             Assert.That(taskList[0].Frequency, Is.EqualTo(freq));
             Assert.That(taskList[0].Tasks.Count, Is.EqualTo(1));
-            Assert.That(taskList[0].Tasks[0].GetType(), Is.EqualTo(typeof(Task)));
+            Assert.That(taskList[0].Tasks[0].GetType(), Is.EqualTo(typeof(RunableRunTask)));
         }       
     }
 }

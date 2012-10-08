@@ -1,3 +1,5 @@
+using ConfigSpike;
+
 using log4net;
 using SqlToGraphiteInterfaces;
 
@@ -14,23 +16,23 @@ namespace SqlToGraphite
             this.log = log;
         }
 
-        public IStatsClient Create(GraphiteParams graphiteParams, TaskParams taskParams)
+        public IStatsClient Create(Client client)
         {
-            var clientType = taskParams.Client.ToLower();
-            log.Debug(string.Format("Creating a graphite client of type: {0} with values {1} {2}", taskParams.Client, graphiteParams.Hostname, graphiteParams.Port));
-            if (clientType == "graphitetcp")
+            var clientType = client.ClientName.ToLower();
+            log.Debug(string.Format("Creating a graphite client of type: {0} with values {1} {2}", client.ClientName, client.Hostname, client.Port));
+            if (clientType == "GraphiteTcpClient".ToLower())
             {
-                return new GraphiteTcpClient(graphiteParams.Hostname, graphiteParams.Port);
+                return new GraphiteTcpClient(client.Hostname, client.Port);
             }
 
-            if (clientType == "graphiteudp")
+            if (clientType == "GraphiteUdpClient".ToLower())
             {
-                return new GraphiteUdpClient(graphiteParams.Hostname, graphiteParams.Port);
+                return new GraphiteUdpClient(client.Hostname, client.Port);
             }
 
-            if (clientType == "statsdudp")
+            if (clientType == "StatsdClient".ToLower())
             {
-                return new StatsdClient(graphiteParams.Hostname, graphiteParams.Port);
+                return new StatsdClient(client.Hostname, client.Port);
             }
 
             throw new UnknownGraphiteClientTypeException(string.Format("{0} {1}", ErrorMessage, clientType));

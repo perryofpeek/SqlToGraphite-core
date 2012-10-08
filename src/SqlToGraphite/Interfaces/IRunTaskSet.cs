@@ -2,9 +2,9 @@ using System.Collections.Generic;
 
 namespace SqlToGraphite
 {
-    public interface ITaskSet
+    public interface IRunTaskSet
     {
-        IList<ITask> Tasks { get; }
+        IList<IRunTask> Tasks { get; }
 
         int Frequency { get; set; }
 

@@ -1,12 +1,15 @@
 using System;
+
+using ConfigSpike;
+
 using log4net;
 using SqlToGraphiteInterfaces;
 
 namespace SqlToGraphite
 {
-    public class Task : ITask
+    public class RunableRunTask : IRunTask
     {
-        private readonly TaskParams taskParams;
+        private readonly Job job;
 
         private readonly IDataClientFactory dataClientFactory;
 
@@ -16,22 +19,25 @@ namespace SqlToGraphite
 
         private readonly ILog log;
 
-        public Task(TaskParams taskParams, IDataClientFactory dataClientFactory, IGraphiteClientFactory graphiteClientFactory, GraphiteParams graphiteParams, ILog log)
+        private readonly Client client;
+
+        public RunableRunTask(Job job, IDataClientFactory dataClientFactory, IGraphiteClientFactory graphiteClientFactory, GraphiteParams graphiteParams, ILog log, Client client)
         {
-            this.taskParams = taskParams;
+            this.job = job;
             this.dataClientFactory = dataClientFactory;
             this.graphiteClientFactory = graphiteClientFactory;
             this.graphiteParams = graphiteParams;
             this.log = log;
+            this.client = client;
         }
 
         public void Process()
         {
             try
             {
-                this.LogTaskParams();
-                var dataClient = this.dataClientFactory.Create(taskParams);
-                var graphiteClient = this.graphiteClientFactory.Create(graphiteParams, taskParams);
+                //this.LogTaskParams();
+                var dataClient = this.dataClientFactory.Create(this.job);
+                var graphiteClient = this.graphiteClientFactory.Create(this.client);
                 var results = dataClient.Get();
                 foreach (var result in results)
                 {
@@ -45,16 +51,16 @@ namespace SqlToGraphite
             }
         }
 
-        private void LogTaskParams()
-        {
-            this.log.Debug(
-                string.Format(
-                    "CLient[{0}] ConStr[{1}] Path[{2}] Sql[{3}] Type[{4}]",
-                    this.taskParams.Client,
-                    this.taskParams.ConnectionString,
-                    this.taskParams.Path,
-                    this.taskParams.Sql,
-                    this.taskParams.Type));
-        }
+        //private void LogTaskParams()
+        //{
+        //    this.log.Debug(
+        //        string.Format(
+        //            "CLient[{0}] ConStr[{1}] Path[{2}] Sql[{3}] Type[{4}]",
+        //            this.job.Client,
+        //            this.job.ConnectionString,
+        //            this.job.Path,
+        //            this.job.Sql,
+        //            this.job.Type));
+        //}
     }
 }

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Xml.Serialization;
 
 namespace ConfigSpike.Config
@@ -21,16 +23,16 @@ namespace ConfigSpike.Config
 
         public SqlToGraphiteConfig()
         {
-            this.Jobs = new List<IJob>();
-            this.Clients = new ListOfUniqueType<IClient>();
+            this.Jobs = new List<Job>();
+            this.Clients = new ListOfUniqueType<Client>();
             this.Hosts = new List<Host>();
             this.Templates = new List<Template>();
             genericSerializer = new GenericSerializer();
         }
 
-        public ListOfUniqueType<IClient> Clients { get; set; }
+        public ListOfUniqueType<Client> Clients { get; set; }
 
-        public List<IJob> Jobs { get; set; }
+        public List<Job> Jobs { get; set; }
 
         public List<Host> Hosts { get; set; }
 
@@ -154,11 +156,11 @@ namespace ConfigSpike.Config
 
             reader.MoveToContent();
             reader.ReadStartElement("Jobs");
-            this.Jobs = genericSerializer.Deserialize<List<IJob>>(reader, JobTypes);
+            this.Jobs = genericSerializer.Deserialize<List<Job>>(reader, JobTypes);
             reader.ReadEndElement();
 
             reader.ReadStartElement("Clients");
-            this.Clients = genericSerializer.Deserialize<ListOfUniqueType<IClient>>(reader, ClientTypes);
+            this.Clients = genericSerializer.Deserialize<ListOfUniqueType<Client>>(reader, ClientTypes);
             reader.ReadEndElement();
 
             reader.ReadStartElement("Hosts");
@@ -176,11 +178,11 @@ namespace ConfigSpike.Config
         public void WriteXml(System.Xml.XmlWriter writer)
         {
             writer.WriteStartElement("Jobs");
-            genericSerializer.Serialize<List<IJob>>(this.Jobs, writer, JobTypes);
+            genericSerializer.Serialize<List<Job>>(this.Jobs, writer, JobTypes);
             writer.WriteEndElement();
 
             writer.WriteStartElement("Clients");
-            genericSerializer.Serialize<ListOfUniqueType<IClient>>(this.Clients, writer, ClientTypes);
+            genericSerializer.Serialize<ListOfUniqueType<Client>>(this.Clients, writer, ClientTypes);
             writer.WriteEndElement();
 
             writer.WriteStartElement("Hosts");
@@ -214,7 +216,28 @@ namespace ConfigSpike.Config
         public static List<Type> GetJobTypes()
         {
             var types = new List<Type>();
-            var asm = typeof(SqlToGraphiteConfig).Assembly;
+
+            var allDlls = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.dll");
+            foreach (var dll in allDlls)
+            {
+                try
+                {
+                    Assembly a = Assembly.LoadFile(dll);
+                    types.AddRange(LoadJobTypes(a).ToArray());
+                }
+                catch (Exception ex)
+                {
+                    var s = ex.Message;
+                    throw;
+                }
+            }
+
+            return types;
+        }
+
+        private static List<Type> LoadJobTypes(Assembly asm)
+        {
+            var types = new List<Type>();
             var job = typeof(Job);
 
             //Query our types. We could also load any other assemblies and

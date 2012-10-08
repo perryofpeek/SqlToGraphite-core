@@ -2,6 +2,7 @@
 
 using NUnit.Framework;
 
+using SqlToGraphite.Plugin.SqlServer;
 using SqlToGraphite.UnitTests;
 
 namespace ConfigSpike

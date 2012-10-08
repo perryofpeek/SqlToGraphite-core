@@ -1,4 +1,6 @@
-﻿using log4net;
+﻿using ConfigSpike;
+
+using log4net;
 using NUnit.Framework;
 using Rhino.Mocks;
 using SqlToGraphiteInterfaces;
@@ -23,9 +25,8 @@ namespace SqlToGraphite.UnitTests
         [Test]
         public void Should_create_native_graphitetcp_client()
         {
-            var taskParams = new TaskParams("path", "sql", "cs", "wmi", "name", "graphitetcp");
-            var graphiteParams = new GraphiteParams("hostname", 8125);
-            var o = clientFactory.Create(graphiteParams, taskParams);
+            var client = new ConfigSpike.GraphiteTcpClient { Hostname = "hostname", Port = 8125 };
+            var o = clientFactory.Create(client);
 
             Assert.That(o, Is.Not.Null);
             Assert.That(o, Is.TypeOf(typeof(GraphiteTcpClient)));
@@ -35,9 +36,9 @@ namespace SqlToGraphite.UnitTests
         [Test]
         public void Should_create_statsd_client()
         {
-            var graphiteParams = new GraphiteParams("localhost", 8125);
-            var taskParams = new TaskParams("path", "sql", "cs", "wmi", "name", "statsdudp");
-            var o = clientFactory.Create(graphiteParams, taskParams);
+            var client = new ConfigSpike.GraphiteTcpClient { Hostname = "localhost", Port = 8125 };
+
+            var o = clientFactory.Create(client);
 
             Assert.That(o, Is.Not.Null);
             Assert.That(o, Is.TypeOf(typeof(StatsdClient)));
@@ -47,9 +48,10 @@ namespace SqlToGraphite.UnitTests
         [Test]
         public void Should_create_statsd_client_uppercase()
         {
-            var graphiteParams = new GraphiteParams("localhost", 8125);
-            var taskParams = new TaskParams("path", "sql", "cs", "wmi", "name", "STATSduDp");
-            var o = clientFactory.Create(graphiteParams, taskParams);
+            //var graphiteParams = new GraphiteParams("localhost", 8125);
+            //var taskParams = new TaskParams("path", "sql", "cs", "wmi", "name", "STATSduDp");
+            var client = new ConfigSpike.GraphiteTcpClient { Hostname = "localhost", Port = 8125 };
+            var o = clientFactory.Create(client);
 
             Assert.That(o, Is.Not.Null);
             Assert.That(o, Is.TypeOf(typeof(StatsdClient)));
@@ -59,9 +61,10 @@ namespace SqlToGraphite.UnitTests
         [Test]
         public void Should_throw_exception_if_unknown_type()
         {
+            var client = new ConfigSpike.GraphiteTcpClient { Hostname = "localhost", Port = 8125 };
             var graphiteParams = new GraphiteParams("hostname", 8125);
             var taskParams = new TaskParams("path", "sql", "cs", "wmi", "name", "unknown");
-            var ex = Assert.Throws<UnknownGraphiteClientTypeException>(() => clientFactory.Create(graphiteParams, taskParams));
+            var ex = Assert.Throws<UnknownGraphiteClientTypeException>(() => clientFactory.Create(client));
             Assert.That(ex.Message, Is.EqualTo("Unknown Graphite Client Type: unknown"));
         }
     }
