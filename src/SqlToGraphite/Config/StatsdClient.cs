@@ -4,7 +4,7 @@ using ConfigSpike;
 
 namespace SqlToGraphite.Config
 {
-    public class GraphiteTcpClient : Client
+    public class StatsdClient : Client
     {
         [XmlAttribute]
         public override string Hostname { get; set; }

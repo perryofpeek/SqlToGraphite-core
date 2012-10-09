@@ -32,43 +32,34 @@ namespace SqlToGraphite
             ConfigMapper.log = log;
         }
 
-        public IList<IRunTaskSet> Map(List<ConfigSpike.Config.TaskSet> list, GraphiteClients clients)
+        public IList<IRunTaskSet> Map(List<ConfigSpike.Config.TaskSet> list)
         {
             var taskSets = new List<IRunTaskSet>();
             foreach (ConfigSpike.Config.TaskSet taskSet in list)
             {
-                var fequency = taskSet.Frequency;
-
-                var tasks = this.MapTasks(hostname, taskSet, clients);
-                taskSets.Add(new RunTaskSetWithProcess(tasks, stop, fequency));
-                //throw new ApplicationException("this is not right");
+                var tasks = this.MapTasks(hostname, taskSet);
+                taskSets.Add(new RunTaskSetWithProcess(tasks, stop, taskSet.Frequency));
             }
 
             return taskSets;
         }
 
-        private IList<IRunTask> MapTasks(string hostName, ConfigSpike.Config.TaskSet workItem, GraphiteClients clients)
+        private IList<IRunTask> MapTasks(string hostName, ConfigSpike.Config.TaskSet workItem)
         {
-            var tasks = new List<IRunTask>();           
+            var tasks = new List<IRunTask>();
             foreach (var item in workItem.Tasks)
             {
                 var job = repository.GetJob(item.JobName);
                 var client = repository.GetClient(job.ClientName);
-                //var c = clients.Get(item.JobName);
-                tasks.Add(CreateTask(hostName, client, item, job));
+                tasks.Add(this.CreateTask(hostName, client, job));
             }
 
-            return tasks;            
+            return tasks;
         }
 
-        private RunableRunTask CreateTask(string hostName, Client client, ConfigSpike.Config.Task item, Job job)
-        {            
-            var graphiteParams = new GraphiteParams(hostName, client.Port);
-            //var taskParams = new TaskParams(item.path, item.sql, item.connectionstring, item.type, item.name, item.client);
-            var task = new RunableRunTask(job, this.dataClientFactory, this.graphiteClientFactory, graphiteParams, log, client);
-            //throw new ApplicationException("this needs to be fixed to work.");
-            return task;
-            // task;
+        private RunableRunTask CreateTask(string hostName, Client client, Job job)
+        {                        
+            return new RunableRunTask(job, this.dataClientFactory, this.graphiteClientFactory, new GraphiteParams(hostName, client.Port), log, client);                        
         }
     }
 }

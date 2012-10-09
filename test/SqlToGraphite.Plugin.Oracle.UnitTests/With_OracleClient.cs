@@ -16,15 +16,28 @@ namespace SqlToGraphite.Plugin.Oracle.UnitTests
     {
         private const string ConnectionString = "Data Source=localhost:1521/XE;User Id=owain;Password=abcd1234;";
 
+        private const string SimpleQuery = "SELECT 234 , DATEADD(day,11,GETDATE())";
+
+        private const string SimplePath = "Some.Path";
+
+
         [Test]
         public void Should_get_result()
         {
             var name = Guid.NewGuid().ToString();
             var sql = string.Format("SELECT level, '{0}',  to_date('2012-FEB-03 00:00:01', 'YYYY-MON-DD HH24:MI:SS') FROM    dual CONNECT BY  level <= 100", name);
-            //var param = new TaskParams("path", sql, ConnectionString, "Oracle", name, "Statsdudp");
-            Job param = null;
+
+            var oracleClient = new OracleClient();
+            oracleClient.MetricName = "metricName";
+            oracleClient.Sql = sql;
+            oracleClient.Path = SimplePath;
+            oracleClient.ConnectionString = ConnectionString;
+            oracleClient.ClientName = "GrphiteTcpClient";
+
+            // var param = new TaskParams("path", sql, ConnectionString, "Oracle", name, "Statsdudp");
+            // Job param = null;
             var log = MockRepository.GenerateMock<ILog>();
-            var client = new OracleClient(log, param);
+            var client = new OracleClient(log, oracleClient);
             //Test
             var results = client.Get();
             //Asset            

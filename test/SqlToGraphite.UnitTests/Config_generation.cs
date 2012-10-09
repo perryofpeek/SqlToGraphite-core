@@ -7,6 +7,7 @@ using ConfigSpike.Config;
 
 using NUnit.Framework;
 
+using SqlToGraphite.Config;
 using SqlToGraphite.Plugin.SqlServer;
 
 namespace ConfigSpike
@@ -24,8 +25,8 @@ namespace ConfigSpike
 
                 Type type = assembly.GetType("SqlToGraphite.Plugin.SqlServer.SqlServer");
 
-                var job1 = new SqlServer { ClientName = "GraphiteTcpClient", Name = "GetNumberOfTransactionsASecond", ConnectionString = "some Cs", Sql = "some sql" };
-                var job2 = new SqlServer { ClientName = "GraphiteUdpClient", Name = "GetNumberOfDeliveryies", ConnectionString = "some Cs1", Sql = "some sql1" };
+                var job1 = new SqlServerClient { ClientName = "GraphiteTcpClient", Name = "GetNumberOfTransactionsASecond", ConnectionString = "some Cs", Sql = "some sql" };
+                var job2 = new SqlServerClient { ClientName = "GraphiteUdpClient", Name = "GetNumberOfDeliveryies", ConnectionString = "some Cs1", Sql = "some sql1" };
                 var job3 = new WmiPlugin { ClientName = "GraphiteUdpClient", Name = "CpuLoad", Sql = "w1Sql", Hostname = "w1Hostname" };
                 var client1 = new GraphiteTcpClient { ClientName = "GraphiteTcpClient", Port = 2003, Hostname = "metrics.london.ttldev.local" };
                 var client2 = new GraphiteUdpClient { ClientName = "GraphiteUdpClient", Port = 2003, Hostname = "metrics.london.ttldev.local" };

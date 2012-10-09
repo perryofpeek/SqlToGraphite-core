@@ -4,6 +4,7 @@ using ConfigSpike.Config;
 
 using NUnit.Framework;
 
+using SqlToGraphite.Config;
 using SqlToGraphite.UnitTests;
 
 namespace ConfigSpike

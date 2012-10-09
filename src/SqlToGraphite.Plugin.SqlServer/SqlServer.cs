@@ -6,14 +6,14 @@ using SqlToGraphiteInterfaces;
 
 namespace SqlToGraphite.Plugin.SqlServer
 {
-    public class SqlServer : PluginBase
+    public class SqlServer1 : PluginBase
     {
-        public SqlServer(ILog log, Job taskParams) : base(log, taskParams)
+        public SqlServer1(ILog log, Job job) : base(log, job)
         {
-            this.WireUpProperties(taskParams, this);
+            this.WireUpProperties(job, this);
         }
 
-        public SqlServer() : base()
+        public SqlServer1() : base()
         {
         }
 

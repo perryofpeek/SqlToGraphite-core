@@ -2,6 +2,7 @@
 
 using NUnit.Framework;
 
+using SqlToGraphite.Config;
 using SqlToGraphite.Plugin.SqlServer;
 using SqlToGraphite.UnitTests;
 
@@ -45,7 +46,7 @@ namespace ConfigSpike
             c.ClientName = clientName;
 
             var jobName = "jobName";
-            var job = new SqlServer();
+            var job = new SqlServerClient();
             job.Name = jobName;
             job.ClientName = clientName;
 

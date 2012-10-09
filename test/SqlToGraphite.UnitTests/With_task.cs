@@ -37,8 +37,8 @@ namespace SqlToGraphite.UnitTests
             var result = MockRepository.GenerateMock<IResult>();
             var resultList = new List<IResult> { result };
            // var param = new Job("path", "sql", "cs", "SqlServer", "name", "client");
-            var param = new SqlServer();
-            var client = new ConfigSpike.GraphiteTcpClient();
+            var param = new SqlServerClient();
+            var client = new Config.GraphiteTcpClient();
             this.dataClientFactory.Expect(x => x.Create(param)).Return(this.sqlClient);
             this.sqlClient.Expect(x => x.Get()).Return(resultList);
             statsClient.Expect(x => x.Send(result));
@@ -57,12 +57,11 @@ namespace SqlToGraphite.UnitTests
         [Test]
         public void Should_run_task_sending_two_results()
         {
-            var job = new SqlServer();
-            var client = new ConfigSpike.GraphiteTcpClient();
+            var job = new SqlServerClient();
+            var client = new Config.GraphiteTcpClient();
             var result1 = MockRepository.GenerateMock<IResult>();
             var result2 = MockRepository.GenerateMock<IResult>();
-            var resultList = new List<IResult> { result1, result2 };
-            var param = new TaskParams("path", "sql", "cs", "SqlServer", "name", "client");
+            var resultList = new List<IResult> { result1, result2 };            
             var graphiteParams = new GraphiteParams("host", 1234);
             this.dataClientFactory.Expect(x => x.Create(job)).Return(this.sqlClient);
             this.graphiteClientFactory.Expect(x => x.Create(client)).Return(this.statsClient);

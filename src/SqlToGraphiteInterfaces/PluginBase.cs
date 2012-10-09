@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
-
-using SqlToGraphite;
-
 using log4net;
 
 namespace SqlToGraphiteInterfaces
@@ -12,7 +9,7 @@ namespace SqlToGraphiteInterfaces
     {
         protected ILog Log { get; set; }
 
-        protected Job TaskParams { get; set; }
+       // protected Job TaskParams { get; set; }
 
         public override string Name { get; set; }
 
@@ -20,36 +17,12 @@ namespace SqlToGraphiteInterfaces
 
         public override string Type { get; set; }
 
-        //[XmlIgnore]
-        //private Type t;
-
-        //[XmlIgnore]
-        //public Type T
-        //{
-        //    get
-        //    {
-        //        return t;
-        //    }
-        //    set
-        //    {
-        //        t = value;
-        //        this.TName = value.AssemblyQualifiedName;
-        //    }
-        //}
-
-        //public string TName
-        //{
-        //    get { return t.AssemblyQualifiedName; }
-        //    set { t = Type.GetType(); }
-        //}
-
-        protected PluginBase(ILog log, Job taskParams)
+        protected PluginBase(ILog log, Job job)
         {
             this.Log = log;
-            this.TaskParams = taskParams;
-            this.Name = taskParams.Name;
-            this.ClientName = taskParams.ClientName;
-            this.Type = taskParams.Type;
+            this.Name = job.Name;
+            this.ClientName = job.ClientName;
+            this.Type = job.Type;
         }
 
         protected PluginBase()
@@ -57,7 +30,6 @@ namespace SqlToGraphiteInterfaces
             this.Type = this.GetType().FullName;
         }
 
-        //public abstract IList<IResult> Get();
         public void WireUpProperties(Job taskParams, object dis)
         {
             var thisPropertyInfos = dis.GetType().GetProperties();

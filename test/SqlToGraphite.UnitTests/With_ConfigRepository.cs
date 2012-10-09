@@ -55,14 +55,12 @@ namespace SqlToGraphite.UnitTests
 
         [Test]
         public void Should_save_config()
-        {
-            var configPersister = MockRepository.GenerateMock<IConfigPersister>();
+        {            
             var configXml = this.Add(Blank, TwoClients);
             cache.Expect(x => x.HasExpired()).Return(true).Repeat.Once();
             reader.Expect(x => x.GetXml()).Return(configXml);
-            this.AddTwoClients();
-            genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(config);
-            genericSerializer.Expect(x => x.Serialize<SqlToGraphiteConfig>(config));            
+            this.AddTwoClientsToConfig();
+            genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(config);            
             configPersister.Expect(x => x.Save(config));
             repository.Load();
             //Act 
@@ -76,7 +74,7 @@ namespace SqlToGraphite.UnitTests
         public void Should_read_config_and_get_clients()
         {
             var configXml = this.Add(Blank, TwoClients);
-            this.AddTwoClients();
+            this.AddTwoClientsToConfig();
             genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(config);
             reader.Expect(x => x.GetXml()).Return(configXml);
             cache.Expect(x => x.HasExpired()).Return(true).Repeat.Once();
@@ -92,7 +90,7 @@ namespace SqlToGraphite.UnitTests
         public void Should_retry_to_read_config_on_getting_error()
         {
             var configXml = this.Add(Blank, TwoClients);
-            this.AddTwoClients();
+            this.AddTwoClientsToConfig();
             genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(config);
             reader.Expect(x => x.GetXml()).Throw(new ApplicationException()).Repeat.Once();
             reader.Expect(x => x.GetXml()).Return(configXml).Repeat.Once();
@@ -110,7 +108,7 @@ namespace SqlToGraphite.UnitTests
         [Test]
         public void Should_load_config_and_get_clients()
         {
-            this.AddTwoClients();
+            this.AddTwoClientsToConfig();
             string configXml = this.Add(Blank, TwoClients);
             genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(config);
             reader.Expect(x => x.GetXml()).Return(configXml);
@@ -121,9 +119,9 @@ namespace SqlToGraphite.UnitTests
             cache.VerifyAllExpectations();
         }
 
-        private void AddTwoClients()
+        private void AddTwoClientsToConfig()
         {
-            var c1 = new ConfigSpike.GraphiteTcpClient { ClientName = "ClientName" };
+            var c1 = new Config.GraphiteTcpClient { ClientName = "ClientName" };
             this.config.Clients.Add(c1);
             this.config.Clients.Add(new ConfigSpike.GraphiteUdpClient());
         }
@@ -131,7 +129,7 @@ namespace SqlToGraphite.UnitTests
         [Test]
         public void Should_add_clients()
         {
-            repository.AddClient(new ConfigSpike.GraphiteTcpClient { ClientName = "abc", Port = 123 });
+            repository.AddClient(new Config.GraphiteTcpClient { ClientName = "abc", Port = 123 });
             var clients = repository.GetClients();
             Assert.That(clients.Count, Is.EqualTo(1));
         }
@@ -158,7 +156,7 @@ namespace SqlToGraphite.UnitTests
         public void AddNewJob()
         {
             var jobName = "job1";
-            var job = new SqlServer();
+            var job = new SqlServerClient();
             job.Name = jobName;
             job.ClientName = "TcpGraphite";
             repository.AddJob(job);
@@ -258,7 +256,7 @@ namespace SqlToGraphite.UnitTests
             string namec1 = "c1Name";
             string namec2 = "c2Name";
 
-            config.Clients.Add(new ConfigSpike.GraphiteTcpClient { ClientName = namec1 });
+            config.Clients.Add(new Config.GraphiteTcpClient { ClientName = namec1 });
             config.Clients.Add(new ConfigSpike.GraphiteUdpClient { ClientName = namec2 });
             string configXml = this.Add(Blank, TwoClients);
             genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(config);
@@ -402,14 +400,14 @@ namespace SqlToGraphite.UnitTests
         {
             string configXml = this.Add(Add(Add(Blank, TwoHosts), Templates), TwoClients);
             genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(config);
-            this.AddTwoClients();
+            this.AddTwoClientsToConfig();
                                  
             reader.Expect(x => x.GetXml()).Return(configXml);
             cache.Expect(x => x.HasExpired()).Return(true).Repeat.Once();
             //Test
             repository.Load();
 
-            var job = new SqlServer();
+            var job = new SqlServerClient();
             job.Name = "fred";
             job.ClientName = "ClientName";
             repository.AddJob(job);
@@ -428,7 +426,7 @@ namespace SqlToGraphite.UnitTests
         public void Should_return_failed_to_load_config_error()
         {
             var configXml = this.Add(Blank, TwoClients);
-            this.AddTwoClients();
+            this.AddTwoClientsToConfig();
             genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(new SqlToGraphiteConfig());
             reader.Expect(x => x.GetXml()).Return(Blank).Repeat.Twice();
             reader.Expect(x => x.GetXml()).Return(configXml).Repeat.Once();

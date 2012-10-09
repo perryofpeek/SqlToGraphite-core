@@ -13,15 +13,18 @@ using LogRecordSet = Interop.MSUtil.ILogRecordset;
 
 namespace SqlToGraphite.Plugin.LogParser
 {
-    public class IisLogParserClient : PluginBase
+    public class LogParserClient : PluginBase
     {
-        public IisLogParserClient()
+        public string Path { get; set; }
+
+        public LogParserClient()
         {
         }
 
-        public IisLogParserClient(ILog log, Job taskParams)
-            : base(log, taskParams)
+        public LogParserClient(ILog log, Job job)
+            : base(log, job)
         {
+            this.WireUpProperties(job, this);
         }
 
         private Result Map(ILogRecord record)
@@ -85,15 +88,14 @@ namespace SqlToGraphite.Plugin.LogParser
             //    }
             //}
 
-            if (this.TaskParams.Name != string.Empty && name == string.Empty)
+            if (this.Name != string.Empty && name == string.Empty)
             {
-                name = this.TaskParams.Name;
+                name = this.Name;
             }
 
             this.Log.Debug(string.Format("Got [{1}] {0}", value, dateTime));
-            
-            //return new Result(value, name, dateTime, this.TaskParams.Path);
-            return null;
+
+            return new Result(value, name, dateTime, this.Path);            
         }
 
         public override string Name { get; set; }
@@ -113,32 +115,36 @@ namespace SqlToGraphite.Plugin.LogParser
                 iCheckpoint = CheckpointFile
             };
 
-            //var records = logParser.Execute(this.TaskParams.Sql, w3Clog);
-            //while (!records.atEnd())
-            //{
-            //    var record = records.getRecord();
-            //    rtn.Add(this.Map(record));
-            //    records.moveNext();
-            //}
+            var records = logParser.Execute(this.Sql, w3Clog);
+            while (!records.atEnd())
+            {
+                var record = records.getRecord();
+                rtn.Add(this.Map(record));
+                records.moveNext();
+            }
             return rtn;
         }
 
-        //private static void Parse(string checkpointFile, string strSQL)
-        //{
-        //    var logParser = new LogQueryClassClass();
-        //    var w3Clog = new COMIISW3CInputContextClass
-        //    {
-        //        iCheckpoint = checkpointFile
-        //    };
-        //    var logRecordset = logParser.Execute(strSQL, w3Clog);
-        //    while (!logRecordset.atEnd())
-        //    {
-        //        var logRecord = logRecordset.getRecord();
-        //        Console.WriteLine(logRecord.getValue(0).GetType());
-        //        Console.WriteLine(logRecord.getValue(1).GetType());
-        //        Console.WriteLine(string.Format("{0} {1}", logRecord.getValue(0), logRecord.getValue(1)));
-        //        logRecordset.moveNext();
-        //    }
-        //}
+        public string Sql { get; set; }
+
+        public string PathName { get; set; }
+
+        private static void Parse(string checkpointFile, string strSQL)
+        {
+            var logParser = new LogQueryClassClass();
+            var w3Clog = new COMIISW3CInputContextClass
+            {
+                iCheckpoint = checkpointFile
+            };
+            var logRecordset = logParser.Execute(strSQL, w3Clog);
+            while (!logRecordset.atEnd())
+            {
+                var logRecord = logRecordset.getRecord();
+                Console.WriteLine(logRecord.getValue(0).GetType());
+                Console.WriteLine(logRecord.getValue(1).GetType());
+                Console.WriteLine(string.Format("{0} {1}", logRecord.getValue(0), logRecord.getValue(1)));
+                logRecordset.moveNext();
+            }
+        }
     }
 }

@@ -4,7 +4,7 @@ namespace ConfigSpike
 {
     public class GraphiteUdpClient : Client
     {
-         [XmlAttribute]
+        [XmlAttribute]
         public override string Hostname { get; set; }
 
         [XmlAttribute]

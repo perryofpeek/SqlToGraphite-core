@@ -46,7 +46,7 @@ namespace SqlToGraphite.Conf
                     }
                 }
 
-                var taskList = configMapper.Map(setList, configRepository.GetClientList());
+                var taskList = configMapper.Map(setList);
                 return taskList;
             }
 

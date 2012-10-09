@@ -40,15 +40,15 @@ namespace SqlToGraphite.Plugin.LogParser.UnitTests
             var logMock = MockRepository.GenerateMock<ILog>();
             string path = "Some.path";
             var pathName = "Test";
-            string sql = string.Format(@"select '{1}' , count (*) from {0} WHERE cs-uri-stem LIKE '%/buytickets/Default.aspx%' group by cs-uri-stem ", "TestLogFile.txt", pathName);
-            string connectionString = "";
-            string type = "Plugin-type"; ;
-            string name = "alldaylong365" + ""; ;
-            string client = "statsdudp"; ;
-            //var taskParam = new TaskParams(path, sql, connectionString, type, name, client);
-            Job taskParam = null;
-            var logParserClient = new IisLogParserClient(logMock, taskParam);
+            string sql = string.Format(@"select '{1}' , count (*) from {0} WHERE cs-uri-stem LIKE '%/buytickets/Default.aspx%' group by cs-uri-stem ", "TestLogFile.txt", pathName);            
+            var job = new LogParserClient();
+            job.Sql = sql;
+            job.Path = path;
+            job.PathName = pathName;
+            var logParserClient = new LogParserClient(logMock, job);
+            //Test
             var result = logParserClient.Get();
+            //Assert
             Assert.That(result[0].Value, Is.EqualTo(1000));
             Assert.That(result[0].FullPath, Is.EqualTo(string.Format("{0}.{1}", path, pathName)));
             Assert.That(result[0].Name, Is.EqualTo(pathName));

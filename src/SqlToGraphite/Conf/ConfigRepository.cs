@@ -347,9 +347,9 @@ namespace SqlToGraphite.Conf
             return taskSetItem;
         }
 
-        private static ConfigSpike.Config.Task CreateTask(TaskDetails taskProperties)
+        private static Task CreateTask(TaskDetails taskProperties)
         {
-            return new ConfigSpike.Config.Task { JobName = taskProperties.JobName };
+            return new Task { JobName = taskProperties.JobName };
         }
 
         public List<Job> GetJobs()

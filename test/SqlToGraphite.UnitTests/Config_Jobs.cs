@@ -2,6 +2,7 @@
 
 using NUnit.Framework;
 
+using SqlToGraphite.Config;
 using SqlToGraphite.Plugin.SqlServer;
 using SqlToGraphite.UnitTests;
 
@@ -17,7 +18,7 @@ namespace ConfigSpike
             var name = "Name";
             var client = "SomeClient";
             var config = new ConfigSpike.Config.SqlToGraphiteConfig();
-            config.Jobs.Add(new SqlServer { ClientName = client, Name = name });
+            config.Jobs.Add(new SqlServerClient { ClientName = client, Name = name });
 
             var ex = Assert.Throws<ClientNotDefinedException>(() => config.Validate());
             //Test
@@ -32,7 +33,7 @@ namespace ConfigSpike
             var config = new ConfigSpike.Config.SqlToGraphiteConfig();
             var c = new GraphiteTcpClient { ClientName = clientName };
             config.Clients.Add(c);
-            config.Jobs.Add(new SqlServer { ClientName = clientName, Name = name });
+            config.Jobs.Add(new SqlServerClient { ClientName = clientName, Name = name });
             //Test
             config.Validate();                       
         }
@@ -43,7 +44,7 @@ namespace ConfigSpike
             var name = "Name";
             var client = "SomeClient";
             var config = new ConfigSpike.Config.SqlToGraphiteConfig();
-            config.Jobs.Add(new SqlServer { ClientName = client, Name = name });
+            config.Jobs.Add(new SqlServerClient { ClientName = client, Name = name });
             //Test
             var sqlToGraphiteConfig = Helper.SerialiseDeserialise(config);
             //Assert
@@ -60,8 +61,8 @@ namespace ConfigSpike
             var client2 = "SomeClient2";
 
             var config = new ConfigSpike.Config.SqlToGraphiteConfig();
-            config.Jobs.Add(new SqlServer { ClientName = client1, Name = name1 });
-            config.Jobs.Add(new SqlServer { ClientName = client2, Name = name2 });
+            config.Jobs.Add(new SqlServerClient { ClientName = client1, Name = name1 });
+            config.Jobs.Add(new SqlServerClient { ClientName = client2, Name = name2 });
             //Test
             var sqlToGraphiteConfig = Helper.SerialiseDeserialise(config);
             //Assert
@@ -80,14 +81,14 @@ namespace ConfigSpike
             var client2 = "SomeClient2";
 
             var config = new ConfigSpike.Config.SqlToGraphiteConfig();
-            config.Jobs.Add(new SqlServer { ClientName = client1, Name = name1 });
+            config.Jobs.Add(new SqlServerClient { ClientName = client1, Name = name1 });
             config.Jobs.Add(new WmiPlugin { ClientName = client2, Name = name2 });
             //Test
             var sqlToGraphiteConfig = Helper.SerialiseDeserialise(config);
             //Assert
             Assert.That(sqlToGraphiteConfig.Jobs[0].ClientName, Is.EqualTo(client1));
             Assert.That(sqlToGraphiteConfig.Jobs[0].Name, Is.EqualTo(name1));
-            Assert.That(sqlToGraphiteConfig.Jobs[0], Is.TypeOf<SqlServer>());
+            Assert.That(sqlToGraphiteConfig.Jobs[0], Is.TypeOf<SqlServerClient>());
             Assert.That(sqlToGraphiteConfig.Jobs[1].ClientName, Is.EqualTo(client2));
             Assert.That(sqlToGraphiteConfig.Jobs[1].Name, Is.EqualTo(name2));
             Assert.That(sqlToGraphiteConfig.Jobs[1], Is.TypeOf<WmiPlugin>());

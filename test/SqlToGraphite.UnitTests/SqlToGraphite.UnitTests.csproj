@@ -105,10 +105,12 @@
     <Compile Include="Config_Templates.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Config_generation.cs" />
+    <Compile Include="With_AssemblyResolver.cs" />
     <Compile Include="With_Cache.cs" />
     <Compile Include="With_ConfigReader.cs" />
     <Compile Include="With_ConfigRepository.cs" />
     <Compile Include="With_ConfigWriter.cs" />
+    <Compile Include="With_DirectoryImpl.cs" />
     <Compile Include="With_GraphiteClients.cs" />
     <Compile Include="With_Rolesconfig.cs" />
     <Compile Include="With_KnownDataClients.cs" />

@@ -15,10 +15,20 @@ namespace SqlToGraphite.Plugin.Oracle
         {
         }
 
-        public OracleClient(ILog log, Job taskParams)
-            : base(log, taskParams)
+        public OracleClient(ILog log, Job job)
+            : base(log, job)
         {
+            this.WireUpProperties(job, this);
         }
+
+
+        public string MetricName { get; set; }
+
+        public string ConnectionString { get; set; }
+
+        public string Path { get; set; }
+
+        public string Sql { get; set; }
 
         public override string Name { get; set; }
 
@@ -29,11 +39,11 @@ namespace SqlToGraphite.Plugin.Oracle
         public override IList<IResult> Get()
         {
             var rtn = new List<IResult>();
-            //var dataSet = this.ExecuteQuery(this.TaskParams.ConnectionString, this.TaskParams.Sql);            
-            //foreach (DataRow row in dataSet.Tables[0].Rows)
-            //{
-            //    rtn.Add(this.Map(row));
-            //}
+            var dataSet = this.ExecuteQuery(this.ConnectionString, this.Sql);
+            foreach (DataRow row in dataSet.Tables[0].Rows)
+            {
+                rtn.Add(this.Map(row));
+            }
 
             return rtn;
         }
@@ -61,15 +71,14 @@ namespace SqlToGraphite.Plugin.Oracle
                 }
             }
 
-            if (this.TaskParams.Name != string.Empty && name == string.Empty)
+            if (this.MetricName != string.Empty && name == string.Empty)
             {
-                name = this.TaskParams.Name;
+                name = this.MetricName;
             }
 
             this.Log.Debug(string.Format("Got [{1}] {0}", value, dateTime));
 
-            //return new Result(value, name, dateTime, this.TaskParams.Path);
-            return new Result(value, name, dateTime, null);
+            return new Result(value, name, dateTime, this.Path);            
         }
 
         public DataSet ExecuteQuery(string connectionString, string sql)

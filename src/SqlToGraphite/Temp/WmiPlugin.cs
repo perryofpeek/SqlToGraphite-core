@@ -5,10 +5,10 @@ using SqlToGraphiteInterfaces;
 
 public class WmiPlugin : PluginBase
 {
-    public WmiPlugin(ILog log, Job taskParams)
-        : base(log, taskParams)
+    public WmiPlugin(ILog log, Job job)
+        : base(log, job)
     {
-        this.WireUpProperties(taskParams, this);
+        this.WireUpProperties(job, this);
     }
 
     public WmiPlugin()
