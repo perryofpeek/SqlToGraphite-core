@@ -2,9 +2,13 @@
 
 using NUnit.Framework;
 
-using SqlToGraphite.Config;
+using Rhino.Mocks;
+
+using SqlToGraphite;
 using SqlToGraphite.Plugin.SqlServer;
 using SqlToGraphite.UnitTests;
+
+using GraphiteTcpClient = SqlToGraphite.Config.GraphiteTcpClient;
 
 namespace ConfigSpike
 {
@@ -17,12 +21,15 @@ namespace ConfigSpike
         private string hostname2 = "hostname2";
         private string rolename2 = "roleName2";
 
-        private ConfigSpike.Config.SqlToGraphiteConfig config;
+        private SqlToGraphiteConfig config;
+
+        private IAssemblyResolver assemblyResolver;
 
         [SetUp]
         public void SetUP()
         {
-            config = new ConfigSpike.Config.SqlToGraphiteConfig();
+            assemblyResolver = MockRepository.GenerateMock<IAssemblyResolver>();
+            config = new SqlToGraphiteConfig(assemblyResolver);
         }
 
         [Test]
@@ -71,7 +78,7 @@ namespace ConfigSpike
         {
             var wi = new WorkItems { RoleName = roleName };
             var ts = new TaskSet { Frequency = freq };
-            var task = new Task { JobName = jobName };            
+            var task = new Task { JobName = jobName };
             ts.Tasks.Add(task);
             wi.TaskSet.Add(ts);
             return wi;

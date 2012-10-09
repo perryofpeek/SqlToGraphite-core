@@ -1,10 +1,11 @@
 ﻿using ConfigSpike.Config;
-
+using log4net;
 using NUnit.Framework;
-
-using SqlToGraphite.Config;
+using Rhino.Mocks;
+using SqlToGraphite;
 using SqlToGraphite.Plugin.SqlServer;
 using SqlToGraphite.UnitTests;
+using GraphiteTcpClient = SqlToGraphite.Config.GraphiteTcpClient;
 
 namespace ConfigSpike
 {
@@ -12,12 +13,26 @@ namespace ConfigSpike
     // ReSharper disable InconsistentNaming
     public class Config_Jobs
     {
+        private ILog log;
+
+        private SqlToGraphiteConfig config;
+
+        private IDirectory directory;
+
+        [SetUp]
+        public void SetUp()
+        {
+            directory = MockRepository.GenerateMock<IDirectory>();
+            log = MockRepository.GenerateMock<ILog>();
+            config = new SqlToGraphiteConfig(new AssemblyResolver(new DirectoryImpl()));
+        }
+
         [Test]
         public void Should_not_validate_job_if_client_does_not_exist()
         {
             var name = "Name";
             var client = "SomeClient";
-            var config = new ConfigSpike.Config.SqlToGraphiteConfig();
+
             config.Jobs.Add(new SqlServerClient { ClientName = client, Name = name });
 
             var ex = Assert.Throws<ClientNotDefinedException>(() => config.Validate());
@@ -30,12 +45,11 @@ namespace ConfigSpike
         {
             var name = "Name";
             var clientName = "SomeClient";
-            var config = new ConfigSpike.Config.SqlToGraphiteConfig();
             var c = new GraphiteTcpClient { ClientName = clientName };
             config.Clients.Add(c);
             config.Jobs.Add(new SqlServerClient { ClientName = clientName, Name = name });
             //Test
-            config.Validate();                       
+            config.Validate();
         }
 
         [Test]
@@ -43,7 +57,6 @@ namespace ConfigSpike
         {
             var name = "Name";
             var client = "SomeClient";
-            var config = new ConfigSpike.Config.SqlToGraphiteConfig();
             config.Jobs.Add(new SqlServerClient { ClientName = client, Name = name });
             //Test
             var sqlToGraphiteConfig = Helper.SerialiseDeserialise(config);
@@ -60,7 +73,6 @@ namespace ConfigSpike
             var name2 = "Name2";
             var client2 = "SomeClient2";
 
-            var config = new ConfigSpike.Config.SqlToGraphiteConfig();
             config.Jobs.Add(new SqlServerClient { ClientName = client1, Name = name1 });
             config.Jobs.Add(new SqlServerClient { ClientName = client2, Name = name2 });
             //Test
@@ -80,7 +92,6 @@ namespace ConfigSpike
             var name2 = "Name2";
             var client2 = "SomeClient2";
 
-            var config = new ConfigSpike.Config.SqlToGraphiteConfig();
             config.Jobs.Add(new SqlServerClient { ClientName = client1, Name = name1 });
             config.Jobs.Add(new WmiPlugin { ClientName = client2, Name = name2 });
             //Test

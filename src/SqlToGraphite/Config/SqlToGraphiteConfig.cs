@@ -1,28 +1,41 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Xml.Serialization;
+using SqlToGraphite;
 
 namespace ConfigSpike.Config
 {
     public class SqlToGraphiteConfig : IXmlSerializable
     {
-        private static readonly Type[] JobTypes;
+        private static Type[] jobTypes;
 
-        private static readonly Type[] ClientTypes;
+        private static Type[] clientTypes;
 
         private GenericSerializer genericSerializer;
 
-        static SqlToGraphiteConfig()
-        {
-            JobTypes = GetJobTypes().ToArray();
-            ClientTypes = GetClientTypes().ToArray();
-        }
-
         public SqlToGraphiteConfig()
         {
+            var job = new JobImpl();
+            var assemblyResolver = new AssemblyResolver(new DirectoryImpl());
+            jobTypes = assemblyResolver.ResolveTypes(job);
+            //JobTypes = GetJobTypes().ToArray();
+            clientTypes = GetClientTypes().ToArray();
+
+            this.Jobs = new List<Job>();
+            this.Clients = new ListOfUniqueType<Client>();
+            this.Hosts = new List<Host>();
+            this.Templates = new List<Template>();
+            genericSerializer = new GenericSerializer();
+        }
+
+        public SqlToGraphiteConfig(IAssemblyResolver assemblyResolver)
+        {            
+            var job = new JobImpl();
+            jobTypes = assemblyResolver.ResolveTypes(job);
+            //JobTypes = GetJobTypes().ToArray();
+            clientTypes = GetClientTypes().ToArray();
+
             this.Jobs = new List<Job>();
             this.Clients = new ListOfUniqueType<Client>();
             this.Hosts = new List<Host>();
@@ -156,11 +169,11 @@ namespace ConfigSpike.Config
 
             reader.MoveToContent();
             reader.ReadStartElement("Jobs");
-            this.Jobs = genericSerializer.Deserialize<List<Job>>(reader, JobTypes);
+            this.Jobs = genericSerializer.Deserialize<List<Job>>(reader, jobTypes);
             reader.ReadEndElement();
 
             reader.ReadStartElement("Clients");
-            this.Clients = genericSerializer.Deserialize<ListOfUniqueType<Client>>(reader, ClientTypes);
+            this.Clients = genericSerializer.Deserialize<ListOfUniqueType<Client>>(reader, clientTypes);
             reader.ReadEndElement();
 
             reader.ReadStartElement("Hosts");
@@ -178,11 +191,11 @@ namespace ConfigSpike.Config
         public void WriteXml(System.Xml.XmlWriter writer)
         {
             writer.WriteStartElement("Jobs");
-            genericSerializer.Serialize<List<Job>>(this.Jobs, writer, JobTypes);
+            genericSerializer.Serialize<List<Job>>(this.Jobs, writer, jobTypes);
             writer.WriteEndElement();
 
             writer.WriteStartElement("Clients");
-            genericSerializer.Serialize<ListOfUniqueType<Client>>(this.Clients, writer, ClientTypes);
+            genericSerializer.Serialize<ListOfUniqueType<Client>>(this.Clients, writer, clientTypes);
             writer.WriteEndElement();
 
             writer.WriteStartElement("Hosts");
@@ -213,44 +226,44 @@ namespace ConfigSpike.Config
             return types;
         }
 
-        public static List<Type> GetJobTypes()
-        {
-            var types = new List<Type>();
+        //public static List<Type> GetJobTypes()
+        //{
+        //    var types = new List<Type>();
 
-            var allDlls = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.dll");
-            foreach (var dll in allDlls)
-            {
-                try
-                {
-                    Assembly a = Assembly.LoadFile(dll);
-                    types.AddRange(LoadJobTypes(a).ToArray());
-                }
-                catch (Exception ex)
-                {
-                    var s = ex.Message;
-                    throw;
-                }
-            }
+        //    var allDlls = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.dll");
+        //    foreach (var dll in allDlls)
+        //    {
+        //        try
+        //        {
+        //            Assembly a = Assembly.LoadFile(dll);
+        //            types.AddRange(LoadJobTypes(a).ToArray());
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            var s = ex.Message;
+        //            throw;
+        //        }
+        //    }
 
-            return types;
-        }
+        //    return types;
+        //}
 
-        private static List<Type> LoadJobTypes(Assembly asm)
-        {
-            var types = new List<Type>();
-            var job = typeof(Job);
+        //private static List<Type> LoadJobTypes(Assembly asm)
+        //{
+        //    var types = new List<Type>();
+        //    var job = typeof(Job);
 
-            //Query our types. We could also load any other assemblies and
-            //query them for any types that inherit from Animal
-            foreach (Type currType in asm.GetTypes())
-            {
-                if (!currType.IsAbstract && !currType.IsInterface && job.IsAssignableFrom(currType))
-                {
-                    types.Add(currType);
-                }
-            }
+        //    //Query our types. We could also load any other assemblies and
+        //    //query them for any types that inherit from Animal
+        //    foreach (Type currType in asm.GetTypes())
+        //    {
+        //        if (!currType.IsAbstract && !currType.IsInterface && job.IsAssignableFrom(currType))
+        //        {
+        //            types.Add(currType);
+        //        }
+        //    }
 
-            return types;
-        }
+        //    return types;
+        //}
     }
 }

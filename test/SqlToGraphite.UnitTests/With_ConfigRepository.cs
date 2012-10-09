@@ -34,11 +34,14 @@ namespace SqlToGraphite.UnitTests
 
         private SqlToGraphiteConfig config;
 
+        private IAssemblyResolver assemblyResolver;
+
         [SetUp]
         public void SetUp()
         {
             sleepTime = 1000;
-            config = new SqlToGraphiteConfig();
+            assemblyResolver = MockRepository.GenerateMock<IAssemblyResolver>();
+            config = new SqlToGraphiteConfig(assemblyResolver);
             reader = MockRepository.GenerateMock<IConfigReader>();
             cache = MockRepository.GenerateMock<ICache>();
             sleep = MockRepository.GenerateMock<ISleep>();
@@ -348,7 +351,7 @@ namespace SqlToGraphite.UnitTests
         public void Should_not_validate_because_templates_are_not_defined()
         {
             string configXml = this.Add(Add(Blank, TwoClients), TwoHosts);
-            genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(new SqlToGraphiteConfig());
+            genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(new SqlToGraphiteConfig(assemblyResolver));
             reader.Expect(x => x.GetXml()).Return(configXml);
             cache.Expect(x => x.HasExpired()).Return(true).Repeat.Once();
             //Test
@@ -365,7 +368,7 @@ namespace SqlToGraphite.UnitTests
         public void Should_not_validate_because_hosts_are_not_defined()
         {
             string configXml = this.Add(Add(Blank, TwoClients), Templates);
-            genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(new SqlToGraphiteConfig());
+            genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(new SqlToGraphiteConfig(assemblyResolver));
             reader.Expect(x => x.GetXml()).Return(configXml);
             cache.Expect(x => x.HasExpired()).Return(true).Repeat.Once();
             //Test
@@ -382,7 +385,7 @@ namespace SqlToGraphite.UnitTests
         public void Should_not_validate_because_clients_are_not_defined()
         {
             string configXml = this.Add(Add(Blank, TwoHosts), Templates);
-            genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(new SqlToGraphiteConfig());
+            genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(new SqlToGraphiteConfig(assemblyResolver));
             reader.Expect(x => x.GetXml()).Return(configXml);
             cache.Expect(x => x.HasExpired()).Return(true).Repeat.Once();
             //Test
@@ -427,7 +430,7 @@ namespace SqlToGraphite.UnitTests
         {
             var configXml = this.Add(Blank, TwoClients);
             this.AddTwoClientsToConfig();
-            genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(new SqlToGraphiteConfig());
+            genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(new SqlToGraphiteConfig(assemblyResolver));
             reader.Expect(x => x.GetXml()).Return(Blank).Repeat.Twice();
             reader.Expect(x => x.GetXml()).Return(configXml).Repeat.Once();
             sleep.Expect(x => x.Sleep(sleepTime)).Repeat.Twice();

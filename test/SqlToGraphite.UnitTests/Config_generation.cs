@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-
 using ConfigSpike.Config;
-
+using log4net;
 using NUnit.Framework;
-
-using SqlToGraphite.Config;
+using SqlToGraphite;
 using SqlToGraphite.Plugin.SqlServer;
+using GraphiteTcpClient = SqlToGraphite.Config.GraphiteTcpClient;
 
 namespace ConfigSpike
 {
@@ -21,6 +19,9 @@ namespace ConfigSpike
         {
             try
             {
+                var log = LogManager.GetLogger("log");
+                log4net.Config.XmlConfigurator.Configure();
+
                 Assembly assembly = Assembly.LoadFrom("SqlToGraphite.Plugin.SqlServer.dll");
 
                 Type type = assembly.GetType("SqlToGraphite.Plugin.SqlServer.SqlServer");
@@ -31,7 +32,7 @@ namespace ConfigSpike
                 var client1 = new GraphiteTcpClient { ClientName = "GraphiteTcpClient", Port = 2003, Hostname = "metrics.london.ttldev.local" };
                 var client2 = new GraphiteUdpClient { ClientName = "GraphiteUdpClient", Port = 2003, Hostname = "metrics.london.ttldev.local" };
 
-                var config = new SqlToGraphiteConfig();
+                var config = new SqlToGraphiteConfig(new AssemblyResolver(new DirectoryImpl()));
                 config.Jobs.Add(job1);
                 config.Jobs.Add(job2);
                 config.Jobs.Add(job3);
@@ -71,9 +72,9 @@ namespace ConfigSpike
                 config.Templates.Add(template);
                 config.Clients = new ListOfUniqueType<Client> { client1, client2 };
                 var genericSerializer = new GenericSerializer();
-                string xml = genericSerializer.Serialize<ConfigSpike.Config.SqlToGraphiteConfig>(config);
+                string xml = genericSerializer.Serialize(config);
                 Console.WriteLine(xml);
-                var sqlToGraphiteConfig = genericSerializer.Deserialize<ConfigSpike.Config.SqlToGraphiteConfig>(xml);
+                var sqlToGraphiteConfig = genericSerializer.Deserialize<SqlToGraphiteConfig>(xml);
                 foreach (var job in sqlToGraphiteConfig.Jobs)
                 {
                     Console.WriteLine(job.Type);

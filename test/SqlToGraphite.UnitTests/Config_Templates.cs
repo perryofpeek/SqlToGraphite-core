@@ -1,9 +1,11 @@
 ﻿using ConfigSpike.Config;
 using NUnit.Framework;
 
-using SqlToGraphite.Config;
+using SqlToGraphite;
 using SqlToGraphite.Plugin.SqlServer;
 using SqlToGraphite.UnitTests;
+
+using GraphiteTcpClient = SqlToGraphite.Config.GraphiteTcpClient;
 
 namespace ConfigSpike
 {
@@ -19,13 +21,16 @@ namespace ConfigSpike
         private string taskName2 = "taskName";
         private int freq2 = 100;
 
-        private Config.SqlToGraphiteConfig config;
-        private Template template;
+        private SqlToGraphiteConfig config;
+        private Template template;        
+
+        private IAssemblyResolver assemblyResolver;    
 
         [SetUp]
         public void SetUp()
         {
-            config = new ConfigSpike.Config.SqlToGraphiteConfig();
+            assemblyResolver = new AssemblyResolver(new DirectoryImpl());
+            config = new SqlToGraphiteConfig(assemblyResolver);
             template = new Template();
         }
 
@@ -45,8 +50,7 @@ namespace ConfigSpike
         public void Should_validate_job_if_client_exist()
         {
             var name = "Name";
-            var clientName = "SomeClient";
-            var config = new Config.SqlToGraphiteConfig();
+            var clientName = "SomeClient";            
             var c = new GraphiteTcpClient { ClientName = clientName };
             config.Clients.Add(c);
             config.Jobs.Add(new SqlServerClient { ClientName = clientName, Name = name });

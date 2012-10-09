@@ -52,7 +52,7 @@ namespace SqlToGraphite.Conf
             clientList = new GraphiteClients();
             //    hosts = new List<Host>();
             //    this.templates = new List<WorkItems>();
-            this.masterConfig = new SqlToGraphiteConfig();
+            this.masterConfig = new SqlToGraphiteConfig(new AssemblyResolver(new DirectoryImpl()));
         }
 
         public ConfigRepository(IConfigReader configReader, IKnownGraphiteClients knownGraphiteClients, ICache cache, ISleep sleep, ILog log, int errorReadingConfigSleepTime, IConfigPersister configPersister, IGenericSerializer genericSerializer)

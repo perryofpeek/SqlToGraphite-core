@@ -102,6 +102,7 @@
     <Compile Include="Config\GraphiteTcpClient.cs" />
     <Compile Include="Config\GraphiteUdpClient.cs" />
     <Compile Include="Config\Host.cs" />
+    <Compile Include="Config\JobImpl.cs" />
     <Compile Include="Config\JobNotDefinedForTaskException.cs" />
     <Compile Include="Config\ListOfUniqueType.cs" />
     <Compile Include="Config\Role.cs" />

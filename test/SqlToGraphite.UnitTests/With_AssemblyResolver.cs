@@ -32,7 +32,7 @@ namespace SqlToGraphite.UnitTests
             var files = new List<string>() { string.Format(@"{0}\SqlToGraphite.Plugin.SqlServer.dll", Directory.GetCurrentDirectory()) };
             dir.Expect(x => x.GetFilesInCurrentDirectory(AssemblyResolver.FilesToScan)).Return(files);
             //Test
-            assemblyResolver = new AssemblyResolver(log, dir);
+            assemblyResolver = new AssemblyResolver(this.dir);
             var rtn = assemblyResolver.ResolveType(job);
             //Assert
             Assert.That(rtn.FullName, Is.EqualTo(job.GetType().FullName));
@@ -43,7 +43,7 @@ namespace SqlToGraphite.UnitTests
         public void Should_exception_if_type_not_found()
         {
             var job = new PrivateJob { Type = "someType" };
-            assemblyResolver = new AssemblyResolver(log, dir);
+            assemblyResolver = new AssemblyResolver(this.dir);
             //Test
             var ex = Assert.Throws<PluginNotFoundOrLoadedException>(() => assemblyResolver.ResolveType(job));
             //Assert
@@ -58,7 +58,7 @@ namespace SqlToGraphite.UnitTests
             var files = new List<string>() { string.Format(@"{0}\bad.dll", Directory.GetCurrentDirectory()), string.Format(@"{0}\SqlToGraphite.Plugin.SqlServer.dll", Directory.GetCurrentDirectory()) };
             dir.Expect(x => x.GetFilesInCurrentDirectory(AssemblyResolver.FilesToScan)).Return(files);
             //Test
-            assemblyResolver = new AssemblyResolver(log, dir);
+            assemblyResolver = new AssemblyResolver(this.dir);
             //Test
             var type = assemblyResolver.ResolveType(job);
             //Assert
