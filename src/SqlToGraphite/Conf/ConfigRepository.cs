@@ -101,9 +101,6 @@ namespace SqlToGraphite.Conf
 
         private void Init()
         {
-            //this.clients = new List<SqlToGraphiteConfigClientsClient>();
-            //this.templates = new List<SqlToGraphiteConfigTemplatesWorkItems>();
-            //this.hosts = new List<SqlToGraphiteConfigHostsHost>();
             this.errors = new List<string>();
             clientList = new GraphiteClients();
         }

@@ -40,6 +40,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,6 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="code\Builder.cs" />
+    <Compile Include="code\Controller.cs" />
+    <Compile Include="code\DefaultJobProperties.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
