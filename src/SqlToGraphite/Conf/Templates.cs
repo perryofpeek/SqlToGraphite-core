@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-using ConfigSpike.Config;
+using SqlToGraphite.Config;
 
 namespace SqlToGraphite.Conf
 {
@@ -14,9 +14,9 @@ namespace SqlToGraphite.Conf
             this.sqlToGraphiteConfigTemplates = sqlToGraphiteConfigTemplates;
         }
 
-        public List<ConfigSpike.Config.TaskSet> GetTaskSetList(List<string> roles)
+        public List<TaskSet> GetTaskSetList(List<string> roles)
         {
-            var rtn = new List<ConfigSpike.Config.TaskSet>();
+            var rtn = new List<TaskSet>();
             foreach (var workItem in sqlToGraphiteConfigTemplates)
             {
                 if (roles.Contains(workItem.RoleName))

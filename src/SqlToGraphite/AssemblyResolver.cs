@@ -2,10 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
-using ConfigSpike.Config;
-
-using log4net;
+using SqlToGraphite.Config;
 
 namespace SqlToGraphite
 {

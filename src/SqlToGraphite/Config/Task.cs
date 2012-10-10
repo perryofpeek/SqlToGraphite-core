@@ -1,6 +1,6 @@
 using System.Xml.Serialization;
 
-namespace ConfigSpike.Config
+namespace SqlToGraphite.Config
 {
     public class Task
     {

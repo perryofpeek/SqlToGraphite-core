@@ -6,8 +6,6 @@ using System.Text;
 using ConfigManager.Controllers;
 using ConfigManager.Models;
 
-using ConfigSpike.Config;
-
 using NUnit.Framework;
 
 using Rhino.Mocks;

@@ -2,7 +2,7 @@ using System;
 using System.Text;
 using System.Xml;
 
-namespace ConfigSpike.Config
+namespace SqlToGraphite
 {
     public interface IGenericSerializer
     {

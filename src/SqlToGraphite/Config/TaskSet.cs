@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace ConfigSpike.Config
+namespace SqlToGraphite.Config
 {
     public class TaskSet
     {

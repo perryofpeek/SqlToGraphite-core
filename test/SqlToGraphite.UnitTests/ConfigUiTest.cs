@@ -11,7 +11,7 @@ namespace SqlToGraphite.UnitTests
         [Test, Ignore()]
         public void Should_Add_thing()
         {
-            var configRepository = new ConfigRepository(null, null, null, null, null, 5, null);
+            var configRepository = new ConfigRepository(null, null, null, null, 5, null);
             Assert.IsFalse(true);
         }
     }

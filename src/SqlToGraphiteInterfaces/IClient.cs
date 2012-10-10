@@ -2,7 +2,7 @@ using System.Xml.Serialization;
 
 namespace ConfigSpike
 {
-    public interface IClient
+    public interface IClient_delete
     {
         [XmlAttribute]
         string ClientName { get; set; }

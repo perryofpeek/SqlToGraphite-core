@@ -151,7 +151,7 @@
     <Compile Include="Interfaces\IGraphiteClientFactory.cs" />
     <Compile Include="DataClientFactory.cs" />
     <Compile Include="Controller.cs" />
-    <Compile Include="Clients\GraphiteTcpClient.cs" />
+    <Compile Include="Clients\LocalGraphiteTcpClient.cs" />
     <Compile Include="Interfaces\IController.cs" />
     <Compile Include="Interfaces\IDataClientFactory.cs" />
     <Compile Include="Interfaces\ISleep.cs" />
@@ -163,7 +163,6 @@
     <Compile Include="PluginNotFoundOrLoadedException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sleeper.cs" />
-    <Compile Include="SqlGetter.cs" />
     <Compile Include="Conf\Configuration.cs" />
     <Compile Include="Clients\StatsdClient.cs" />
     <Compile Include="Stop.cs" />

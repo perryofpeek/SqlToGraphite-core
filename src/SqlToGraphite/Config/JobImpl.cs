@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using SqlToGraphiteInterfaces;
 
-namespace ConfigSpike.Config
+namespace SqlToGraphite.Config
 {
     public class JobImpl : Job
     {

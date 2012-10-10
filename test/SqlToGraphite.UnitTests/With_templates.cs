@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 
-using ConfigSpike.Config;
-
 using NUnit.Framework;
 
 using SqlToGraphite.Conf;
+using SqlToGraphite.Config;
 
 namespace SqlToGraphite.UnitTests
 {
@@ -54,14 +53,14 @@ namespace SqlToGraphite.UnitTests
         public void Should_get_taskLists_from_templates_for_default_and_hostname_not_all()
         {
             var data = new List<WorkItems>();
-            var workItem1 = new WorkItems { RoleName = "default", TaskSet = new List<ConfigSpike.Config.TaskSet>() };
-            workItem1.TaskSet.Add(new ConfigSpike.Config.TaskSet { Frequency = 123 });
+            var workItem1 = new WorkItems { RoleName = "default", TaskSet = new List<TaskSet>() };
+            workItem1.TaskSet.Add(new TaskSet { Frequency = 123 });
 
-            var workItem2 = new WorkItems { RoleName = "webserver", TaskSet = new List<ConfigSpike.Config.TaskSet>() };
-            workItem2.TaskSet.Add(new ConfigSpike.Config.TaskSet { Frequency = 124 });
+            var workItem2 = new WorkItems { RoleName = "webserver", TaskSet = new List<TaskSet>() };
+            workItem2.TaskSet.Add(new TaskSet { Frequency = 124 });
 
-            var workItem3 = new WorkItems { RoleName = "sqlserver", TaskSet = new List<ConfigSpike.Config.TaskSet>() };
-            workItem3.TaskSet.Add(new ConfigSpike.Config.TaskSet { Frequency = 125 });
+            var workItem3 = new WorkItems { RoleName = "sqlserver", TaskSet = new List<TaskSet>() };
+            workItem3.TaskSet.Add(new TaskSet { Frequency = 125 });
 
             data.Add(workItem1);
             data.Add(workItem2);
@@ -81,20 +80,20 @@ namespace SqlToGraphite.UnitTests
         public void Should_not_merge_taskLists_from_templates_with_the_same_freq()
         {
             var data = new List<WorkItems>();
-            var workItem1 = new WorkItems { RoleName = "default", TaskSet = new List<ConfigSpike.Config.TaskSet>() };
-            var ts1 = new ConfigSpike.Config.TaskSet
+            var workItem1 = new WorkItems { RoleName = "default", TaskSet = new List<TaskSet>() };
+            var ts1 = new TaskSet
                 {
                     Frequency = 123,
-                    Tasks = new List<ConfigSpike.Config.Task> { new ConfigSpike.Config.Task() { JobName = "a" } }
+                    Tasks = new List<Task> { new Task() { JobName = "a" } }
                 };
 
             workItem1.TaskSet.Add(ts1);
 
-            var workItem2 = new WorkItems { RoleName = "webserver", TaskSet = new List<ConfigSpike.Config.TaskSet>() };
-            var ts2 = new ConfigSpike.Config.TaskSet
+            var workItem2 = new WorkItems { RoleName = "webserver", TaskSet = new List<TaskSet>() };
+            var ts2 = new TaskSet
             {
                 Frequency = 123,
-                Tasks = new List<ConfigSpike.Config.Task> { new ConfigSpike.Config.Task() { JobName = "b" } }
+                Tasks = new List<Task> { new Task() { JobName = "b" } }
             };
 
             workItem2.TaskSet.Add(ts2);

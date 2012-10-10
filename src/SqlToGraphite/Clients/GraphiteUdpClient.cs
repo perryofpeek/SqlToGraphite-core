@@ -2,21 +2,27 @@ using SqlToGraphiteInterfaces;
 
 namespace SqlToGraphite
 {
-    public class GraphiteUdpClient : IStatsClient
+    public class GraphiteUdpClient : Client
     {
-        private readonly string hostname;
-
-        private readonly int port;
+        public GraphiteUdpClient()
+        {
+        }
 
         public GraphiteUdpClient(string hostname, int port)
         {
-            this.hostname = hostname;
-            this.port = port;
+            this.Hostname  = hostname;
+            this.Port = port;
         }
 
-        public void Send(IResult result)
+        public override string Hostname { get; set; }
+
+        public override string ClientName { get; set; }
+
+        public override int Port { get; set; }
+
+        public override void Send(IResult result)
         {
-            var client = new Graphite.GraphiteUdpClient(hostname, port);
+            var client = new Graphite.GraphiteUdpClient(Hostname, Port);
             client.Send(result.FullPath, result.Value, result.TimeStamp);
         }
     }

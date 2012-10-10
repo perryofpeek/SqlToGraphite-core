@@ -2,7 +2,8 @@
 using System.IO;
 
 using ConfigSpike;
-using ConfigSpike.Config;
+
+using SqlToGraphite.Config;
 
 namespace SqlToGraphite.Conf
 {

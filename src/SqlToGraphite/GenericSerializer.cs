@@ -1,11 +1,11 @@
-﻿namespace ConfigSpike.Config
-{
-    using System;
-    using System.IO;
-    using System.Text;
-    using System.Xml;
-    using System.Xml.Serialization;
+﻿using System;
+using System.IO;
+using System.Text;
+using System.Xml;
+using System.Xml.Serialization;
 
+namespace SqlToGraphite
+{
     /// <summary>
     /// A generic class used to serialize objects.
     /// </summary>
@@ -203,11 +203,11 @@
             {
                 if (extraTypes != null)
                 {
-                    Serialize<T>(obj, writer, extraTypes);
+                    this.Serialize<T>(obj, writer, extraTypes);
                 }
                 else
                 {
-                    Serialize<T>(obj, writer);
+                    this.Serialize<T>(obj, writer);
                 }
 
                 writer.Flush();
@@ -217,17 +217,17 @@
 
         public void SaveAs<T>(T obj, string fileName, Type[] extraTypes)
         {
-            SaveAs<T>(obj, fileName, Encoding.UTF8, extraTypes);
+            this.SaveAs<T>(obj, fileName, Encoding.UTF8, extraTypes);
         }
 
         public void SaveAs<T>(T obj, string fileName, Encoding encoding)
         {
-            SaveAs<T>(obj, fileName, encoding, null);
+            this.SaveAs<T>(obj, fileName, encoding, null);
         }
 
         public void SaveAs<T>(T obj, string fileName)
         {
-            SaveAs<T>(obj, fileName, Encoding.UTF8);
+            this.SaveAs<T>(obj, fileName, Encoding.UTF8);
         }
 
         public T Open<T>(string fileName, Type[] extraTypes)
@@ -241,11 +241,11 @@
                     reader.ReadOuterXml();
                     if (extraTypes != null)
                     {
-                        obj = Deserialize<T>(reader, extraTypes);
+                        obj = this.Deserialize<T>(reader, extraTypes);
                     }
                     else
                     {
-                        obj = Deserialize<T>(reader);
+                        obj = this.Deserialize<T>(reader);
                     }
                 }
             }
@@ -255,7 +255,7 @@
 
         public T Open<T>(string fileName)
         {
-            return Open<T>(fileName, null);
+            return this.Open<T>(fileName, null);
         }
     }
 }

@@ -1,11 +1,9 @@
-﻿using ConfigSpike.Config;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 using SqlToGraphite;
+using SqlToGraphite.Config;
 using SqlToGraphite.Plugin.SqlServer;
 using SqlToGraphite.UnitTests;
-
-using GraphiteTcpClient = SqlToGraphite.Config.GraphiteTcpClient;
 
 namespace ConfigSpike
 {
@@ -51,7 +49,7 @@ namespace ConfigSpike
         {
             var name = "Name";
             var clientName = "SomeClient";            
-            var c = new GraphiteTcpClient { ClientName = clientName };
+            var c = new LocalGraphiteTcpClient { ClientName = clientName };
             config.Clients.Add(c);
             config.Jobs.Add(new SqlServerClient { ClientName = clientName, Name = name });
             //Test

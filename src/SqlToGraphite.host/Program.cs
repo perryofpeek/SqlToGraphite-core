@@ -1,7 +1,5 @@
 using System;
 
-using ConfigSpike.Config;
-
 using SqlToGraphite.Clients;
 using SqlToGraphite.Conf;
 using Topshelf;
@@ -24,10 +22,9 @@ namespace SqlToGraphite.host
             
             var configReader = new ConfigHttpReader(configuration.ConfigUri,configuration.ConfigUsername,configuration.ConfigPassword);
             var cache = new Cache(cacheLength, log);
-            var sleeper = new Sleeper();
-            var knownGraphiteClients = new KnownGraphiteClients();
+            var sleeper = new Sleeper();            
             var genericSer = new GenericSerializer();
-            var cr = new ConfigRepository(configReader, knownGraphiteClients, cache, sleeper, log, configuration.MinutesBetweenRetryToGetConfigOnError, genericSer);
+            var cr = new ConfigRepository(configReader, cache, sleeper, log, configuration.MinutesBetweenRetryToGetConfigOnError, genericSer);
             var configMapper = new ConfigMapper(configuration.Hostname, stop, dataClientFactory, graphiteClientFactory, log, cr);
             var configController = new ConfigController(configMapper, log, cr);
             return new TaskManager(log, configController, configuration.ConfigUri, stop, sleeper, configuration.CheckConfigUpdatedEveryMinutes);

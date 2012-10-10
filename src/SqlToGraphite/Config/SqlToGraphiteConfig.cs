@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
-using SqlToGraphite;
+using SqlToGraphiteInterfaces;
 
-namespace ConfigSpike.Config
+namespace SqlToGraphite.Config
 {
     public class SqlToGraphiteConfig : IXmlSerializable
     {
@@ -26,7 +26,7 @@ namespace ConfigSpike.Config
             this.Clients = new ListOfUniqueType<Client>();
             this.Hosts = new List<Host>();
             this.Templates = new List<Template>();
-            genericSerializer = new GenericSerializer();
+            this.genericSerializer = new GenericSerializer();
         }
 
         public SqlToGraphiteConfig(IAssemblyResolver assemblyResolver)
@@ -40,7 +40,7 @@ namespace ConfigSpike.Config
             this.Clients = new ListOfUniqueType<Client>();
             this.Hosts = new List<Host>();
             this.Templates = new List<Template>();
-            genericSerializer = new GenericSerializer();
+            this.genericSerializer = new GenericSerializer();
         }
 
         public ListOfUniqueType<Client> Clients { get; set; }
@@ -169,19 +169,19 @@ namespace ConfigSpike.Config
 
             reader.MoveToContent();
             reader.ReadStartElement("Jobs");
-            this.Jobs = genericSerializer.Deserialize<List<Job>>(reader, jobTypes);
+            this.Jobs = this.genericSerializer.Deserialize<List<Job>>(reader, jobTypes);
             reader.ReadEndElement();
 
             reader.ReadStartElement("Clients");
-            this.Clients = genericSerializer.Deserialize<ListOfUniqueType<Client>>(reader, clientTypes);
+            this.Clients = this.genericSerializer.Deserialize<ListOfUniqueType<Client>>(reader, clientTypes);
             reader.ReadEndElement();
 
             reader.ReadStartElement("Hosts");
-            this.Hosts = genericSerializer.Deserialize<List<Host>>(reader);
+            this.Hosts = this.genericSerializer.Deserialize<List<Host>>(reader);
             reader.ReadEndElement();
 
             reader.ReadStartElement("Templates");
-            this.Templates = genericSerializer.Deserialize<List<Template>>(reader);
+            this.Templates = this.genericSerializer.Deserialize<List<Template>>(reader);
             reader.ReadEndElement();
 
             //Read Closing Element
@@ -191,19 +191,19 @@ namespace ConfigSpike.Config
         public void WriteXml(System.Xml.XmlWriter writer)
         {
             writer.WriteStartElement("Jobs");
-            genericSerializer.Serialize<List<Job>>(this.Jobs, writer, jobTypes);
+            this.genericSerializer.Serialize<List<Job>>(this.Jobs, writer, jobTypes);
             writer.WriteEndElement();
 
             writer.WriteStartElement("Clients");
-            genericSerializer.Serialize<ListOfUniqueType<Client>>(this.Clients, writer, clientTypes);
+            this.genericSerializer.Serialize<ListOfUniqueType<Client>>(this.Clients, writer, clientTypes);
             writer.WriteEndElement();
 
             writer.WriteStartElement("Hosts");
-            genericSerializer.Serialize<List<Host>>(this.Hosts, writer);
+            this.genericSerializer.Serialize<List<Host>>(this.Hosts, writer);
             writer.WriteEndElement();
 
             writer.WriteStartElement("Templates");
-            genericSerializer.Serialize<List<Template>>(this.Templates, writer);
+            this.genericSerializer.Serialize<List<Template>>(this.Templates, writer);
             writer.WriteEndElement();
         }
 

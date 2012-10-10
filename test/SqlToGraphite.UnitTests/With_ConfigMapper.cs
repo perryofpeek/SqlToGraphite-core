@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using ConfigSpike.Config;
 using log4net;
 using NUnit.Framework;
 using Rhino.Mocks;
 using SqlToGraphite.Conf;
+using SqlToGraphite.Config;
 using SqlToGraphite.Plugin.SqlServer;
 
 // ReSharper disable InconsistentNaming
@@ -73,7 +73,7 @@ namespace SqlToGraphite.UnitTests
             job.ClientName = clientName;
 
             configRepository.Expect(y => y.GetJob(name)).Return(job);
-            configRepository.Expect(y => y.GetClient(clientName)).Return(new Config.GraphiteTcpClient());
+            configRepository.Expect(y => y.GetClient(clientName)).Return(new LocalGraphiteTcpClient());
 
             taskSet.Tasks.Add(new Task() { JobName = name });
             taskSets.Add(taskSet);

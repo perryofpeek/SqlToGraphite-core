@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-using ConfigSpike.Config;
+using SqlToGraphite.Config;
 
 namespace SqlToGraphite
 {

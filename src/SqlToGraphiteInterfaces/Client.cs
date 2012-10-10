@@ -1,8 +1,8 @@
 ﻿using System.Xml.Serialization;
 
-namespace ConfigSpike
+namespace SqlToGraphiteInterfaces
 {
-    public abstract class Client : IClient
+    public abstract class Client : IStatsClient
     {
         [XmlAttribute]
         public abstract string Hostname { get; set; }
@@ -12,5 +12,7 @@ namespace ConfigSpike
 
         [XmlAttribute]
         public abstract int Port { get; set; }
+
+        public abstract void Send(IResult result);
     }
 }

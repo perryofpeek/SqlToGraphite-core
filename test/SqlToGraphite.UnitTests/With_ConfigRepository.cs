@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using ConfigSpike.Config;
+
 using log4net;
 using NUnit.Framework;
 using Rhino.Mocks;
-using SqlToGraphite.Clients;
 using SqlToGraphite.Conf;
+using SqlToGraphite.Config;
 using SqlToGraphite.Plugin.SqlServer;
 
 namespace SqlToGraphite.UnitTests
@@ -48,7 +48,7 @@ namespace SqlToGraphite.UnitTests
             log = MockRepository.GenerateMock<ILog>();
             configPersister = MockRepository.GenerateMock<IConfigPersister>();
             genericSerializer = MockRepository.GenerateMock<IGenericSerializer>();
-            repository = new ConfigRepository(this.reader, new KnownGraphiteClients(), this.cache, this.sleep, this.log, sleepTime, configPersister, genericSerializer);
+            repository = new ConfigRepository(this.reader, this.cache, this.sleep, this.log, this.sleepTime, this.configPersister, this.genericSerializer);
         }
 
         private string Add(string input, string data)
@@ -124,15 +124,15 @@ namespace SqlToGraphite.UnitTests
 
         private void AddTwoClientsToConfig()
         {
-            var c1 = new Config.GraphiteTcpClient { ClientName = "ClientName" };
+            var c1 = new LocalGraphiteTcpClient { ClientName = "ClientName" };
             this.config.Clients.Add(c1);
-            this.config.Clients.Add(new ConfigSpike.GraphiteUdpClient());
+            this.config.Clients.Add(new GraphiteUdpClient());
         }
 
         [Test]
         public void Should_add_clients()
         {
-            repository.AddClient(new Config.GraphiteTcpClient { ClientName = "abc", Port = 123 });
+            repository.AddClient(new LocalGraphiteTcpClient { ClientName = "abc", Port = 123 });
             var clients = repository.GetClients();
             Assert.That(clients.Count, Is.EqualTo(1));
         }
@@ -185,7 +185,7 @@ namespace SqlToGraphite.UnitTests
             Assert.That(templates[0].WorkItems[0].TaskSet[0].Tasks[0].JobName, Is.EqualTo(jobName));
         }
 
-        private static void AssertThatTaskEqualToTaskProperty(TaskDetails t, ConfigSpike.Config.Task task)
+        private static void AssertThatTaskEqualToTaskProperty(TaskDetails t, Task task)
         {
             Assert.Fail("commented out shit");
             //Assert.That(task.client, Is.EqualTo(t.Client));
@@ -259,8 +259,8 @@ namespace SqlToGraphite.UnitTests
             string namec1 = "c1Name";
             string namec2 = "c2Name";
 
-            config.Clients.Add(new Config.GraphiteTcpClient { ClientName = namec1 });
-            config.Clients.Add(new ConfigSpike.GraphiteUdpClient { ClientName = namec2 });
+            config.Clients.Add(new LocalGraphiteTcpClient { ClientName = namec1 });
+            config.Clients.Add(new GraphiteUdpClient { ClientName = namec2 });
             string configXml = this.Add(Blank, TwoClients);
             genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(config);
             reader.Expect(x => x.GetXml()).Return(configXml);

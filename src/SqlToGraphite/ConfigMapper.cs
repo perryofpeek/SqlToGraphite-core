@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
-
-using ConfigSpike;
-
 using log4net;
 using SqlToGraphite.Conf;
+using SqlToGraphite.Config;
+using SqlToGraphiteInterfaces;
 
 namespace SqlToGraphite
 {
@@ -32,10 +30,10 @@ namespace SqlToGraphite
             ConfigMapper.log = log;
         }
 
-        public IList<IRunTaskSet> Map(List<ConfigSpike.Config.TaskSet> list)
+        public IList<IRunTaskSet> Map(List<TaskSet> list)
         {
             var taskSets = new List<IRunTaskSet>();
-            foreach (ConfigSpike.Config.TaskSet taskSet in list)
+            foreach (TaskSet taskSet in list)
             {
                 var tasks = this.MapTasks(hostname, taskSet);
                 taskSets.Add(new RunTaskSetWithProcess(tasks, stop, taskSet.Frequency));
@@ -44,7 +42,7 @@ namespace SqlToGraphite
             return taskSets;
         }
 
-        private IList<IRunTask> MapTasks(string hostName, ConfigSpike.Config.TaskSet workItem)
+        private IList<IRunTask> MapTasks(string hostName, TaskSet workItem)
         {
             var tasks = new List<IRunTask>();
             foreach (var item in workItem.Tasks)

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using ConfigSpike.Config;
-
 using NUnit.Framework;
 
 using SqlToGraphite.Conf;
+using SqlToGraphite.Config;
 
 namespace SqlToGraphite.UnitTests
 {

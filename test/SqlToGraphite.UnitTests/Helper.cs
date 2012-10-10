@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Xml;
 
-using ConfigSpike.Config;
+using SqlToGraphite.Config;
 
 namespace SqlToGraphite.UnitTests
 {
@@ -25,11 +25,11 @@ namespace SqlToGraphite.UnitTests
             return rtn;
         }
 
-        public static ConfigSpike.Config.SqlToGraphiteConfig SerialiseDeserialise(ConfigSpike.Config.SqlToGraphiteConfig hh)
+        public static SqlToGraphiteConfig SerialiseDeserialise(SqlToGraphiteConfig hh)
         {
             var genericSerializer = new GenericSerializer();
-            var xml = genericSerializer.Serialize<ConfigSpike.Config.SqlToGraphiteConfig>(hh);
-            var sqlToGraphiteConfig = genericSerializer.Deserialize<ConfigSpike.Config.SqlToGraphiteConfig>(xml);
+            var xml = genericSerializer.Serialize<SqlToGraphiteConfig>(hh);
+            var sqlToGraphiteConfig = genericSerializer.Deserialize<SqlToGraphiteConfig>(xml);
             return sqlToGraphiteConfig;
         }
     }

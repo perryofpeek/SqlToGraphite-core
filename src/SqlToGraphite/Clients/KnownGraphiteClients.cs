@@ -2,11 +2,11 @@
 
 namespace SqlToGraphite.Clients
 {
-    public class KnownGraphiteClients : IKnownGraphiteClients
+    public class KnownGraphiteClients1 : IKnownGraphiteClients
     {
         private List<string> list; 
 
-        public KnownGraphiteClients()
+        public KnownGraphiteClients1()
         {
             list = new List<string> { "statsdudp", "graphitetcp", "graphiteudp" };
         }

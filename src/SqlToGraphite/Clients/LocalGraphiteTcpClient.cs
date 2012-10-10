@@ -1,12 +1,12 @@
 using System.Xml.Serialization;
 
-using Graphite.StatsD;
+using ConfigSpike;
 
 using SqlToGraphiteInterfaces;
 
 namespace SqlToGraphite
 {
-    public class StatsdClient : Client
+    public class LocalGraphiteTcpClient : Client
     {
         [XmlAttribute]
         public override string Hostname { get; set; }
@@ -17,20 +17,20 @@ namespace SqlToGraphite
         [XmlAttribute]
         public override int Port { get; set; }
 
-        private readonly StatsDClient pipe;
-
-        public StatsdClient()
+        public LocalGraphiteTcpClient()
         {
         }
 
-        public StatsdClient(string hostname, int port)
+        public LocalGraphiteTcpClient(string hostname, int port)
         {
-            pipe = new StatsDClient(hostname, port);
+            this.Hostname = hostname;
+            this.Port = port;
         }
 
         public override void Send(IResult result)
         {
-            pipe.Timing(result.FullPath, result.Value);
+            var client = new Graphite.GraphiteTcpClient(Hostname, Port);
+            client.Send(result.FullPath, result.Value, result.TimeStamp);
         }
     }
 }

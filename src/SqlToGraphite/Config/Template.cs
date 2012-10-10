@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ConfigSpike.Config
+namespace SqlToGraphite.Config
 {
     public class Template
     {

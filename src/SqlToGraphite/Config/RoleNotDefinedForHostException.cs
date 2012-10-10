@@ -1,6 +1,6 @@
 using System;
 
-namespace ConfigSpike.Config
+namespace SqlToGraphite.Config
 {
     public class RoleNotDefinedForHostException : Exception
     {

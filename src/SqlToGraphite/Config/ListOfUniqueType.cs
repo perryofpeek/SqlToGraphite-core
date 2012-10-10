@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ConfigSpike.Config
+namespace SqlToGraphite.Config
 {
     public class ListOfUniqueType<T> : ICollection<T>
     {

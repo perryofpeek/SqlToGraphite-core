@@ -114,7 +114,6 @@
     <Compile Include="With_GraphiteClients.cs" />
     <Compile Include="With_Rolesconfig.cs" />
     <Compile Include="With_KnownDataClients.cs" />
-    <Compile Include="With_KnownGraphiteClients.cs" />
     <Compile Include="With_ConfigMapper.cs" />
     <Compile Include="With_GraphiteClientFactory.cs" />
     <Compile Include="ManualTests.cs" />

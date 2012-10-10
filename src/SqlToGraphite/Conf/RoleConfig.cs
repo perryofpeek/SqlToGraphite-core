@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using ConfigSpike.Config;
+using SqlToGraphite.Config;
 
 namespace SqlToGraphite.Conf
 {

@@ -49,6 +49,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlToGraphite.Plugin.LogPar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlToGraphite.Plugin.LogParser", "src\SqlToGraphite.Plugin.LogParser\SqlToGraphite.Plugin.LogParser.csproj", "{2733A29E-07E8-44E0-8264-53FCAC043F40}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Configurator", "src\Configurator\Configurator.csproj", "{5F0741CE-2F7D-490D-A8FB-95383C0940B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -259,6 +261,16 @@ Global
 		{2733A29E-07E8-44E0-8264-53FCAC043F40}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{2733A29E-07E8-44E0-8264-53FCAC043F40}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{2733A29E-07E8-44E0-8264-53FCAC043F40}.Release|x86.ActiveCfg = Release|Any CPU
+		{5F0741CE-2F7D-490D-A8FB-95383C0940B0}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{5F0741CE-2F7D-490D-A8FB-95383C0940B0}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{5F0741CE-2F7D-490D-A8FB-95383C0940B0}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{5F0741CE-2F7D-490D-A8FB-95383C0940B0}.Debug|x86.ActiveCfg = Debug|x86
+		{5F0741CE-2F7D-490D-A8FB-95383C0940B0}.Debug|x86.Build.0 = Debug|x86
+		{5F0741CE-2F7D-490D-A8FB-95383C0940B0}.Release|Any CPU.ActiveCfg = Release|x86
+		{5F0741CE-2F7D-490D-A8FB-95383C0940B0}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{5F0741CE-2F7D-490D-A8FB-95383C0940B0}.Release|Mixed Platforms.Build.0 = Release|x86
+		{5F0741CE-2F7D-490D-A8FB-95383C0940B0}.Release|x86.ActiveCfg = Release|x86
+		{5F0741CE-2F7D-490D-A8FB-95383C0940B0}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -281,5 +293,6 @@ Global
 		{A95A5501-392A-4ED7-AA0D-9D4B9BA2532F} = {18069ED3-75A2-476D-8BEF-36FF14D8745F}
 		{5F786875-EFD2-4486-BC58-FB2E101CF1F1} = {18069ED3-75A2-476D-8BEF-36FF14D8745F}
 		{2733A29E-07E8-44E0-8264-53FCAC043F40} = {18069ED3-75A2-476D-8BEF-36FF14D8745F}
+		{5F0741CE-2F7D-490D-A8FB-95383C0940B0} = {18069ED3-75A2-476D-8BEF-36FF14D8745F}
 	EndGlobalSection
 EndGlobal

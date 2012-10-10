@@ -1,4 +1,4 @@
-using ConfigSpike.Config;
+using SqlToGraphite.Config;
 
 namespace SqlToGraphite.Conf
 {

@@ -1,14 +1,13 @@
-﻿using ConfigSpike.Config;
-
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 using Rhino.Mocks;
 
 using SqlToGraphite;
+using SqlToGraphite.Config;
 using SqlToGraphite.Plugin.SqlServer;
 using SqlToGraphite.UnitTests;
 
-using GraphiteTcpClient = SqlToGraphite.Config.GraphiteTcpClient;
+using GraphiteTcpClient = SqlToGraphite.LocalGraphiteTcpClient;
 
 namespace ConfigSpike
 {
@@ -49,7 +48,7 @@ namespace ConfigSpike
         public void Should_validate_job_if_client_exist()
         {
             var clientName = "cName";
-            var c = new GraphiteTcpClient();
+            var c = new LocalGraphiteTcpClient();
             c.ClientName = clientName;
 
             var jobName = "jobName";

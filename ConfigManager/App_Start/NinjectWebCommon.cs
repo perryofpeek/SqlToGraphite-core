@@ -74,8 +74,7 @@ namespace ConfigManager.App_Start
             // Create Ninject DI kernel                
             kernel.Bind<ILog>().ToMethod(context => LogManager.GetLogger(context.Request.Target.Member.ReflectedType));
             // Register services with Ninject DI Container
-            kernel.Bind<IConfigReader>().To<ConfigHttpReader>().WithConstructorArgument("uri", uri).WithConstructorArgument("username", username).WithConstructorArgument("password", password);
-            kernel.Bind<IKnownGraphiteClients>().To<KnownGraphiteClients>();
+            kernel.Bind<IConfigReader>().To<ConfigHttpReader>().WithConstructorArgument("uri", uri).WithConstructorArgument("username", username).WithConstructorArgument("password", password);            
             kernel.Bind<ISleep>().To<Sleeper>();
 
 

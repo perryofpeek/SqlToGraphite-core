@@ -2,8 +2,6 @@
 using System.Data;
 using System.Data.SqlClient;
 
-using Graphite;
-
 using log4net;
 
 namespace SqlToGraphite
