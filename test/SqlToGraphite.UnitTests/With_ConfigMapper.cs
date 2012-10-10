@@ -73,7 +73,7 @@ namespace SqlToGraphite.UnitTests
             job.ClientName = clientName;
 
             configRepository.Expect(y => y.GetJob(name)).Return(job);
-            configRepository.Expect(y => y.GetClient(clientName)).Return(new LocalGraphiteTcpClient());
+            configRepository.Expect(y => y.GetClient(clientName)).Return(new GraphiteTcpClient());
 
             taskSet.Tasks.Add(new Task() { JobName = name });
             taskSets.Add(taskSet);

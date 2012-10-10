@@ -124,7 +124,7 @@ namespace SqlToGraphite.UnitTests
 
         private void AddTwoClientsToConfig()
         {
-            var c1 = new LocalGraphiteTcpClient { ClientName = "ClientName" };
+            var c1 = new GraphiteTcpClient { ClientName = "ClientName" };
             this.config.Clients.Add(c1);
             this.config.Clients.Add(new GraphiteUdpClient());
         }
@@ -132,7 +132,7 @@ namespace SqlToGraphite.UnitTests
         [Test]
         public void Should_add_clients()
         {
-            repository.AddClient(new LocalGraphiteTcpClient { ClientName = "abc", Port = 123 });
+            repository.AddClient(new GraphiteTcpClient { ClientName = "abc", Port = 123 });
             var clients = repository.GetClients();
             Assert.That(clients.Count, Is.EqualTo(1));
         }
@@ -259,7 +259,7 @@ namespace SqlToGraphite.UnitTests
             string namec1 = "c1Name";
             string namec2 = "c2Name";
 
-            config.Clients.Add(new LocalGraphiteTcpClient { ClientName = namec1 });
+            config.Clients.Add(new GraphiteTcpClient { ClientName = namec1 });
             config.Clients.Add(new GraphiteUdpClient { ClientName = namec2 });
             string configXml = this.Add(Blank, TwoClients);
             genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(config);

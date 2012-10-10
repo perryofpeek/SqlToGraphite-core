@@ -25,17 +25,17 @@ namespace SqlToGraphite.UnitTests
         [Test]
         public void Should_create_native_graphitetcp_client()
         {
-            var client = new LocalGraphiteTcpClient { Hostname = "hostname", Port = 8125, ClientName = "GraphiteTcpClient" };
+            var client = new GraphiteTcpClient { Hostname = "hostname", Port = 8125, ClientName = "GraphiteTcpClient" };
             var o = clientFactory.Create(client);
 
             Assert.That(o, Is.Not.Null);            
-            Assert.That(o, Is.TypeOf<LocalGraphiteTcpClient>());
+            Assert.That(o, Is.TypeOf<GraphiteTcpClient>());
         }
 
         [Test]
         public void Should_create_native_graphiteudp_client()
         {
-            var client = new LocalGraphiteTcpClient { Hostname = "hostname", Port = 8125, ClientName = "GraphiteUdpClient" };
+            var client = new GraphiteTcpClient { Hostname = "hostname", Port = 8125, ClientName = "GraphiteUdpClient" };
             var o = clientFactory.Create(client);
 
             Assert.That(o, Is.Not.Null);            
@@ -69,7 +69,7 @@ namespace SqlToGraphite.UnitTests
         [Test]
         public void Should_throw_exception_if_unknown_type()
         {
-            var client = new LocalGraphiteTcpClient { Hostname = "localhost", Port = 8125, ClientName = "unknown" };
+            var client = new GraphiteTcpClient { Hostname = "localhost", Port = 8125, ClientName = "unknown" };
             var ex = Assert.Throws<UnknownGraphiteClientTypeException>(() => clientFactory.Create(client));
             Assert.That(ex.Message, Is.EqualTo("Unknown Graphite Client Type: unknown"));
         }

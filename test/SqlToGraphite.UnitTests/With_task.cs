@@ -38,7 +38,7 @@ namespace SqlToGraphite.UnitTests
             var resultList = new List<IResult> { result };
            // var param = new Job("path", "sql", "cs", "SqlServer", "name", "client");
             var param = new SqlServerClient();
-            var client = new LocalGraphiteTcpClient();
+            var client = new GraphiteTcpClient();
             this.dataClientFactory.Expect(x => x.Create(param)).Return(this.sqlClient);
             this.sqlClient.Expect(x => x.Get()).Return(resultList);
             statsClient.Expect(x => x.Send(result));
@@ -58,7 +58,7 @@ namespace SqlToGraphite.UnitTests
         public void Should_run_task_sending_two_results()
         {
             var job = new SqlServerClient();
-            var client = new LocalGraphiteTcpClient();
+            var client = new GraphiteTcpClient();
             var result1 = MockRepository.GenerateMock<IResult>();
             var result2 = MockRepository.GenerateMock<IResult>();
             var resultList = new List<IResult> { result1, result2 };            

@@ -49,7 +49,7 @@ namespace ConfigSpike
         {
             var name = "Name";
             var clientName = "SomeClient";            
-            var c = new LocalGraphiteTcpClient { ClientName = clientName };
+            var c = new GraphiteTcpClient { ClientName = clientName };
             config.Clients.Add(c);
             config.Jobs.Add(new SqlServerClient { ClientName = clientName, Name = name });
             //Test

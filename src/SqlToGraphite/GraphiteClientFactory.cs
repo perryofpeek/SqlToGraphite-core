@@ -22,7 +22,7 @@ namespace SqlToGraphite
             log.Debug(string.Format("Creating a graphite client of type: {0} with values {1} {2}", client.ClientName, client.Hostname, client.Port));
             if (clientType == "GraphiteTcpClient".ToLower())
             {
-                return new LocalGraphiteTcpClient(client.Hostname, client.Port);
+                return new GraphiteTcpClient(client.Hostname, client.Port);
             }
 
             if (clientType == "GraphiteUdpClient".ToLower())

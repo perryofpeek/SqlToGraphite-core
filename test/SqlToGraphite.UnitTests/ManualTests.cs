@@ -52,7 +52,7 @@ namespace SqlToGraphite.UnitTests
             //sqlGetter.Process("owain.test.Tlsvn3.Assigned", sql);
             //var ds = "Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.244.127.11)(PORT=1532)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=tracslg2)));User Id=temp_ttl_user;Password=tt1r34dj0b;";
             //var taskParam = new TaskParams("ThePath", "SELECT concat(dm_code,concat('_',current_ds_code)) AS dm, COUNT(DISTINCT (d.ID)) AS dm_count FROM DELIVERIES D WHERE d.tr_ID >= (SELECT TR_ID FROM TRANSACTION_FIRSTOFDAY WHERE date_of_tr = TRUNC(SYSDATE)) GROUP BY dm_code, current_ds_code", ds, "Oracle", "name", "graphiteudp");
-            var tasks = new List<IRunTask> { new RunableRunTask(new SqlServerClient(), new DataClientFactory(log, null), new GraphiteClientFactory(log), new GraphiteParams("hostname", 1234), log, new LocalGraphiteTcpClient()) };
+            var tasks = new List<IRunTask> { new RunableRunTask(new SqlServerClient(), new DataClientFactory(log, null), new GraphiteClientFactory(log), new GraphiteParams("hostname", 1234), log, new GraphiteTcpClient()) };
             var set = new RunTaskSetWithProcess(tasks, new Stop(), 1000);
             var sleep = new Sleeper();
             var stop = new Stop();

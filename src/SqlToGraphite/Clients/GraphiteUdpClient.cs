@@ -1,3 +1,5 @@
+using System.Xml.Serialization;
+
 using SqlToGraphiteInterfaces;
 
 namespace SqlToGraphite
@@ -14,10 +16,13 @@ namespace SqlToGraphite
             this.Port = port;
         }
 
+        [XmlAttribute]
         public override string Hostname { get; set; }
 
+        [XmlAttribute]
         public override string ClientName { get; set; }
 
+        [XmlAttribute]
         public override int Port { get; set; }
 
         public override void Send(IResult result)

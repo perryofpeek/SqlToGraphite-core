@@ -1,12 +1,9 @@
 using System.Xml.Serialization;
-
-using ConfigSpike;
-
 using SqlToGraphiteInterfaces;
 
 namespace SqlToGraphite
 {
-    public class LocalGraphiteTcpClient : Client
+    public class GraphiteTcpClient : Client
     {
         [XmlAttribute]
         public override string Hostname { get; set; }
@@ -17,11 +14,11 @@ namespace SqlToGraphite
         [XmlAttribute]
         public override int Port { get; set; }
 
-        public LocalGraphiteTcpClient()
+        public GraphiteTcpClient()
         {
         }
 
-        public LocalGraphiteTcpClient(string hostname, int port)
+        public GraphiteTcpClient(string hostname, int port)
         {
             this.Hostname = hostname;
             this.Port = port;

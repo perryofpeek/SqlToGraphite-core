@@ -99,8 +99,6 @@
     <Compile Include="AssemblyResolver.cs" />
     <Compile Include="Config\CannotAddAnotherInstanceOfTypeException.cs" />
     <Compile Include="Config\ClientNotDefinedException.cs" />
-    <Compile Include="Config\GraphiteTcpClient.cs" />
-    <Compile Include="Config\GraphiteUdpClient.cs" />
     <Compile Include="Config\Host.cs" />
     <Compile Include="Config\JobImpl.cs" />
     <Compile Include="Config\JobNotDefinedForTaskException.cs" />
@@ -151,7 +149,7 @@
     <Compile Include="Interfaces\IGraphiteClientFactory.cs" />
     <Compile Include="DataClientFactory.cs" />
     <Compile Include="Controller.cs" />
-    <Compile Include="Clients\LocalGraphiteTcpClient.cs" />
+    <Compile Include="Clients\GraphiteTcpClient.cs" />
     <Compile Include="Interfaces\IController.cs" />
     <Compile Include="Interfaces\IDataClientFactory.cs" />
     <Compile Include="Interfaces\ISleep.cs" />
