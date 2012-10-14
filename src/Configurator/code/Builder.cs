@@ -1,37 +1,59 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
+using SqlToGraphite;
 
 namespace Configurator.code
 {
-    public class Builder
+    public class Builder : BuilderBase
     {
-        private readonly Panel panel;
-
-        private readonly DefaultJobProperties defaultJobProperties;
-
-        //public Control.ControlCollection Controls { get; set; }
-
-        public Builder(Panel panel, DefaultJobProperties defaultJobProperties)
+        public Builder(Panel panel, DefaultJobProperties defaultJobProperties, Controller controller, AssemblyResolver assemblyResolver)
+            : base(panel, defaultJobProperties, controller, assemblyResolver)
         {
-            this.panel = panel;
-            this.defaultJobProperties = defaultJobProperties;
-            //Controls = new Control.ControlCollection(owner);
         }
 
-        private int nextTop;
+        private Panel addJobPannel;
 
-        public void AddPair(string name, string value)
+        private AddJobBuilder addJobBuilder;
+
+        private void AddPluginComboBox()
         {
-            var lbl = new Label { Text = name, Top = this.nextTop, Width = this.defaultJobProperties.DefaultLabelWidth };
-            var txb = new TextBox
+            var lbl = new Label { Text = "Type", Top = this.nextTop, Width = this.defaultJobProperties.DefaultLabelWidth };
+            var cb = new ComboBox { Top = this.GetNextTop(), Left = this.defaultJobProperties.DefaultLabelWidth + this.defaultJobProperties.DefaultSpace, Name = "ClientName" };
+            var jobTypes = assemblyResolver.GetJobTypes();
+            cb.Width = 250;
+            cb.SelectedIndexChanged += this.AddPluginIndexChanged;
+            foreach (var c in jobTypes)
             {
-                Text = value,
-                Top = this.nextTop,
-                Left = this.defaultJobProperties.DefaultLabelWidth + this.defaultJobProperties.DefaultSpace,
-                Width = defaultJobProperties.TextWidth               
-            };
+                cb.Items.Add(c.Key);
+            }
             panel.Controls.Add(lbl);
-            panel.Controls.Add(txb);
-            nextTop = nextTop + defaultJobProperties.DefaultHeight;
+            panel.Controls.Add(cb);
         }
+
+        private void AddPluginIndexChanged(object sender, EventArgs eventArgs)
+        {
+            var cb = (ComboBox)sender;            
+            addJobBuilder.Render(cb.SelectedItem.ToString());            
+        }
+        
+        public void DisplayJobAdd()
+        {  
+             addJobPannel = new Panel();
+            this.AddPluginComboBox();
+            this.AddPluginPannel();
+            addJobBuilder = new AddJobBuilder(addJobPannel, defaultJobProperties, controller, assemblyResolver);
+            addJobBuilder.AddedJobEvent += AddJobBuilderOnAddedJobEvent;
+        }
+
+        private void AddJobBuilderOnAddedJobEvent(object sender, EventArgs eventArgs)
+        {
+            this.OnAddedJobEvent(EventArgs.Empty);
+        }
+
+        private void AddPluginPannel()
+        {           
+            this.addJobPannel = this.CreateNewPanel();
+            this.panel.Controls.Add(addJobPannel);
+        }        
     }
 }

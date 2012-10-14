@@ -17,5 +17,10 @@ namespace SqlToGraphite
         {
             File.WriteAllText(fileName, data);
         }
+
+        public void Save(string data, string path)
+        {
+            File.WriteAllText(path, data);
+        }
     }
 }

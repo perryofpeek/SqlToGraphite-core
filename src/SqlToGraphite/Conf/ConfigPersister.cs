@@ -24,5 +24,11 @@ namespace SqlToGraphite.Conf
             var data = genericSerializer.Serialize(config);
             configWriter.Save(data);
         }
+
+        public void Save(SqlToGraphiteConfig config, string path)
+        {            
+            var data = genericSerializer.Serialize(config);
+            configWriter.Save(data, path);
+        }
     }
 }

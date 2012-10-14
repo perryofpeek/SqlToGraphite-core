@@ -1,22 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Windows.Forms;
-
 using Configurator.code;
-
 using SqlToGraphite;
-using SqlToGraphite.Conf;
-using SqlToGraphite.Config;
-
-using SqlToGraphiteInterfaces;
-
-using log4net;
 
 namespace Configurator
 {
@@ -31,6 +16,9 @@ namespace Configurator
 
         private string selectedJob;
 
+        private AssemblyResolver assemblyResolver;
+
+
         private void SetUpDialogues()
         {
             ofgConfig.Multiselect = false;
@@ -41,6 +29,7 @@ namespace Configurator
         {
             selectedJob = string.Empty;
             controller = new code.Controller();
+            assemblyResolver = new AssemblyResolver(new DirectoryImpl());
             SetUpDialogues();
             this.LoadTheConfig();
         }
@@ -52,8 +41,9 @@ namespace Configurator
         }
 
         private void RefreshForm()
-        {          
+        {
             DisplayJob(selectedJob);
+            DisplayAddJob();
         }
 
         private void DisplayHosts()
@@ -92,77 +82,69 @@ namespace Configurator
             this.RefreshForm();
         }
 
+
         private void lbJob_SelectedIndexChanged(object sender, EventArgs e)
         {
             var listControl = (ListBox)sender;
-            selectedJob =  listControl.SelectedItem.ToString();
+            selectedJob = listControl.SelectedItem.ToString();
             this.RefreshForm();
         }
 
+        private Builder b;
 
         private void DisplayJob(string name)
         {
             jobDisplay.Controls.Clear();
-            if(!string.IsNullOrEmpty(name))
-            {                             
-                //for (int i = 0; i < jobDisplay.Controls.Count; i++)
-                //{
-                //    jobDisplay.Controls.RemoveAt(i);
-                //}
+            if (!string.IsNullOrEmpty(name))
+            {
                 foreach (var job in controller.GetJobs())
                 {
                     if (job.Name == name)
                     {
-                        var typedJob = controller.GetTypedJob(name);
-                        //create an instance of the type. 
-                        var defaultJobProperties = new DefaultJobProperties(jobDisplay.Width);
-                        var b = new Builder(jobDisplay, defaultJobProperties);
-                        foreach (var property in typedJob.GetType().GetProperties())
-                        {
-                            var value = GetPropertyValue(typedJob, property);
-                            b.AddPair(property.Name, value);
-                        }
+                        b = new Builder(jobDisplay, new DefaultJobProperties(jobDisplay.Width), controller, assemblyResolver);
+                        jobDisplay.Controls.Clear();
+                        b.DisplayJob(name);
+                        b.AddedJobEvent += BOnAddedJobEvent;
                     }
                 }
 
                 this.Refresh();
-                
             }
-
         }
 
-        private string GetPropertyValue(ISqlClient typedJob, PropertyInfo property)
+        private Builder jobAddObject;
+
+        private void DisplayAddJob()
         {
-            string rtn;
-            if (property == null)
-            {
-                rtn = string.Empty;
-            }
-            else
-            {
-                var obj = property.GetValue(typedJob, null);
-                rtn = obj == null ? string.Empty : obj.ToString();
-            }
-            return rtn;
+            jobAddObject = new Builder(jobAdd, new DefaultJobProperties(jobDisplay.Width), controller, assemblyResolver);
+            jobAddObject.AddedJobEvent += BOnAddedJobEvent;
+            jobAddObject.DisplayJobAdd();
+            this.Refresh();
         }
 
-        private Object GetPropValue(String name, Object obj)
+        private void BOnAddedJobEvent(object sender, EventArgs eventArgs)
         {
-            foreach (String part in name.Split('.'))
-            {
-                if (obj == null) { return null; }
-
-                Type type = obj.GetType();
-                PropertyInfo info = type.GetProperty(part);
-                if (info == null) { return null; }
-
-                obj = info.GetValue(obj, null);
-            }
-            return obj;
+            RefreshTheForm();
         }
 
         private void Form1_Resize(object sender, EventArgs e)
         {
+            this.RefreshForm();
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            controller.Save(ofgConfig.FileName);
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            RefreshTheForm();
+        }
+
+        private void RefreshTheForm()
+        {
+            this.RenderForm();
             this.RefreshForm();
         }
     }

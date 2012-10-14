@@ -40,7 +40,6 @@ namespace SqlToGraphite.Conf
         public ConfigRepository(IConfigReader configReader, ICache cache, ISleep sleep, ILog log, int errorReadingConfigSleepTime, IGenericSerializer genericSerializer)
         {
             this.configReader = configReader;
-            this.knownGraphiteClients = knownGraphiteClients;
             this.cache = cache;
             this.sleep = sleep;
             this.log = log;
@@ -206,6 +205,11 @@ namespace SqlToGraphite.Conf
         public void Save()
         {
             this.configPersister.Save(this.masterConfig);
+        }
+
+        public void Save(string path)
+        {
+            this.configPersister.Save(this.masterConfig, path);
         }
 
         private bool AddIfRolesAreTheSame(TaskDetails taskProperties, bool added, WorkItems template)

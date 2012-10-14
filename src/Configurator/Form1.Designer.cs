@@ -29,17 +29,26 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.lblHosts = new System.Windows.Forms.Label();
             this.lbHosts = new System.Windows.Forms.ListBox();
+            this.lblHosts = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.ofgConfig = new System.Windows.Forms.OpenFileDialog();
+            this.btnRefresh = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
             this.btnLoad = new System.Windows.Forms.Button();
+            this.ofgConfig = new System.Windows.Forms.OpenFileDialog();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tpView = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.lbJob = new System.Windows.Forms.ListBox();
             this.jobDisplay = new System.Windows.Forms.Panel();
+            this.lbJob = new System.Windows.Forms.ListBox();
+            this.tpAdd = new System.Windows.Forms.TabPage();
+            this.jobAdd = new System.Windows.Forms.Panel();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tpView.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.tpAdd.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -50,8 +59,18 @@
             this.panel1.Controls.Add(this.lblHosts);
             this.panel1.Location = new System.Drawing.Point(12, 92);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(144, 342);
+            this.panel1.Size = new System.Drawing.Size(144, 385);
             this.panel1.TabIndex = 3;
+            // 
+            // lbHosts
+            // 
+            this.lbHosts.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.lbHosts.FormattingEnabled = true;
+            this.lbHosts.Location = new System.Drawing.Point(6, 16);
+            this.lbHosts.Name = "lbHosts";
+            this.lbHosts.Size = new System.Drawing.Size(127, 355);
+            this.lbHosts.TabIndex = 3;
             // 
             // lblHosts
             // 
@@ -62,27 +81,35 @@
             this.lblHosts.TabIndex = 0;
             this.lblHosts.Text = "Hosts";
             // 
-            // lbHosts
-            // 
-            this.lbHosts.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.lbHosts.FormattingEnabled = true;
-            this.lbHosts.Location = new System.Drawing.Point(6, 16);
-            this.lbHosts.Name = "lbHosts";
-            this.lbHosts.Size = new System.Drawing.Size(127, 316);
-            this.lbHosts.TabIndex = 3;
-            // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.btnRefresh);
+            this.panel2.Controls.Add(this.btnSave);
             this.panel2.Controls.Add(this.btnLoad);
             this.panel2.Location = new System.Drawing.Point(18, 12);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(151, 29);
+            this.panel2.Size = new System.Drawing.Size(175, 57);
             this.panel2.TabIndex = 4;
             // 
-            // ofgConfig
+            // btnRefresh
             // 
-            this.ofgConfig.FileName = "config.xml";
+            this.btnRefresh.Location = new System.Drawing.Point(14, 28);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(75, 23);
+            this.btnRefresh.TabIndex = 4;
+            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(95, 3);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.TabIndex = 3;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnLoad
             // 
@@ -94,6 +121,34 @@
             this.btnLoad.UseVisualStyleBackColor = true;
             this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click_1);
             // 
+            // ofgConfig
+            // 
+            this.ofgConfig.FileName = "config.xml";
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl1.Controls.Add(this.tpView);
+            this.tabControl1.Controls.Add(this.tpAdd);
+            this.tabControl1.Location = new System.Drawing.Point(199, 15);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(636, 462);
+            this.tabControl1.TabIndex = 2;
+            // 
+            // tpView
+            // 
+            this.tpView.Controls.Add(this.groupBox1);
+            this.tpView.Location = new System.Drawing.Point(4, 22);
+            this.tpView.Name = "tpView";
+            this.tpView.Padding = new System.Windows.Forms.Padding(3);
+            this.tpView.Size = new System.Drawing.Size(628, 436);
+            this.tpView.TabIndex = 0;
+            this.tpView.Text = "View";
+            this.tpView.UseVisualStyleBackColor = true;
+            // 
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -101,23 +156,12 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.jobDisplay);
             this.groupBox1.Controls.Add(this.lbJob);
-            this.groupBox1.Location = new System.Drawing.Point(415, 33);
+            this.groupBox1.Location = new System.Drawing.Point(6, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(547, 391);
-            this.groupBox1.TabIndex = 3;
+            this.groupBox1.Size = new System.Drawing.Size(616, 424);
+            this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Jobs";
-            // 
-            // lbJob
-            // 
-            this.lbJob.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.lbJob.FormattingEnabled = true;
-            this.lbJob.Location = new System.Drawing.Point(6, 19);
-            this.lbJob.Name = "lbJob";
-            this.lbJob.Size = new System.Drawing.Size(188, 368);
-            this.lbJob.TabIndex = 0;
-            this.lbJob.SelectedIndexChanged += new System.EventHandler(this.lbJob_SelectedIndexChanged);
             // 
             // jobDisplay
             // 
@@ -126,15 +170,44 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.jobDisplay.Location = new System.Drawing.Point(200, 19);
             this.jobDisplay.Name = "jobDisplay";
-            this.jobDisplay.Size = new System.Drawing.Size(341, 366);
+            this.jobDisplay.Size = new System.Drawing.Size(410, 394);
             this.jobDisplay.TabIndex = 1;
+            // 
+            // lbJob
+            // 
+            this.lbJob.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.lbJob.FormattingEnabled = true;
+            this.lbJob.Location = new System.Drawing.Point(6, 19);
+            this.lbJob.Name = "lbJob";
+            this.lbJob.Size = new System.Drawing.Size(188, 394);
+            this.lbJob.TabIndex = 0;
+            this.lbJob.SelectedIndexChanged += new System.EventHandler(this.lbJob_SelectedIndexChanged);
+            // 
+            // tpAdd
+            // 
+            this.tpAdd.Controls.Add(this.jobAdd);
+            this.tpAdd.Location = new System.Drawing.Point(4, 22);
+            this.tpAdd.Name = "tpAdd";
+            this.tpAdd.Padding = new System.Windows.Forms.Padding(3);
+            this.tpAdd.Size = new System.Drawing.Size(628, 436);
+            this.tpAdd.TabIndex = 1;
+            this.tpAdd.Text = "Add";
+            this.tpAdd.UseVisualStyleBackColor = true;
+            // 
+            // jobAdd
+            // 
+            this.jobAdd.Location = new System.Drawing.Point(6, 6);
+            this.jobAdd.Name = "jobAdd";
+            this.jobAdd.Size = new System.Drawing.Size(501, 387);
+            this.jobAdd.TabIndex = 0;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(974, 446);
-            this.Controls.Add(this.groupBox1);
+            this.ClientSize = new System.Drawing.Size(839, 489);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "Form1";
@@ -144,7 +217,10 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tpView.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
+            this.tpAdd.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -157,9 +233,15 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.OpenFileDialog ofgConfig;
         private System.Windows.Forms.Button btnLoad;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tpView;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.ListBox lbJob;
         private System.Windows.Forms.Panel jobDisplay;
+        private System.Windows.Forms.ListBox lbJob;
+        private System.Windows.Forms.TabPage tpAdd;
+        private System.Windows.Forms.Panel jobAdd;
+        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Button btnRefresh;
     }
 }
 

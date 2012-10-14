@@ -8,12 +8,12 @@ namespace SqlToGraphite
 {
     public class AssemblyResolver : IAssemblyResolver
     {
-        public const string FilesToScan = "*.dll";        
+        public const string FilesToScan = "*.dll";
 
         private readonly IDirectory directory;
 
         public AssemblyResolver(IDirectory directory)
-        {            
+        {
             this.directory = directory;
             types = new Dictionary<string, Type>();
             this.GetJobTypes();
@@ -71,9 +71,26 @@ namespace SqlToGraphite
             {
                 if (!currType.IsAbstract && !currType.IsInterface && typeToLoad.IsAssignableFrom(currType) && currType.IsPublic)
                 {
-                    types.Add(currType.FullName, currType);
+                    if (!types.ContainsKey(currType.FullName))
+                    {
+                        types.Add(currType.FullName, currType);
+                    }
                 }
             }
+        }
+
+        //TODO: write test(s) for this. 
+        public Type ResolveType(string name)
+        {
+            foreach (var type in types)
+            {
+                if (type.Key == name)
+                {
+                    return type.Value;
+                }
+            }
+
+            return null;
         }
     }
 }

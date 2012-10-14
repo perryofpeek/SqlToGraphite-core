@@ -9,8 +9,6 @@ namespace SqlToGraphiteInterfaces
     {
         protected ILog Log { get; set; }
 
-       // protected Job TaskParams { get; set; }
-
         public override string Name { get; set; }
 
         public override string ClientName { get; set; }
@@ -20,13 +18,24 @@ namespace SqlToGraphiteInterfaces
         protected PluginBase(ILog log, Job job)
         {
             this.Log = log;
+            this.SetOrCreateLogObjectIfNull();            
             this.Name = job.Name;
             this.ClientName = job.ClientName;
             this.Type = job.Type;
         }
 
+        private void SetOrCreateLogObjectIfNull()
+        {
+            if (this.Log == null)
+            {
+                this.Log = LogManager.GetLogger("log");
+                log4net.Config.XmlConfigurator.Configure();
+            }                      
+        }
+
         protected PluginBase()
         {
+            SetOrCreateLogObjectIfNull();
             this.Type = this.GetType().FullName;
         }
 

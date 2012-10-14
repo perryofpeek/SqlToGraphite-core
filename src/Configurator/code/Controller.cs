@@ -36,7 +36,7 @@ namespace Configurator.code
             var cache = new Cache(new TimeSpan(0, 0, 1, 0), log);
             var sleep = new Sleeper();
             var genericSerializer = new GenericSerializer();
-            var configPersister = new ConfigPersister(new ConfigFileWriter("somefile.xml"), genericSerializer);
+            var configPersister = new ConfigPersister(new ConfigFileWriter(path), genericSerializer);
 
             repository = new ConfigRepository(reader, cache, sleep, this.log, sleepTime, configPersister, genericSerializer);            
         }
@@ -61,6 +61,22 @@ namespace Configurator.code
         {
              var dataClientFactory = new DataClientFactory(log, assemblyResolver);
             return dataClientFactory.Create(repository.GetJob(name));
+        }
+
+        public ListOfUniqueType<Client> GetClientTypes()
+        {
+          return repository.GetClients();
+        }
+
+        public void AddJob(ISqlClient client)
+        {
+            Job j = (Job)client;
+            repository.AddJob(j);
+        }
+
+        public void Save(string fileName)
+        {
+            repository.Save(fileName);
         }
     }
 }
