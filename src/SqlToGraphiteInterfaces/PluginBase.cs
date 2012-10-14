@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Xml.Serialization;
 using log4net;
 
 namespace SqlToGraphiteInterfaces

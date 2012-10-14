@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -100,8 +101,9 @@ namespace Configurator.code
         private void TestButtonClick(object sender, EventArgs e)
         {
             this.WireUpTheClientObjectWithUiValues();
-            client.Get();
-            DisplayResults(new Result(1, "name", DateTime.Now, "path"));            
+            var results = client.Get();
+            var rv = new ResultView(defaultJobProperties.DefaultHeight,Convert.ToInt32(resultsPanel.Width/4));
+            this.resultsPanel = rv.Get(results,this.resultsPanel);
         }
 
         public void DisplayEmptyJob(string name)
@@ -202,18 +204,14 @@ namespace Configurator.code
         private void DisplayResultsPannel()
         {
             resultsPanel = this.CreateNewPanel();
+            //resultsPanel.BorderStyle = BorderStyle.Fixed3D;
+            resultsPanel.Width = panel.Width;
             this.AddPanel(resultsPanel);
         }
 
         private void AddPanel(Panel p)
         {
             panel.Controls.Add(p);
-        }
-
-        protected Panel DisplayResults(IResult result)
-        {
-            resultsPanel.Controls.Add(new TextBox());
-            return null;
-        }
+        }       
     }
 }
