@@ -232,7 +232,7 @@ namespace Configurator.code
         private void DisplayResultsPannel()
         {
             resultsPanel = this.CreateNewPanel();
-            //resultsPanel.BorderStyle = BorderStyle.Fixed3D;
+            resultsPanel.BorderStyle = BorderStyle.Fixed3D;
             resultsPanel.Width = panel.Width;
             this.AddPanel(resultsPanel);
         }

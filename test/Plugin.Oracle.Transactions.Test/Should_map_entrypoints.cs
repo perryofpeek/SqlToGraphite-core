@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 
 using NUnit.Framework;
@@ -25,6 +26,7 @@ namespace Plugin.Oracle.Transactions.Test
             connectionString = "someString";
             DataStore.EntryPoints = new Dictionary<int, string>();
             DataStore.LastMaxId = 0;
+            DataStore.LastRun = DateTime.Now;
         }
 
         [Test]
@@ -56,6 +58,56 @@ namespace Plugin.Oracle.Transactions.Test
             Assert.That(DataStore.LastMaxId, Is.EqualTo(NewMaxId));
             oracleRepository.VerifyAllExpectations();
         }
+
+        [Test]
+        public void Should_get_last_max_id_because_last_run_is_greater_than_timedrift_timeout()
+        {
+            int NumberOfSecondsInThePast = 123;
+            var job = new OracleTransactions();
+            job.Path = "Path";
+            job.ConnectionString = connectionString;
+            job.NumberOfSecondsInThePast = NumberOfSecondsInThePast;
+            const int MaxId = 123456;
+            const int NewMaxId = 555777;
+            DataStore.LastMaxId = 1000;
+            DataStore.LastRun = DateTime.Now.Subtract(new TimeSpan(0, 0, 0, NumberOfSecondsInThePast * 3));
+            var sql = string.Format(Sql.GetTransactionsCountSql, MaxId, NumberOfSecondsInThePast);
+            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetEntryPoints)).Return(CreateEntryPointQueryResult()).Repeat.Once();
+            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(MaxId)).Repeat.Once();
+            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, sql)).Return(CreateQueryResult()).Repeat.Once();
+            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(NewMaxId)).Repeat.Once();
+            var oracleTransactions = new OracleTransactions(log, job, oracleRepository);
+            //Test
+           oracleTransactions.Get();
+            //Assert           
+            Assert.That(DataStore.LastMaxId, Is.EqualTo(NewMaxId));
+            oracleRepository.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Should_set_last_max_id_to_zero_on_exception()
+        {
+            int NumberOfSecondsInThePast = 123;
+            var job = new OracleTransactions();
+            job.Path = "Path";
+            job.ConnectionString = connectionString;
+            job.NumberOfSecondsInThePast = NumberOfSecondsInThePast;
+            const int MaxId = 123456;
+            const int NewMaxId = 555777;
+            DataStore.LastMaxId = 1000;
+            DataStore.LastRun = DateTime.Now.Subtract(new TimeSpan(0, 0, 0, NumberOfSecondsInThePast * 3));
+            var sql = string.Format(Sql.GetTransactionsCountSql, MaxId, NumberOfSecondsInThePast);
+            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetEntryPoints)).Return(CreateEntryPointQueryResult()).Repeat.Once();
+            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(MaxId)).Repeat.Once();
+            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, sql)).Return(CreateQueryResult()).Throw(new ApplicationException());            
+            var oracleTransactions = new OracleTransactions(log, job, oracleRepository);
+            //Test
+            Assert.Throws<ApplicationException>(() => oracleTransactions.Get());
+            //Assert           
+            Assert.That(DataStore.LastMaxId, Is.EqualTo(0));
+            oracleRepository.VerifyAllExpectations();
+        }
+
 
         [Test]
         public void Should_deal_with_odd_data_in_entry_point_and_total_count()

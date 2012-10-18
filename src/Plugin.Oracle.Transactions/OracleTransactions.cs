@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.OracleClient;
 using System.Linq;
-
 using log4net;
 using SqlToGraphiteInterfaces;
 
@@ -11,22 +9,22 @@ namespace Plugin.Oracle.Transactions
 {
     public class OracleTransactions : PluginBase
     {
-        private IOracleRepository oracleRepository;
+        private readonly IOracleRepository oracleRepository;
+
+        private const int TimeDrift = 2;
 
         public OracleTransactions()
-        {
+        {           
             oracleRepository = new OracleRepository();
         }
 
-        public OracleTransactions(ILog log, Job job)
-            : base(log, job)
-        {
+        public OracleTransactions(ILog log, Job job) : base(log, job)
+        {           
             oracleRepository = new OracleRepository();
             this.WireUpProperties(job, this);
         }
 
-        public OracleTransactions(ILog log, Job job, IOracleRepository oracleRepository)
-            : base(log, job)
+        public OracleTransactions(ILog log, Job job, IOracleRepository oracleRepository) : base(log, job)
         {
             this.oracleRepository = oracleRepository;
             this.WireUpProperties(job, this);
@@ -48,15 +46,36 @@ namespace Plugin.Oracle.Transactions
 
         public override IList<IResult> Get()
         {
-            InitialiseEntryPointsOnFirstRun();
-            InitialiseLastIdOnFirstRun();
+            try
+            {
+                InitialiseEntryPointsOnFirstRun();
+                InitialiseLastIdOnFirstRun();
+                this.ResetLastIdIfTimeDrifted();
+                var rtn = this.GetTransactionCounts();
+                this.SetLastId();
+                UpdateLastRunTime();
+                return rtn;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex);
+                DataStore.LastMaxId = 0;
+                throw;
+            }          
+        }
 
-            var rtn = this.GetTransactionCounts();
+        private static void UpdateLastRunTime()
+        {
+            DataStore.LastRun = DateTime.Now;
+        }
 
-
-            this.SetLastId();
-            //Need to have a safty net for exception where lastId is reset 
-            return rtn;
+        private void ResetLastIdIfTimeDrifted()
+        {
+            if (DataStore.LastRun < DateTime.Now.Subtract(new TimeSpan(0, 0, 0, this.NumberOfSecondsInThePast * TimeDrift)))
+            {
+                Log.Error(string.Format("Time drift has occured last run was {0}", DataStore.LastRun));
+                this.SetLastId();
+            }
         }
 
         private void InitialiseLastIdOnFirstRun()
@@ -158,12 +177,17 @@ namespace Plugin.Oracle.Transactions
         {
             if (resultDictionary.ContainsKey(origSystem))
             {
-                resultDictionary[origSystem] += count;
+                AddToExistingValue(resultDictionary, origSystem, count);
             }
             else
             {
                 resultDictionary.Add(origSystem, count);
             }
+        }
+
+        private static void AddToExistingValue(Dictionary<string, int> resultDictionary, string origSystem, int count)
+        {
+            resultDictionary[origSystem] += count;
         }
 
         private string CleanOrigSystem(DataRow row)
