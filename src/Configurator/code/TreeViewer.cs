@@ -91,7 +91,6 @@ namespace Configurator.code
             }
         }
 
-
         private void PopulateTree()
         {
             var wi = this.controller.GetWorkItems();

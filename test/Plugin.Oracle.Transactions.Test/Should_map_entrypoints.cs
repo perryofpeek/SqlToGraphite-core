@@ -160,8 +160,8 @@ namespace Plugin.Oracle.Transactions.Test
             oracleRepository.Expect(x => x.ExecuteQuery(connectionString, sql)).Return(CreateQueryResult());
             var oracleTransactions = new OracleTransactions(log, job, oracleRepository);
             //Test
-            var result = oracleTransactions.Get();
-            var result1 = oracleTransactions.Get();
+            oracleTransactions.Get();
+            oracleTransactions.Get();
             //Assert           
             oracleRepository.VerifyAllExpectations();
         }
@@ -184,7 +184,7 @@ namespace Plugin.Oracle.Transactions.Test
             oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(NewMaxId)).Repeat.Once();
             var oracleTransactions = new OracleTransactions(log, job, oracleRepository);
             //Test
-            var result = oracleTransactions.Get();
+            oracleTransactions.Get();
             //Assert
             Assert.That(DataStore.EntryPoints.Count, Is.EqualTo(3));
             oracleRepository.VerifyAllExpectations();
