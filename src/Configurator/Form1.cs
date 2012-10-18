@@ -96,20 +96,22 @@ namespace Configurator
         private void DisplayJob(string name)
         {
             jobDisplay.Controls.Clear();
+          
             if (!string.IsNullOrEmpty(name))
             {
                 foreach (var job in controller.GetJobs())
                 {
                     if (job.Name == name)
                     {
-                        b = new Builder(jobDisplay, new DefaultJobProperties(jobDisplay.Width), controller, assemblyResolver);
+                        b = new Builder(jobDisplay, new DefaultJobProperties(jobDisplay.Width), controller, assemblyResolver, this.resultView);
                         jobDisplay.Controls.Clear();
                         b.DisplayJob(name);
-                        b.AddedJobEvent += BOnAddedJobEvent;
+                        b.AddedJobEvent += BOnAddedJobEvent;                       
                     }
                 }
 
                 this.Refresh();
+                
             }
         }
 
@@ -117,7 +119,7 @@ namespace Configurator
 
         private void DisplayAddJob()
         {
-            jobAddObject = new Builder(jobAdd, new DefaultJobProperties(jobDisplay.Width), controller, assemblyResolver);
+            jobAddObject = new Builder(jobAdd, new DefaultJobProperties(jobDisplay.Width), controller, assemblyResolver,this.resultView);
             jobAddObject.AddedJobEvent += BOnAddedJobEvent;
             jobAddObject.DisplayJobAdd();
             this.Refresh();

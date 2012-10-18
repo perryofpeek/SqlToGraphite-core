@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -31,16 +30,19 @@ namespace Configurator.code
 
         protected AssemblyResolver assemblyResolver;
 
+        protected readonly DataGridView resultGrid;
+
         protected int nextTop;
 
         private ISqlClient client;
 
-        public BuilderBase(Panel panel, DefaultJobProperties defaultJobProperties, Controller controller, AssemblyResolver assemblyResolver)
+        public BuilderBase(Panel panel, DefaultJobProperties defaultJobProperties, Controller controller, AssemblyResolver assemblyResolver, DataGridView resultGrid)
         {
             this.panel = panel;
             this.defaultJobProperties = defaultJobProperties;
             this.controller = controller;
             this.assemblyResolver = assemblyResolver;
+            this.resultGrid = resultGrid;
         }
 
         protected int GetNextTop()
@@ -101,18 +103,10 @@ namespace Configurator.code
         private void TestButtonClick(object sender, EventArgs e)
         {
             try
-            {
+            {               
                 this.WireUpTheClientObjectWithUiValues();
                 var results = client.Get();
-                if (results.Count > 0)
-                {
-                    var rv = new ResultView(defaultJobProperties.DefaultHeight, Convert.ToInt32(resultsPanel.Width / 4));
-                    this.resultsPanel = rv.Get(results, this.resultsPanel);
-                }
-                else
-                {
-                    throw new NoResultsReturnedException();
-                }
+                resultGrid.DataSource = results;               
             }
             catch (Exception ex)
             {

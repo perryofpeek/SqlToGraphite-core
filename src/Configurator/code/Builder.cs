@@ -6,8 +6,8 @@ namespace Configurator.code
 {
     public class Builder : BuilderBase
     {
-        public Builder(Panel panel, DefaultJobProperties defaultJobProperties, Controller controller, AssemblyResolver assemblyResolver)
-            : base(panel, defaultJobProperties, controller, assemblyResolver)
+        public Builder(Panel panel, DefaultJobProperties defaultJobProperties, Controller controller, AssemblyResolver assemblyResolver, DataGridView resultView)
+            : base(panel, defaultJobProperties, controller, assemblyResolver, resultView)
         {
         }
 
@@ -41,7 +41,7 @@ namespace Configurator.code
              addJobPannel = new Panel();
             this.AddPluginComboBox();
             this.AddPluginPannel();
-            addJobBuilder = new AddJobBuilder(addJobPannel, defaultJobProperties, controller, assemblyResolver);
+            addJobBuilder = new AddJobBuilder(addJobPannel, defaultJobProperties, controller, assemblyResolver, this.resultGrid);
             addJobBuilder.AddedJobEvent += AddJobBuilderOnAddedJobEvent;
         }
 

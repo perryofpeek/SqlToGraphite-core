@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 using SqlToGraphite;
 
@@ -7,8 +6,8 @@ namespace Configurator.code
 {
     public class AddJobBuilder : BuilderBase
     {
-        public AddJobBuilder(Panel panel, DefaultJobProperties defaultJobProperties, Controller controller, AssemblyResolver assemblyResolver)
-            : base(panel, defaultJobProperties, controller, assemblyResolver)
+        public AddJobBuilder(Panel panel, DefaultJobProperties defaultJobProperties, Controller controller, AssemblyResolver assemblyResolver,DataGridView resultView)
+            : base(panel, defaultJobProperties, controller, assemblyResolver, resultView)
         {
         }       
         
