@@ -290,5 +290,113 @@ namespace SqlToGraphite.Conf
 
             throw new ClientNotFoundException(string.Format("Client {0} is not found", clientName));
         }
+
+        public void DeleteJobFromRole(string jobName, int frequency, string roleName)
+        {
+            var found = false;
+            foreach (var template in masterConfig.Templates)
+            {
+                foreach (var wi in template.WorkItems)
+                {
+                    if (wi.RoleName == roleName)
+                    {
+                        foreach (var ts in wi.TaskSet)
+                        {
+                            if (ts.Frequency == frequency)
+                            {
+                                found = RemoveJob(jobName, ts);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (!found)
+            {
+                throw new JobNotFoundException();
+            }
+        }
+
+        public TaskSet GetTaskSet(string roleName, int frequency)
+        {
+            var wi = this.GetRole(roleName);
+            return null;
+        }
+
+        public WorkItems GetRole(string rolename)
+        {
+            foreach (var template in masterConfig.Templates)
+            {
+                foreach (var wi in template.WorkItems)
+                {
+                    if (wi.RoleName == rolename)
+                    {
+                        return wi;
+                    }
+                }
+            }
+
+            return EmptyRole();
+        }
+
+        private WorkItems EmptyRole()
+        {
+            return new WorkItems();
+        }
+
+        /*
+        This needs to be better should should be able to not have to loop so much. 
+        */
+        private static bool RemoveJob(string jobName, TaskSet ts)
+        {
+            bool found = false;
+            Task foundTask = null;
+            foreach (var t in ts.Tasks)
+            {
+                if (t.JobName == jobName)
+                {
+                    found = true;
+                    foundTask = t;
+                }
+            }
+
+            if (found)
+            {
+                ts.Tasks.Remove(foundTask);
+            }
+
+            return found;
+        }
+
+        public void DeleteRole(string roleName)
+        {
+            var role = this.GetRole(roleName);
+            if (!role.IsEmpty())
+            {
+                masterConfig.Templates[0].WorkItems.Remove(role);
+            }
+        }
+
+        public void DeleteRoleFrequency(string roleName, int frequency)
+        {
+            var role = this.GetRole(roleName);
+            if (!role.IsEmpty())
+            {
+                TaskSet taskToDelete = null;
+
+                foreach (var ts in role.TaskSet)
+                {
+                    if (ts.Frequency == frequency)
+                    {
+                        taskToDelete = ts;
+                    }
+                }
+
+                if (taskToDelete != null)
+                {
+                    role.TaskSet.Remove(taskToDelete);
+                }
+            }
+        }
     }
 }

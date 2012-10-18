@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using Configurator.code;
 using SqlToGraphite;
@@ -17,7 +18,6 @@ namespace Configurator
         private string selectedJob;
 
         private AssemblyResolver assemblyResolver;
-
 
         private void SetUpDialogues()
         {
@@ -44,6 +44,7 @@ namespace Configurator
         {
             DisplayJob(selectedJob);
             DisplayAddJob();
+            DisplayRolesView();
         }
 
         private void DisplayHosts()
@@ -57,10 +58,10 @@ namespace Configurator
 
         private void DisplayJobs()
         {
-            lbJob.Items.Clear();
+            lbJob.Items.Clear();            
             foreach (var job in controller.GetJobs())
             {
-                lbJob.Items.Add(job.Name);
+                lbJob.Items.Add(job.Name);                
             }
         }
 
@@ -146,6 +147,19 @@ namespace Configurator
         {
             this.RenderForm();
             this.RefreshForm();
+        }
+
+        private void DisplayRolesView()
+        {
+            var rv = new RolesViewer(controller, new TreeViewer(controller));
+            var p = new Position(this.tpRoles.Left, this.tpRoles.Width, this.tpRoles.Top, this.tpRoles.Height);
+            var panel = rv.Get(p);
+            tpRoles.Controls.Add(panel);
+        }
+
+        private void test(object sender, EventArgs e)
+        {
+            var x = "";
         }
     }
 }

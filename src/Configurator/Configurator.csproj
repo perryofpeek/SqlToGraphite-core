@@ -54,9 +54,15 @@
     <Compile Include="code\AddJobBuilder.cs" />
     <Compile Include="code\Builder.cs" />
     <Compile Include="code\BuilderBase.cs" />
+    <Compile Include="code\JobViewer.cs" />
+    <Compile Include="code\NoResultsReturnedException.cs" />
+    <Compile Include="code\Position.cs" />
+    <Compile Include="code\RolesViewer.cs" />
     <Compile Include="code\Controller.cs" />
     <Compile Include="code\DefaultJobProperties.cs" />
     <Compile Include="code\ResultView.cs" />
+    <Compile Include="code\RolesView.cs" />
+    <Compile Include="code\TreeViewer.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -91,6 +97,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Plugin.Oracle.Transactions\Plugin.Oracle.Transactions.csproj">
+      <Project>{0B5C577F-285E-4730-AAE4-A0AE781D5F16}</Project>
+      <Name>Plugin.Oracle.Transactions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SqlToGraphite.Plugin.LogParser\SqlToGraphite.Plugin.LogParser.csproj">
       <Project>{2733A29E-07E8-44E0-8264-53FCAC043F40}</Project>
       <Name>SqlToGraphite.Plugin.LogParser</Name>

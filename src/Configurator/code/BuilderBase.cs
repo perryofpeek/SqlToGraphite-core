@@ -100,10 +100,24 @@ namespace Configurator.code
 
         private void TestButtonClick(object sender, EventArgs e)
         {
-            this.WireUpTheClientObjectWithUiValues();
-            var results = client.Get();
-            var rv = new ResultView(defaultJobProperties.DefaultHeight,Convert.ToInt32(resultsPanel.Width/4));
-            this.resultsPanel = rv.Get(results,this.resultsPanel);
+            try
+            {
+                this.WireUpTheClientObjectWithUiValues();
+                var results = client.Get();
+                if (results.Count > 0)
+                {
+                    var rv = new ResultView(defaultJobProperties.DefaultHeight, Convert.ToInt32(resultsPanel.Width / 4));
+                    this.resultsPanel = rv.Get(results, this.resultsPanel);
+                }
+                else
+                {
+                    throw new NoResultsReturnedException();
+                }
+            }
+            catch (Exception ex)
+            {
+                var s = ex.Message;
+            }
         }
 
         public void DisplayEmptyJob(string name)
@@ -148,8 +162,22 @@ namespace Configurator.code
                 {
                     value = this.GetTextBoxValue(property.Name);
                 }
+                //This is a rubbish implementation , but it will do for now 
+                //TODO:Make this more generic
+                if (property.PropertyType.Name == typeof(Int32).Name)
+                {
+                    property.SetValue(this.client, Convert.ToInt32(value), null);
+                }
 
-                property.SetValue(this.client, value, null);
+                if (property.PropertyType.Name == typeof(string).Name)
+                {
+                    property.SetValue(this.client, value, null);
+                }
+
+                if (property.PropertyType.Name == typeof(bool).Name)
+                {
+                    property.SetValue(this.client, Convert.ToBoolean(value), null);
+                }
             }
         }
 
@@ -212,6 +240,6 @@ namespace Configurator.code
         private void AddPanel(Panel p)
         {
             panel.Controls.Add(p);
-        }       
+        }
     }
 }

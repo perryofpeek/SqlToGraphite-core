@@ -23,6 +23,8 @@ namespace SqlToGraphite.Plugin.SqlServer
 
         public string  Sql { get; set; }
 
+        private static int count;
+
         public SqlServerClient()
         {
         }
@@ -35,6 +37,7 @@ namespace SqlToGraphite.Plugin.SqlServer
 
         public override IList<IResult> Get()
         {
+            count++;           
             var rtn = new List<IResult>();
             var connection = new SqlConnection();
             try

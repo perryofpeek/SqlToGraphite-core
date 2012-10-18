@@ -58,12 +58,12 @@ namespace SqlToGraphite.UnitTests
 
         [Test]
         public void Should_save_config()
-        {            
+        {
             var configXml = this.Add(Blank, TwoClients);
             cache.Expect(x => x.HasExpired()).Return(true).Repeat.Once();
             reader.Expect(x => x.GetXml()).Return(configXml);
             this.AddTwoClientsToConfig();
-            genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(config);            
+            genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(config);
             configPersister.Expect(x => x.Save(config));
             repository.Load();
             //Act 
@@ -399,12 +399,147 @@ namespace SqlToGraphite.UnitTests
         }
 
         [Test]
+        public void Should_remove_job_from_role_with_same_frequency()
+        {
+            string jobName = "jobName";
+            int frequency = 123;
+            string roleName = "roleName";
+            var template = this.CreateSingleRoleAndJob(jobName, frequency, roleName);
+            cache.Expect(x => x.HasExpired()).Return(true).Repeat.Once();
+            string configXml = this.Add(Add(Blank, TwoClients), Templates);
+            genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(config);
+            reader.Expect(x => x.GetXml()).Return(configXml);
+            repository.Load();
+
+            //Test            
+            repository.DeleteJobFromRole(jobName, frequency, roleName);
+            Assert.That(template.WorkItems[0].TaskSet[0].Tasks.Count, Is.EqualTo(0));
+            cache.VerifyAllExpectations();
+            genericSerializer.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Should_remove_frequency_from_role()
+        {
+            int frequency = 123;
+            int frequency1 = 321;
+            string roleName = "roleName";
+            var template = this.CreateMultipoleRolesAndJobs("none", "job1", frequency, frequency1, roleName);
+            cache.Expect(x => x.HasExpired()).Return(true).Repeat.Once();
+            string configXml = this.Add(Add(Blank, TwoClients), Templates);
+            genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(config);
+            reader.Expect(x => x.GetXml()).Return(configXml);
+            repository.Load();
+
+            //Test            
+            repository.DeleteRoleFrequency(roleName, frequency);
+            //Assert
+            Assert.That(template.WorkItems.Count, Is.EqualTo(1));
+            Assert.That(template.WorkItems[0].TaskSet.Count, Is.EqualTo(1));
+            Assert.That(template.WorkItems[0].TaskSet[0].Tasks.Count, Is.EqualTo(1));
+            Assert.That(template.WorkItems[0].TaskSet[0].Tasks[0].JobName, Is.EqualTo("job1"));
+            Assert.That(template.WorkItems[0].TaskSet[0].Frequency, Is.EqualTo(frequency1));
+            cache.VerifyAllExpectations();
+            genericSerializer.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Should_not_remove_unknown_frequency_from_role()
+        {
+            int frequency = 333;
+            int frequency1 = 321;
+            string roleName = "roleName";
+            var template = this.CreateMultipoleRolesAndJobs("none", "job1", frequency, frequency1, roleName);
+            cache.Expect(x => x.HasExpired()).Return(true).Repeat.Once();
+            string configXml = this.Add(Add(Blank, TwoClients), Templates);
+            genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(config);
+            reader.Expect(x => x.GetXml()).Return(configXml);
+            repository.Load();
+
+            //Test            
+            repository.DeleteRoleFrequency(roleName, 444);
+            //Assert
+            Assert.That(template.WorkItems.Count, Is.EqualTo(1));
+            Assert.That(template.WorkItems[0].TaskSet.Count, Is.EqualTo(2));
+            Assert.That(template.WorkItems[0].TaskSet[0].Tasks[0].JobName, Is.EqualTo("none"));
+            Assert.That(template.WorkItems[0].TaskSet[0].Frequency, Is.EqualTo(frequency));
+            cache.VerifyAllExpectations();
+            genericSerializer.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Should_remove_role()
+        {
+            int frequency = 123;
+            string roleName = "roleName";
+            var template = this.CreateSingleRoleAndJob("none", frequency, roleName);
+            cache.Expect(x => x.HasExpired()).Return(true).Repeat.Once();
+            string configXml = this.Add(Add(Blank, TwoClients), Templates);
+            genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(config);
+            reader.Expect(x => x.GetXml()).Return(configXml);
+            repository.Load();
+
+            //Test            
+            repository.DeleteRole(roleName);
+            Assert.That(template.WorkItems.Count, Is.EqualTo(0));
+            cache.VerifyAllExpectations();
+            genericSerializer.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Should_throw_job_not_found_exception()
+        {
+            cache.Expect(x => x.HasExpired()).Return(true).Repeat.Once();
+            string configXml = this.Add(Add(Blank, TwoClients), Templates);
+            genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(config);
+            reader.Expect(x => x.GetXml()).Return(configXml);
+            repository.Load();
+
+            //Test            
+            Assert.Throws<JobNotFoundException>(() => repository.DeleteJobFromRole("notFound", 123, "roleName"));
+            cache.VerifyAllExpectations();
+            genericSerializer.VerifyAllExpectations();
+        }
+
+        private Template CreateSingleRoleAndJob(string jobName, int frequency, string roleName)
+        {
+            var ts = new TaskSet { Frequency = frequency, Tasks = new List<Task>() };
+            var task = new Task { JobName = jobName };
+            ts.Tasks.Add(task);
+            var template = new Template();
+            var wi = new WorkItems { RoleName = roleName, TaskSet = new List<TaskSet>() };
+            wi.TaskSet.Add(ts);
+            var wilist = new List<WorkItems> { wi };
+            template.WorkItems = wilist;
+            this.config.Templates.Add(template);
+            return template;
+        }
+
+        private Template CreateMultipoleRolesAndJobs(string jobName, string jobName1, int frequency, int frequency1, string roleName)
+        {
+            var ts1 = new TaskSet { Frequency = frequency, Tasks = new List<Task>() };
+            var ts2 = new TaskSet { Frequency = frequency1, Tasks = new List<Task>() };
+            var task = new Task { JobName = jobName };
+            ts1.Tasks.Add(task);
+            var task1 = new Task { JobName = jobName1 };
+            ts2.Tasks.Add(task1);
+            var template = new Template();
+            var wi = new WorkItems { RoleName = roleName, TaskSet = new List<TaskSet>() };
+            wi.TaskSet.Add(ts1);
+            wi.TaskSet.Add(ts2);
+            var wilist = new List<WorkItems> { wi };
+            template.WorkItems = wilist;
+            this.config.Templates.Add(template);
+            return template;
+        }
+
+        [Test]
         public void Should_validate_sucessfully()
         {
             string configXml = this.Add(Add(Add(Blank, TwoHosts), Templates), TwoClients);
             genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(config);
             this.AddTwoClientsToConfig();
-                                 
+
             reader.Expect(x => x.GetXml()).Return(configXml);
             cache.Expect(x => x.HasExpired()).Return(true).Repeat.Once();
             //Test
@@ -415,8 +550,8 @@ namespace SqlToGraphite.UnitTests
             job.ClientName = "ClientName";
             repository.AddJob(job);
             repository.AddHost("hostname", new List<Role> { new Role { Name = "roleName" } });
-            repository.AddTask(new TaskDetails("roleName", 1000, "fred"));  
-            
+            repository.AddTask(new TaskDetails("roleName", 1000, "fred"));
+
             //Assert          
             Assert.That(repository.Validate(), Is.EqualTo(true));
             Assert.That(repository.Errors.Count, Is.EqualTo(0));

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 using SqlToGraphite;
 using SqlToGraphite.Conf;
@@ -38,7 +39,7 @@ namespace Configurator.code
             var genericSerializer = new GenericSerializer();
             var configPersister = new ConfigPersister(new ConfigFileWriter(path), genericSerializer);
 
-            repository = new ConfigRepository(reader, cache, sleep, this.log, sleepTime, configPersister, genericSerializer);            
+            repository = new ConfigRepository(reader, cache, sleep, this.log, sleepTime, configPersister, genericSerializer);
         }
 
         public void LoadConfig(string path)
@@ -53,30 +54,108 @@ namespace Configurator.code
         }
 
         public List<Job> GetJobs()
-        {           
+        {
             return repository.GetJobs();
         }
 
         public ISqlClient GetTypedJob(string name)
         {
-             var dataClientFactory = new DataClientFactory(log, assemblyResolver);
+            var dataClientFactory = new DataClientFactory(log, assemblyResolver);
             return dataClientFactory.Create(repository.GetJob(name));
         }
 
         public ListOfUniqueType<Client> GetClientTypes()
         {
-          return repository.GetClients();
+            return repository.GetClients();
         }
 
         public void AddJob(ISqlClient client)
         {
-            Job j = (Job)client;
-            repository.AddJob(j);
+            repository.AddJob((Job)client);
         }
 
         public void Save(string fileName)
         {
             repository.Save(fileName);
+        }
+
+        public List<string> GetRoles()
+        {
+            var templates = repository.GetTemplates();
+            return templates[0].WorkItems.Select(workItem => workItem.RoleName).ToList();
+        }
+
+        public void GetJobsInRole(string name)
+        {
+            //var templates = repository.GetTemplates();
+            //foreach (var wi in templates[0].WorkItems)
+            //{
+            //    if(wi.RoleName == name)
+            //    {
+            //        foreach (var taskSet in wi.TaskSet)
+            //        {
+            //            taskSet.
+            //        }
+            //        wi.TaskSet
+            //    }
+            //}                       
+        }
+
+        public List<WorkItems> GetWorkItems()
+        {
+            var templates = repository.GetTemplates();
+            return templates[0].WorkItems;
+        }
+
+
+        public List<int> GetTasksFrequencyInRole(string name)
+        {
+            var rtn = new List<int>();
+            foreach (var taskSet in GetRoleTaskSet(name))
+            {
+                rtn.Add(taskSet.Frequency);
+            }
+            return rtn;
+        }
+
+        private IEnumerable<TaskSet> GetRoleTaskSet(string name)
+        {
+            var templates = repository.GetTemplates();
+            foreach (var wi in templates[0].WorkItems)
+            {
+                if (wi.RoleName == name)
+                {
+                    return wi.TaskSet;
+                }
+            }
+            return null;
+        }
+
+        public List<string> GetTasksWithFrequencyInRole(int selectedFrequency, string name)
+        {
+            var rtn = new List<string>();
+            var templates = repository.GetTemplates();
+            foreach (var taskSet in GetRoleTaskSet(name))
+            {
+                if (taskSet.Frequency == selectedFrequency)
+                {
+                    foreach (var task in taskSet.Tasks)
+                    {
+                        rtn.Add(task.JobName);
+                    }
+                }
+            }
+            return rtn;
+        }
+
+        public void AddJobToRoleAndFrequency(string role, int frequency, string jobName)
+        {
+            repository.AddTask(new TaskDetails(role,frequency,jobName));
+        }
+
+        public void DeleteJobFromRole(string jobName, int frequency, string roleName)
+        {
+            repository.DeleteJobFromRole(jobName, frequency, roleName);
         }
     }
 }

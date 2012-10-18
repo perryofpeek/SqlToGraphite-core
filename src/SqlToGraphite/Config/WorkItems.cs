@@ -14,5 +14,10 @@ namespace SqlToGraphite.Config
         public string RoleName { get; set; }
 
         public List<TaskSet> TaskSet { get; set; }
+
+        public bool IsEmpty()
+        {
+            return TaskSet.Count == 0;
+        }
     }
 }
