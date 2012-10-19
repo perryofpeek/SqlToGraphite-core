@@ -15,18 +15,15 @@ namespace SqlToGraphite
 
         private readonly IGraphiteClientFactory graphiteClientFactory;
 
-        private readonly GraphiteParams graphiteParams;
-
         private readonly ILog log;
 
         private readonly Client client;
 
-        public RunableRunTask(Job job, IDataClientFactory dataClientFactory, IGraphiteClientFactory graphiteClientFactory, GraphiteParams graphiteParams, ILog log, Client client)
+        public RunableRunTask(Job job, IDataClientFactory dataClientFactory, IGraphiteClientFactory graphiteClientFactory, ILog log, Client client)
         {
             this.job = job;
             this.dataClientFactory = dataClientFactory;
             this.graphiteClientFactory = graphiteClientFactory;
-            this.graphiteParams = graphiteParams;
             this.log = log;
             this.client = client;
         }

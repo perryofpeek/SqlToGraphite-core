@@ -57,7 +57,7 @@ namespace SqlToGraphite
 
         private RunableRunTask CreateTask(string hostName, Client client, Job job)
         {                        
-            return new RunableRunTask(job, this.dataClientFactory, this.graphiteClientFactory, new GraphiteParams(hostName, client.Port), log, client);                        
+            return new RunableRunTask(job, this.dataClientFactory, this.graphiteClientFactory, log, client);                        
         }
     }
 }

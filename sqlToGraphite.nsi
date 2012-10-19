@@ -266,7 +266,9 @@ Section Main
 		StrCpy $path "path=$2" 
 		DetailPrint "Value of path parameter is '$path'"
 
-		ExecWait '"$OUTDIR\ConfigPatcher.exe" $hostname $username $password $configuri $cachelength $configretry $configupdate $path' $0
+
+		DetailPrint '"$OUTDIR\ConfigPatcher.exe" $hostname $username $password $configuri $cachelength $configretry $configupdate "$path"'
+		ExecWait '"$OUTDIR\ConfigPatcher.exe" $hostname $username $password $configuri $cachelength $configretry $configupdate "$path"' $0
 
 		ExecWait '"$OUTDIR\sqltographite.exe" install' $0
 		DetailPrint "Returned $0"

@@ -1,0 +1,1 @@
+SqlToGraphite-Setup.exe   /HOSTNAME=metrics.london.ttldev.local /USERNAME= /PASSWORD= /CONFIGUPDATE=8 /CONFIGRETRY=9 /CACHELENGTH=11 /CONFIGURI=file://c:/config.xml

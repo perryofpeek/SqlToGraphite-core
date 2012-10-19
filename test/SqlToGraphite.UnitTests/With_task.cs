@@ -42,9 +42,8 @@ namespace SqlToGraphite.UnitTests
             this.dataClientFactory.Expect(x => x.Create(param)).Return(this.sqlClient);
             this.sqlClient.Expect(x => x.Get()).Return(resultList);
             statsClient.Expect(x => x.Send(result));
-            var graphiteParams = new GraphiteParams("host", 1234);
             this.graphiteClientFactory.Expect(x => x.Create(client)).Return(this.statsClient);
-            IRunTask runTask = new RunableRunTask(param, this.dataClientFactory, this.graphiteClientFactory, graphiteParams, this.log, client);
+            IRunTask runTask = new RunableRunTask(param, this.dataClientFactory, this.graphiteClientFactory, this.log, client);
             //Test
             runTask.Process();
             //Assert
@@ -62,13 +61,12 @@ namespace SqlToGraphite.UnitTests
             var result1 = MockRepository.GenerateMock<IResult>();
             var result2 = MockRepository.GenerateMock<IResult>();
             var resultList = new List<IResult> { result1, result2 };            
-            var graphiteParams = new GraphiteParams("host", 1234);
             this.dataClientFactory.Expect(x => x.Create(job)).Return(this.sqlClient);
             this.graphiteClientFactory.Expect(x => x.Create(client)).Return(this.statsClient);
             this.sqlClient.Expect(x => x.Get()).Return(resultList);
             statsClient.Expect(x => x.Send(result1)).Repeat.Once();
             statsClient.Expect(x => x.Send(result2)).Repeat.Once();
-            IRunTask runTask = new RunableRunTask(job, this.dataClientFactory, this.graphiteClientFactory, graphiteParams, this.log, client);
+            IRunTask runTask = new RunableRunTask(job, this.dataClientFactory, this.graphiteClientFactory, this.log, client);
             //Test
             runTask.Process();
             //Assert
