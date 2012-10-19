@@ -193,6 +193,8 @@ Section Main
 		File output\sqltographite.exe
 		File output\sqltographite.exe.config 
 		File output\ConfigPatcher.exe
+		File output\ConfigUi.exe
+		File output\ConfigUi.exe.config
 		WriteUninstaller $OUTDIR\uninstall.exe  
     
 		WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\SqlToGraphite" \
@@ -280,6 +282,8 @@ Section "Uninstall"
   ExecWait '"$INSTDIR\sqltographite.exe" uninstall'
   Delete $INSTDIR\sqltographite.exe
   Delete $INSTDIR\configpatcher.exe
+  Delete $INSTDIR\ConfigUi.exe
+  Delete $INSTDIR\ConfigUi.exe.config
   Delete $INSTDIR\sqltographite.exe.config
   RMDir $INSTDIR\logs
   Delete $INSTDIR\uninstall.exe ; delete self (see explanation below why this works)

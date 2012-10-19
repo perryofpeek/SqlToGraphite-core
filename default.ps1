@@ -17,6 +17,7 @@ task Test -depends Init, Compile, Clean, StartOracle {
   Exec { packages\NUnit.Runners.2.6.0.12051\tools\nunit-console-x86.exe .\test\SqlToGraphite.Plugin.SqlServer.UnitTests\output\SqlToGraphite.Plugin.SqlServer.UnitTests.dll }
   Exec { packages\NUnit.Runners.2.6.0.12051\tools\nunit-console-x86.exe .\test\SqlToGraphite.Plugin.Oracle.UnitTests\output\SqlToGraphite.Plugin.Oracle.UnitTests.dll }
   Exec { packages\NUnit.Runners.2.6.0.12051\tools\nunit-console-x86.exe .\test\SqlToGraphite.Plugin.Wmi.UnitTests\output\SqlToGraphite.Plugin.Wmi.UnitTests.dll }
+  Exec { packages\NUnit.Runners.2.6.0.12051\tools\nunit-console-x86.exe .\test\Plugin.Oracle.Transactions.Test\output\Plugin.Oracle.Transactions.Test.dll }
 }
 
 task Compile -depends  Clean { 
@@ -100,13 +101,15 @@ task Ilmerge -depends Test  {
     #$var = "" + "$fullPath" + "" + "$fullPath" + "\log4net.dll " + "$fullPath" + "\SqlToGraphite.dll " + "$fullPath" + "\Topshelf.dll";
     #Write-Host $var;
     Exec { tools\ilmerge.exe /closed /t:exe /out:output\sqlToGraphite.exe /targetplatform:v4 src\SqlToGraphite.host\output\SqlToGraphite.host.exe src\SqlToGraphite.host\output\Graphite.dll src\SqlToGraphite.host\output\SqlToGraphite.Plugin.Oracle.dll src\SqlToGraphite.host\output\SqlToGraphite.Plugin.Wmi.dll src\SqlToGraphite.host\output\SqlToGraphite.Plugin.SqlServer.dll src\SqlToGraphite.host\output\SqlToGraphiteInterfaces.dll  src\SqlToGraphite.host\output\Topshelf.dll src\SqlToGraphite.host\output\log4net.dll };
-    Copy-Item  $fullPath\app.config.Template output\SqlToGraphite.exe.config;
-	Copy-Item  src\ConfigPatcher\output\configpatcher.exe output\configpatcher.exe;
+    Exec { tools\ilmerge.exe /closed /t:winexe /out:output\ConfigUi.exe /targetplatform:v4 src\Configurator\output\Configurator.exe src\SqlToGraphite.host\output\SqlToGraphiteInterfaces.dll src\SqlToGraphite.host\output\log4net.dll };
+    	
+	Copy-Item  $fullPath\app.config.Template output\SqlToGraphite.exe.config;
+	Copy-Item  src\ConfigPatcher\output\configpatcher.exe output\configpatcher.exe;	
+	Copy-Item  src\Configurator\output\Configurator.exe.config output\ConfigUi.exe.config;
 }
-
-#-depends Ilmerge
+# -depends Ilmerge
 task Package -depends Ilmerge {
-	Exec { "c:\Program Files (x86)\NSIS\makensis.exe sqlToGraphite.nsi" }
+	Exec { c:\Apps\NSIS\makensis.exe sqlToGraphite.nsi }	
 }
 
 task StartOracle {

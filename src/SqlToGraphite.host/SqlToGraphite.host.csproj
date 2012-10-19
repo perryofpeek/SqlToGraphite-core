@@ -131,6 +131,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Plugin.Oracle.Transactions\Plugin.Oracle.Transactions.csproj">
+      <Project>{0B5C577F-285E-4730-AAE4-A0AE781D5F16}</Project>
+      <Name>Plugin.Oracle.Transactions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SqlToGraphite.Plugin.Oracle\SqlToGraphite.Plugin.Oracle.csproj">
       <Project>{22C76B9E-DA37-4DF9-9A02-F4F1636AEDDE}</Project>
       <Name>SqlToGraphite.Plugin.Oracle</Name>

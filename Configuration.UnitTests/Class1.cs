@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -17,6 +18,7 @@ namespace Configuration.UnitTests
     [TestFixture]
     public class Class1
     {
+       
         //    [Test]
         //    public void Should_display_all_clients()
         //    {

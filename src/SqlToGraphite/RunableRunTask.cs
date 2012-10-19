@@ -41,11 +41,13 @@ namespace SqlToGraphite
                 var results = dataClient.Get();
                 foreach (var result in results)
                 {
+                    log.Debug(string.Format("{0} [{1}] @ {2} ({3}) {4}", result.FullPath, result.Value, result.TimeStamp, result.Name, graphiteClient.GetType().Name));
                     graphiteClient.Send(result);
                 }
             }
             catch (Exception ex)
             {
+                var s = ex.Message;
                 // Catch all errors so we keep going. 
                 log.Error(ex);
             }

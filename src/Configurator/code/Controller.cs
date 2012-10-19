@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 using SqlToGraphite;
@@ -23,6 +24,7 @@ namespace Configurator.code
 
         public Controller()
         {
+            this.Initialise(Directory.GetCurrentDirectory());
         }
 
         public void Initialise(string path)
@@ -104,7 +106,11 @@ namespace Configurator.code
         public List<WorkItems> GetWorkItems()
         {
             var templates = repository.GetTemplates();
-            return templates[0].WorkItems;
+            if (templates.Count > 0)
+            {
+                return templates[0].WorkItems;
+            }
+            return new List<WorkItems>();
         }
 
 

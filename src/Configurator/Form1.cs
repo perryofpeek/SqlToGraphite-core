@@ -31,7 +31,7 @@ namespace Configurator
             controller = new code.Controller();
             assemblyResolver = new AssemblyResolver(new DirectoryImpl());
             SetUpDialogues();
-            this.LoadTheConfig();
+            //this.LoadTheConfig();
         }
 
         private void RenderForm()

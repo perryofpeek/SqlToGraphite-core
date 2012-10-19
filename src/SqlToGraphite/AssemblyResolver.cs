@@ -16,7 +16,8 @@ namespace SqlToGraphite
         {
             this.directory = directory;
             types = new Dictionary<string, Type>();
-            this.GetJobTypes();
+            this.GetJobTypes(FilesToScan);
+            this.GetJobTypes("*.exe");
         }
 
         private Dictionary<string, Type> types;
@@ -37,9 +38,9 @@ namespace SqlToGraphite
             return this.types.Select(type => type.Value).ToArray();
         }
 
-        public Dictionary<string, Type> GetJobTypes()
+        public Dictionary<string, Type> GetJobTypes(string filesToScan)
         {
-            var files = directory.GetFilesInCurrentDirectory(FilesToScan);
+            var files = directory.GetFilesInCurrentDirectory(filesToScan);           
             if (files != null)
             {
                 foreach (var dll in files)

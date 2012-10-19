@@ -202,7 +202,7 @@ namespace Plugin.Oracle.Transactions
 
         private string ReplaceDotsAndSpaces(string input)
         {
-            return input.Replace(".", "_").Replace(" ", "_");
+            return input.Replace(".", "_").Replace(" ", "_").Replace("/", "_").Replace(@"\", "_");
         }
 
         private void SetLastId()

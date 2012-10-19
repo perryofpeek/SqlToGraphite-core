@@ -19,7 +19,7 @@ namespace Configurator.code
         {
             var lbl = new Label { Text = "Type", Top = this.nextTop, Width = this.defaultJobProperties.DefaultLabelWidth };
             var cb = new ComboBox { Top = this.GetNextTop(), Left = this.defaultJobProperties.DefaultLabelWidth + this.defaultJobProperties.DefaultSpace, Name = "ClientName" };
-            var jobTypes = assemblyResolver.GetJobTypes();
+            var jobTypes = assemblyResolver.GetJobTypes("*.dll");
             cb.Width = 250;
             cb.SelectedIndexChanged += this.AddPluginIndexChanged;
             foreach (var c in jobTypes)

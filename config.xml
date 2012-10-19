@@ -23,13 +23,23 @@
         <Sql>w1Sql</Sql>
         <Hostname>w1Hostname</Hostname>
       </Job>
+      <Job xsi:type="WmiClient">
+        <Name>NameOfTheJOb</Name>
+        <ClientName>GraphiteUdpClient</ClientName>
+        <Type>SqlToGraphite.Plugin.Wmi.WmiClient</Type>
+        <Username />
+        <Hostname>Localhost</Hostname>
+        <Path>Some.Path</Path>
+        <Sql>SELECT AvailableMBytes FROM Win32_PerfFormattedData_PerfOS_Memory</Sql>
+        <Password />
+      </Job>
       <Job xsi:type="OracleTransactions">
-        <Name>E03_TracsTransactionCounter</Name>
+        <Name>Name</Name>
         <ClientName>GraphiteUdpClient</ClientName>
         <Type>Plugin.Oracle.Transactions.OracleTransactions</Type>
         <MetricName>MetricName</MetricName>
         <ConnectionString>Data Source=10.40.10.168:80/ttl6dbm2;User Id=E03;Password=password</ConnectionString>
-        <Path>Test.Tracs.Transactions.1m</Path>
+        <Path>Some.Path</Path>
         <NumberOfSecondsInThePast>60</NumberOfSecondsInThePast>
       </Job>
       <Job xsi:type="WmiClient">
@@ -42,7 +52,17 @@
         <Sql>SELECT AvailableMBytes FROM Win32_PerfFormattedData_PerfOS_Memory</Sql>
         <Password />
       </Job>
-      <Job xsi:type="WmiClient">
+	  <Job xsi:type="WmiClient">
+        <Name>Wmi_Memory_AvailableMBytes</Name>
+        <ClientName>GraphiteUdpClient</ClientName>
+        <Type>SqlToGraphite.Plugin.Wmi.WmiClient</Type>
+        <Username />
+        <Hostname>localhost</Hostname>
+        <Path>London.Dev.Servers.Memory.AvailableMBytes.%h</Path>
+        <Sql>SELECT AvailableMBytes FROM Win32_PerfFormattedData_PerfOS_Memory</Sql>
+        <Password />
+      </Job>
+	  <Job xsi:type="WmiClient">
         <Name>Wmi_Disk_AvgDiskQueueLength</Name>
         <ClientName>GraphiteUdpClient</ClientName>
         <Type>SqlToGraphite.Plugin.Wmi.WmiClient</Type>
@@ -52,8 +72,8 @@
         <Sql>SELECT AvgDiskQueueLength FROM Win32_PerfFormattedData_PerfDisk_LogicalDisk where name ="_Total"</Sql>
         <Password />
       </Job>
-      <Job xsi:type="WmiClient">
-        <Name>Wmi_Disk_PercentFreeSpace</Name>
+	   <Job xsi:type="WmiClient">
+        <Name>Wmi_Disk_PPercentFreeSpace</Name>
         <ClientName>GraphiteUdpClient</ClientName>
         <Type>SqlToGraphite.Plugin.Wmi.WmiClient</Type>
         <Username />
@@ -62,7 +82,7 @@
         <Sql>SELECT PercentFreeSpace, Name FROM Win32_PerfFormattedData_PerfDisk_LogicalDisk Where Name &lt;&gt; "_Total"</Sql>
         <Password />
       </Job>
-      <Job xsi:type="WmiClient">
+	  <Job xsi:type="WmiClient">
         <Name>Wmi_Network_NetworkBytePerSecond</Name>
         <ClientName>GraphiteUdpClient</ClientName>
         <Type>SqlToGraphite.Plugin.Wmi.WmiClient</Type>
@@ -72,7 +92,7 @@
         <Sql>select BytesTotalPersec , Name from Win32_PerfFormattedData_Tcpip_NetworkInterface</Sql>
         <Password />
       </Job>
-      <Job xsi:type="WmiClient">
+	  <Job xsi:type="WmiClient">
         <Name>Wmi_Network_ConnectionsEstablished</Name>
         <ClientName>GraphiteUdpClient</ClientName>
         <Type>SqlToGraphite.Plugin.Wmi.WmiClient</Type>
@@ -81,8 +101,8 @@
         <Path>London.Dev.Servers.Network.ConnectionsEstablished.%h</Path>
         <Sql>select ConnectionsEstablished from Win32_PerfFormattedData_Tcpip_TCPv4</Sql>
         <Password />
-      </Job>
-      <Job xsi:type="WmiClient">
+      </Job>   
+	  <Job xsi:type="WmiClient">
         <Name>Wmi_Cpu_NumberOfThreads</Name>
         <ClientName>GraphiteUdpClient</ClientName>
         <Type>SqlToGraphite.Plugin.Wmi.WmiClient</Type>
@@ -92,7 +112,7 @@
         <Sql>select Threads from Win32_PerfRawData_PerfOS_System</Sql>
         <Password />
       </Job>
-      <Job xsi:type="WmiClient">
+	   <Job xsi:type="WmiClient">
         <Name>Wmi_Cpu_NumberOfProcesses</Name>
         <ClientName>GraphiteUdpClient</ClientName>
         <Type>SqlToGraphite.Plugin.Wmi.WmiClient</Type>
@@ -112,7 +132,7 @@
         <Sql>SELECT PercentProcessorTime FROM win32_perfformatteddata_perfproc_process WHERE Name="SavService"</Sql>
         <Password />
       </Job>
-      <Job xsi:type="WmiClient">
+	  <Job xsi:type="WmiClient">
         <Name>Wmi_Cpu_PercentProcessorTime</Name>
         <ClientName>GraphiteUdpClient</ClientName>
         <Type>SqlToGraphite.Plugin.Wmi.WmiClient</Type>
@@ -134,8 +154,8 @@
     <ArrayOfHost xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
       <Host Name="TTL001121">
         <Roles>
+          <Role Name="ProductionTests" />
           <Role Name="default" />
-          <Role Name="OracleTransactionCounter" />
         </Roles>
       </Host>
       <Host Name="Server1">
@@ -152,51 +172,33 @@
         <WorkItems>
           <WorkItems RoleName="ProductionTests">
             <TaskSet>
-              <TaskSet Frequency="30">
+              <TaskSet Frequency="1000">
                 <Tasks>
                   <Task JobName="GetNumberOfTransactionsASecond" />
                   <Task JobName="NameOfTheJOb" />
                   <Task JobName="GetNumberOfDeliveryies" />
                 </Tasks>
               </TaskSet>
-              <TaskSet Frequency="10">
+              <TaskSet Frequency="2000">
                 <Tasks>
                   <Task JobName="GetNumberOfTransactionsASecond" />
                   <Task JobName="NameOfTheJOb" />
-                </Tasks>
-              </TaskSet>
-            </TaskSet>
-          </WorkItems>
-          <WorkItems RoleName="OracleTransactionCounter">
-            <TaskSet>
-              <TaskSet Frequency="60">
-                <Tasks>
-                  <Task JobName="E03_TracsTransactionCounter" />
                 </Tasks>
               </TaskSet>
             </TaskSet>
           </WorkItems>
           <WorkItems RoleName="default">
             <TaskSet>
-              <TaskSet Frequency="10">
+              <TaskSet Frequency="2000">
                 <Tasks>
                   <Task JobName="GetNumberOfDeliveryies" />
-                  <Task JobName="Wmi_Memory_AvailableMBytes" />
-                  <Task JobName="Wmi_Disk_AvgDiskQueueLength" />
-                  <Task JobName="Wmi_Disk_PercentFreeSpace" />
-                  <Task JobName="Wmi_Network_NetworkBytePerSecond" />
-                  <Task JobName="Wmi_Network_ConnectionsEstablished" />
-                  <Task JobName="Wmi_Cpu_NumberOfThreads" />
-                  <Task JobName="Wmi_Cpu_NumberOfProcesses" />
-                  <Task JobName="Wmi_Cpu_Sophos" />
-                  <Task JobName="Wmi_Cpu_PercentProcessorTime" />
                 </Tasks>
               </TaskSet>
             </TaskSet>
           </WorkItems>
           <WorkItems RoleName="SqlTests">
             <TaskSet>
-              <TaskSet Frequency="60">
+              <TaskSet Frequency="3000">
                 <Tasks>
                   <Task JobName="CpuLoad" />
                 </Tasks>
