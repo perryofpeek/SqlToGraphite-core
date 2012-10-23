@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using SqlToGraphite.Config;
 using SqlToGraphite.Plugin.SqlServer;
+using SqlToGraphite.Plugin.Wmi;
 
 namespace SqlToGraphite.UnitTests
 {
@@ -90,7 +91,7 @@ namespace SqlToGraphite.UnitTests
             var client2 = "SomeClient2";
 
             this.config.Jobs.Add(new SqlServerClient { ClientName = client1, Name = name1 });
-            this.config.Jobs.Add(new WmiPlugin { ClientName = client2, Name = name2 });
+            this.config.Jobs.Add(new WmiClient { ClientName = client2, Name = name2 });
             //Test
             var sqlToGraphiteConfig = Helper.SerialiseDeserialise(this.config);
             //Assert
@@ -99,7 +100,7 @@ namespace SqlToGraphite.UnitTests
             Assert.That(sqlToGraphiteConfig.Jobs[0], Is.TypeOf<SqlServerClient>());
             Assert.That(sqlToGraphiteConfig.Jobs[1].ClientName, Is.EqualTo(client2));
             Assert.That(sqlToGraphiteConfig.Jobs[1].Name, Is.EqualTo(name2));
-            Assert.That(sqlToGraphiteConfig.Jobs[1], Is.TypeOf<WmiPlugin>());
+            Assert.That(sqlToGraphiteConfig.Jobs[1], Is.TypeOf<WmiClient>());
         }
     }
 }

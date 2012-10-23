@@ -22,6 +22,8 @@ namespace Configurator.code
 
         private AssemblyResolver assemblyResolver;
 
+        private IEncryption encryption;
+
         public Controller()
         {
             this.Initialise(Directory.GetCurrentDirectory());
@@ -35,6 +37,7 @@ namespace Configurator.code
             var sleepTime = 0;
             assemblyResolver = new AssemblyResolver(new DirectoryImpl());
             var config = new SqlToGraphiteConfig(assemblyResolver);
+            encryption = new Encryption();
             var reader = new ConfigHttpReader(path, "", "");
             var cache = new Cache(new TimeSpan(0, 0, 1, 0), log);
             var sleep = new Sleeper();
@@ -62,7 +65,7 @@ namespace Configurator.code
 
         public ISqlClient GetTypedJob(string name)
         {
-            var dataClientFactory = new DataClientFactory(log, assemblyResolver);
+            var dataClientFactory = new DataClientFactory(log, assemblyResolver, encryption);
             return dataClientFactory.Create(repository.GetJob(name));
         }
 
@@ -156,7 +159,7 @@ namespace Configurator.code
 
         public void AddJobToRoleAndFrequency(string role, int frequency, string jobName)
         {
-            repository.AddTask(new TaskDetails(role,frequency,jobName));
+            repository.AddTask(new TaskDetails(role, frequency, jobName));
         }
 
         public void DeleteJobFromRole(string jobName, int frequency, string roleName)
@@ -166,7 +169,7 @@ namespace Configurator.code
 
         public void DeleteFrequency(int frequency, string roleName)
         {
-            repository.DeleteRoleFrequency(roleName,frequency);
+            repository.DeleteRoleFrequency(roleName, frequency);
         }
 
         public void DeleteRole(string roleName)

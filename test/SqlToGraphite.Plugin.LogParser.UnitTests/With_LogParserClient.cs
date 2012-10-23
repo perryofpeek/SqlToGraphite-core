@@ -45,7 +45,8 @@ namespace SqlToGraphite.Plugin.LogParser.UnitTests
             job.Sql = sql;
             job.Path = path;
             job.PathName = pathName;
-            var logParserClient = new LogParserClient(logMock, job);
+            IEncryption encryption = MockRepository.GenerateMock<IEncryption>(); 
+            var logParserClient = new LogParserClient(logMock, job, encryption);
             //Test
             var result = logParserClient.Get();
             //Assert

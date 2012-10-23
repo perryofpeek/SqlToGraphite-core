@@ -64,8 +64,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
+    <Compile Include="EncryptedAttribute.cs" />
+    <Compile Include="Encryption.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="IClient.cs" />
+    <Compile Include="IEncryption.cs" />
     <Compile Include="IJob.cs" />
     <Compile Include="ISqlClient.cs" />
     <Compile Include="IStatsClient.cs" />

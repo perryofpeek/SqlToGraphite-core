@@ -24,7 +24,7 @@ namespace Configurator
         private void SetUpDialogues()
         {
             ofgConfig.Multiselect = false;
-            ofgConfig.FileName = @"C:\git\perryOfPeek\SqlToGraphite\src\Configurator\bin\Debug\config.xml";
+           // ofgConfig.FileName = @"C:\git\perryOfPeek\SqlToGraphite\src\Configurator\bin\Debug\config.xml";
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -33,7 +33,7 @@ namespace Configurator
             controller = new code.Controller();
             assemblyResolver = new AssemblyResolver(new DirectoryImpl());
             SetUpDialogues();
-            this.LoadTheConfig();
+            //this.LoadTheConfig();
         }
 
         private void RenderForm()

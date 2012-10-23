@@ -1,9 +1,15 @@
+using System;
+using System.IO;
+using System.Security.Cryptography;
+
 using log4net;
 
 namespace SqlToGraphiteInterfaces
 {
     public abstract class PluginBase : Job
     {
+        protected IEncryption encryption;
+
         protected ILog Log { get; set; }
 
         public override string Name { get; set; }
@@ -12,13 +18,31 @@ namespace SqlToGraphiteInterfaces
 
         public override string Type { get; set; }
 
-        protected PluginBase(ILog log, Job job)
+        protected PluginBase()
         {
+            SetOrCreateLogObjectIfNull();
+            this.Type = this.GetType().FullName;
+            encryption = new Encryption();
+        }
+
+        protected PluginBase(ILog log, Job job, IEncryption encryption)
+        {
+            this.encryption = encryption;
             this.Log = log;
-            this.SetOrCreateLogObjectIfNull();            
+            this.SetOrCreateLogObjectIfNull();
             this.Name = job.Name;
             this.ClientName = job.ClientName;
             this.Type = job.Type;
+        }
+
+        protected string Encrypt(string clearText)
+        {
+            return encryption.Encrypt(clearText);
+        }
+
+        protected string Decrypt(string clearText)
+        {
+            return encryption.Decrypt(clearText);
         }
 
         private void SetOrCreateLogObjectIfNull()
@@ -27,14 +51,8 @@ namespace SqlToGraphiteInterfaces
             {
                 this.Log = LogManager.GetLogger("log");
                 log4net.Config.XmlConfigurator.Configure();
-            }                      
-        }
-
-        protected PluginBase()
-        {
-            SetOrCreateLogObjectIfNull();
-            this.Type = this.GetType().FullName;
-        }
+            }
+        }     
 
         public void WireUpProperties(Job taskParams, object dis)
         {

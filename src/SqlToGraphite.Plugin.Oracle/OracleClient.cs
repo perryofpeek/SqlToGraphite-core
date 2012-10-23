@@ -11,20 +11,41 @@ namespace SqlToGraphite.Plugin.Oracle
 {
     public class OracleClient : PluginBase
     {
+        private string connectionString;
+
         public OracleClient()
         {
         }
 
-        public OracleClient(ILog log, Job job)
-            : base(log, job)
+        public OracleClient(ILog log, Job job, IEncryption encryption) : base(log, job, encryption)
         {
             this.WireUpProperties(job, this);
         }
 
-
         public string MetricName { get; set; }
-
-        public string ConnectionString { get; set; }
+       
+        public string ConnectionString
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(connectionString))
+                {
+                    return string.Empty;
+                }
+                return this.Encrypt(this.connectionString);
+            }
+            set
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    this.connectionString = this.Decrypt(value);
+                }
+                else
+                {
+                    this.connectionString = string.Empty;    
+                }                
+            }
+        }
 
         public string Path { get; set; }
 
@@ -39,7 +60,7 @@ namespace SqlToGraphite.Plugin.Oracle
         public override IList<IResult> Get()
         {
             var rtn = new List<IResult>();
-            var dataSet = this.ExecuteQuery(this.ConnectionString, this.Sql);
+            var dataSet = this.ExecuteQuery(this.connectionString, this.Sql);
             foreach (DataRow row in dataSet.Tables[0].Rows)
             {
                 rtn.Add(this.Map(row));
@@ -78,7 +99,7 @@ namespace SqlToGraphite.Plugin.Oracle
 
             this.Log.Debug(string.Format("Got [{1}] {0}", value, dateTime));
 
-            return new Result(value, name, dateTime, this.Path);            
+            return new Result(value, name, dateTime, this.Path);
         }
 
         public DataSet ExecuteQuery(string connectionString, string sql)
@@ -90,7 +111,7 @@ namespace SqlToGraphite.Plugin.Oracle
                 connection.Open();
                 //Console.WriteLine("State: {0}", connection.State);
                 //Console.WriteLine("ConnectionString: {0}", connection.ConnectionString);
-                var command = connection.CreateCommand();                
+                var command = connection.CreateCommand();
                 command.CommandText = sql;
                 command.ExecuteReader();
                 var da = new OracleDataAdapter(command);

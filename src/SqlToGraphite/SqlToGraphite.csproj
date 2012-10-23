@@ -170,7 +170,6 @@
     <Compile Include="TaskBag.cs" />
     <Compile Include="TaskManager.cs" />
     <Compile Include="RunTaskSetWithProcess.cs" />
-    <Compile Include="Temp\WmiPlugin.cs" />
     <Compile Include="ThreadImpl.cs" />
     <Compile Include="Conf\UnknownDataClientException.cs" />
     <Compile Include="Conf\UnknownGraphiteClientTypeException.cs" />
@@ -201,6 +200,9 @@
       <Project>{B9B8475A-BF93-4D8C-819A-E2303DA40DD0}</Project>
       <Name>SqlToGraphiteInterfaces</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Temp\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(ProgramFiles)\MSBuild\Microsoft\StyleCop\v4.3\Microsoft.StyleCop.targets" />

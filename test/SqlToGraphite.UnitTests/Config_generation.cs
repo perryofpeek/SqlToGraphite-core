@@ -27,14 +27,12 @@ namespace SqlToGraphite.UnitTests
 
                 var job1 = new SqlServerClient { ClientName = "GraphiteTcpClient", Name = "GetNumberOfTransactionsASecond", ConnectionString = "some Cs", Sql = "some sql" };
                 var job2 = new SqlServerClient { ClientName = "GraphiteUdpClient", Name = "GetNumberOfDeliveryies", ConnectionString = "some Cs1", Sql = "some sql1" };
-                var job3 = new WmiPlugin { ClientName = "GraphiteUdpClient", Name = "CpuLoad", Sql = "w1Sql", Hostname = "w1Hostname" };
-                var client1 = new GraphiteTcpClient { ClientName = "GraphiteTcpClient", Port = 2003, Hostname = "metrics.london.ttldev.local" };
+               var client1 = new GraphiteTcpClient { ClientName = "GraphiteTcpClient", Port = 2003, Hostname = "metrics.london.ttldev.local" };
                 var client2 = new GraphiteUdpClient { ClientName = "GraphiteUdpClient", Port = 2003, Hostname = "metrics.london.ttldev.local" };
 
                 var config = new SqlToGraphiteConfig(new AssemblyResolver(new DirectoryImpl()));
                 config.Jobs.Add(job1);
                 config.Jobs.Add(job2);
-                config.Jobs.Add(job3);
 
                 var host1 = new Host { Name = "TTL001121" };
                 var host2 = new Host { Name = "Server1" };
@@ -64,7 +62,6 @@ namespace SqlToGraphite.UnitTests
 
                 var wi2 = new WorkItems { RoleName = role3.Name, TaskSet = new List<TaskSet>() };
                 var taskSet2 = new TaskSet { Frequency = 3000 };
-                taskSet2.Tasks.Add(new Task { JobName = job3.Name });
                 wi2.TaskSet.Add(taskSet2);
                 template.WorkItems.Add(wi2);
 

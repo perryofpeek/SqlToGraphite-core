@@ -21,8 +21,8 @@ namespace SqlToGraphite.Plugin.LogParser
         {
         }
 
-        public LogParserClient(ILog log, Job job)
-            : base(log, job)
+        public LogParserClient(ILog log, Job job, IEncryption encryption)
+            : base(log, job, encryption)
         {
             this.WireUpProperties(job, this);
         }

@@ -1,5 +1,4 @@
-﻿
-using log4net;
+﻿using log4net;
 using NUnit.Framework;
 using Rhino.Mocks;
 using SqlToGraphite.Plugin.Oracle;
@@ -18,23 +17,23 @@ namespace SqlToGraphite.UnitTests
         private IAssemblyResolver assemblyResolver;
 
         private IDataClientFactory dataClientFactory;
-        private const string SqlServerType = "SqlToGraphite.Plugin.SqlServer.SqlServerClient, SqlToGraphite.Plugin.SqlServer, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null";
-        private const string OracleType = "SqlToGraphite.Plugin.Oracle.OracleClient, SqlToGraphite.Plugin.Oracle, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null";
-        private const string WmiType = "SqlToGraphite.Plugin.Wmi.WmiClient, SqlToGraphite.Plugin.Wmi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null";
+
+        private IEncryption encryption;
 
         [SetUp]
         public void SetUp()
         {
+            encryption = new Encryption();
             log = MockRepository.GenerateMock<ILog>();
             assemblyResolver = MockRepository.GenerateMock<IAssemblyResolver>();
-            this.dataClientFactory = new DataClientFactory(log, assemblyResolver);
+            this.dataClientFactory = new DataClientFactory(log, assemblyResolver, encryption);
         }
 
         [Test]
         public void Should_throw_UnknownDataClientException()
         {
             Job job = new SqlServerClient();
-            assemblyResolver.Expect(x => x.ResolveType(job)).Return(null);            
+            assemblyResolver.Expect(x => x.ResolveType(job)).Return(null);
             var ex = Assert.Throws<UnknownDataClientException>(() => this.dataClientFactory.Create(job));
             Assert.That(ex.Message, Is.EqualTo(string.Format("{0}", job.GetType().FullName)));
             assemblyResolver.VerifyAllExpectations();
@@ -43,15 +42,17 @@ namespace SqlToGraphite.UnitTests
         [Test]
         public void Should_create_sql_server_client()
         {
-            var job = new SqlServerClient { ConnectionString = "cstring", ClientName = "clientName" };
-            assemblyResolver.Expect(x => x.ResolveType(job)).Return(job.GetType()); 
+            var e = new Encryption();
+            var job = new SqlServerClient { ConnectionString = "WnCLk1lIq9i4/tb9MQlRFQ==", ClientName = "clientName" };
+            //encryption.Expect(x => e.Decrypt("WnCLk1lIq9i4/tb9MQlRFQ==")).Return("someValue");
+            assemblyResolver.Expect(x => x.ResolveType(job)).Return(job.GetType());
             //Test
             var o = (SqlServerClient)this.dataClientFactory.Create(job);
             //Assert
             Assert.That(o, Is.Not.Null);
             Assert.That(o.ConnectionString, Is.EqualTo(job.ConnectionString));
             Assert.That(o.ClientName, Is.EqualTo(job.ClientName));
-            Assert.That(o.Sql, Is.EqualTo(job.Sql));            
+            Assert.That(o.Sql, Is.EqualTo(job.Sql));
             Assert.That(o, Is.TypeOf<SqlServerClient>());
             assemblyResolver.VerifyAllExpectations();
         }
@@ -60,7 +61,7 @@ namespace SqlToGraphite.UnitTests
         public void Should_create_wmi_client()
         {
             var job = new WmiClient { Sql = "someSql", Name = "someName", Username = "someUser", Password = "pass", Hostname = "hostname" };
-            assemblyResolver.Expect(x => x.ResolveType(job)).Return(job.GetType()); 
+            assemblyResolver.Expect(x => x.ResolveType(job)).Return(job.GetType());
             //Test
             var o = (WmiClient)this.dataClientFactory.Create(job);
             //Assert
@@ -78,8 +79,9 @@ namespace SqlToGraphite.UnitTests
         [Test]
         public void Should_create_oracle_client()
         {
-            Job job = new OracleClient();
-            assemblyResolver.Expect(x => x.ResolveType(job)).Return(job.GetType()); 
+            OracleClient job = new OracleClient();
+            job.ConnectionString = "WnCLk1lIq9i4/tb9MQlRFQ==";
+            assemblyResolver.Expect(x => x.ResolveType(job)).Return(job.GetType());
             var o = this.dataClientFactory.Create(job);
             Assert.That(o, Is.Not.Null);
             Assert.That(o, Is.TypeOf(typeof(OracleClient)));

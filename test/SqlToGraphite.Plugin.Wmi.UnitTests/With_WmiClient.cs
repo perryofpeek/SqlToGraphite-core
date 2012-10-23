@@ -18,7 +18,7 @@ namespace SqlToGraphite.Plugin.Wmi.UnitTests
             Job taskParams = null;
             var log = MockRepository.GenerateMock<ILog>();
             //var taskParams = new TaskParams("path", "SELECT PercentFreeSpace, Name FROM Win32_PerfFormattedData_PerfDisk_LogicalDisk Where Name <> '_Total'", string.Empty, "wmi", "nme", "statsdudp");
-            var wmiClient = new WmiClient(log, taskParams);
+            var wmiClient = new WmiClient(log, taskParams, null);
             var results = wmiClient.Get();
             Assert.That(results[0].Value, Is.GreaterThan(0));
             Assert.That(results[0].Name == "C" || results[0].Name == "D");

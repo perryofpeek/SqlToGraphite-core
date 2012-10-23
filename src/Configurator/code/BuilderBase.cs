@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 using SqlToGraphite;
@@ -66,7 +67,21 @@ namespace Configurator.code
             }
             else
             {
-                var obj = property.GetValue(typedJob, null);
+                object obj = null;
+                if(this.IsEncrypted(property))
+                {
+                    Encryption encryption = new Encryption();
+                    var value = property.GetValue(typedJob, null).ToString();
+                    if (value != string.Empty)
+                    {
+                        obj = encryption.Decrypt(property.GetValue(typedJob, null).ToString());                    
+                    }                        
+                }
+                else
+                {
+                    obj = property.GetValue(typedJob, null);       
+                }
+                
                 rtn = obj == null ? string.Empty : obj.ToString();
             }
             return rtn;
@@ -103,10 +118,10 @@ namespace Configurator.code
         private void TestButtonClick(object sender, EventArgs e)
         {
             try
-            {               
+            {
                 this.WireUpTheClientObjectWithUiValues();
                 var results = client.Get();
-                resultGrid.DataSource = results;               
+                resultGrid.DataSource = results;
             }
             catch (Exception ex)
             {
@@ -161,11 +176,19 @@ namespace Configurator.code
                 if (property.PropertyType.Name == typeof(Int32).Name)
                 {
                     property.SetValue(this.client, Convert.ToInt32(value), null);
-                }
+                }                
 
                 if (property.PropertyType.Name == typeof(string).Name)
                 {
-                    property.SetValue(this.client, value, null);
+                    if(IsEncrypted(property))
+                    {
+                        var encryption = new Encryption();
+                        property.SetValue(this.client, encryption.Encrypt(value), null);
+                    }
+                    else
+                    {
+                        property.SetValue(this.client, value, null);    
+                    }                    
                 }
 
                 if (property.PropertyType.Name == typeof(bool).Name)
@@ -173,6 +196,20 @@ namespace Configurator.code
                     property.SetValue(this.client, Convert.ToBoolean(value), null);
                 }
             }
+        }
+
+        private bool IsEncrypted(PropertyInfo property)
+        {
+            PropertyInfo[] properties = property.GetType().GetProperties();
+            foreach (PropertyInfo prop in properties)
+            {
+                var attribute = Attribute.GetCustomAttribute(property, typeof(EncryptedAttribute)) as EncryptedAttribute;
+                if (attribute != null) 
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private string GetTextBoxValue(string name)

@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-
 using NUnit.Framework;
-
 using Rhino.Mocks;
-
+using SqlToGraphiteInterfaces;
 using log4net;
 
 namespace Plugin.Oracle.Transactions.Test
@@ -18,10 +16,13 @@ namespace Plugin.Oracle.Transactions.Test
         private IOracleRepository oracleRepository = MockRepository.GenerateMock<IOracleRepository>();
         private string connectionString;
 
+        private IEncryption encryption;
+
         [SetUp]
         public void SetUp()
         {
             log = MockRepository.GenerateMock<ILog>();
+            encryption = MockRepository.GenerateMock<IEncryption>();
             oracleRepository = MockRepository.GenerateMock<IOracleRepository>();
             connectionString = "someString";
             DataStore.EntryPoints = new Dictionary<int, string>();
@@ -45,7 +46,7 @@ namespace Plugin.Oracle.Transactions.Test
             oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(MaxId)).Repeat.Once();
             oracleRepository.Expect(x => x.ExecuteQuery(connectionString, sql)).Return(CreateQueryResult()).Repeat.Once();
             oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(NewMaxId)).Repeat.Once();
-            var oracleTransactions = new OracleTransactions(log, job, oracleRepository);
+            var oracleTransactions = new OracleTransactions(log, job, oracleRepository,encryption);
             //Test
             var result = oracleTransactions.Get();
             //Assert
@@ -76,7 +77,7 @@ namespace Plugin.Oracle.Transactions.Test
             oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(MaxId)).Repeat.Once();
             oracleRepository.Expect(x => x.ExecuteQuery(connectionString, sql)).Return(CreateQueryResult()).Repeat.Once();
             oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(NewMaxId)).Repeat.Once();
-            var oracleTransactions = new OracleTransactions(log, job, oracleRepository);
+            var oracleTransactions = new OracleTransactions(log, job, oracleRepository,encryption);
             //Test
            oracleTransactions.Get();
             //Assert           
@@ -99,8 +100,8 @@ namespace Plugin.Oracle.Transactions.Test
             var sql = string.Format(Sql.GetTransactionsCountSql, MaxId, NumberOfSecondsInThePast);
             oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetEntryPoints)).Return(CreateEntryPointQueryResult()).Repeat.Once();
             oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(MaxId)).Repeat.Once();
-            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, sql)).Return(CreateQueryResult()).Throw(new ApplicationException());            
-            var oracleTransactions = new OracleTransactions(log, job, oracleRepository);
+            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, sql)).Return(CreateQueryResult()).Throw(new ApplicationException());
+            var oracleTransactions = new OracleTransactions(log, job, oracleRepository, encryption);
             //Test
             Assert.Throws<ApplicationException>(() => oracleTransactions.Get());
             //Assert           
@@ -125,7 +126,7 @@ namespace Plugin.Oracle.Transactions.Test
             oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(MaxId)).Repeat.Once();
             oracleRepository.Expect(x => x.ExecuteQuery(connectionString, sql)).Return(CreateQueryResultOddData()).Repeat.Once();
             oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(NewMaxId)).Repeat.Once();
-            var oracleTransactions = new OracleTransactions(log, job, oracleRepository);
+            var oracleTransactions = new OracleTransactions(log, job, oracleRepository, encryption);
             //Test
             var result = oracleTransactions.Get();
             //Assert
@@ -158,7 +159,7 @@ namespace Plugin.Oracle.Transactions.Test
             oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetEntryPoints)).Return(CreateEntryPointQueryResult()).Repeat.Once();
             oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(MaxId));
             oracleRepository.Expect(x => x.ExecuteQuery(connectionString, sql)).Return(CreateQueryResult());
-            var oracleTransactions = new OracleTransactions(log, job, oracleRepository);
+            var oracleTransactions = new OracleTransactions(log, job, oracleRepository, encryption);
             //Test
             oracleTransactions.Get();
             oracleTransactions.Get();
@@ -182,7 +183,7 @@ namespace Plugin.Oracle.Transactions.Test
             oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(MaxId)).Repeat.Once();
             oracleRepository.Expect(x => x.ExecuteQuery(connectionString, sql)).Return(CreateQueryResult()).Repeat.Once();
             oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(NewMaxId)).Repeat.Once();
-            var oracleTransactions = new OracleTransactions(log, job, oracleRepository);
+            var oracleTransactions = new OracleTransactions(log, job, oracleRepository, encryption);
             //Test
             oracleTransactions.Get();
             //Assert

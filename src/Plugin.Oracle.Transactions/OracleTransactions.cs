@@ -11,6 +11,8 @@ namespace Plugin.Oracle.Transactions
     {
         private readonly IOracleRepository oracleRepository;
 
+        private string connectionString;
+
         private const int TimeDrift = 2;
 
         public OracleTransactions()
@@ -18,13 +20,13 @@ namespace Plugin.Oracle.Transactions
             oracleRepository = new OracleRepository();
         }
 
-        public OracleTransactions(ILog log, Job job) : base(log, job)
+        public OracleTransactions(ILog log, Job job,IEncryption encryption) : base(log, job, encryption)
         {           
             oracleRepository = new OracleRepository();
             this.WireUpProperties(job, this);
         }
 
-        public OracleTransactions(ILog log, Job job, IOracleRepository oracleRepository) : base(log, job)
+        public OracleTransactions(ILog log, Job job, IOracleRepository oracleRepository, IEncryption encryption) : base(log, job, encryption)
         {
             this.oracleRepository = oracleRepository;
             this.WireUpProperties(job, this);
@@ -32,7 +34,30 @@ namespace Plugin.Oracle.Transactions
 
         public string MetricName { get; set; }
 
-        public string ConnectionString { get; set; }
+        [Encrypted]
+        public string ConnectionString
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(connectionString))
+                {
+                    return string.Empty;
+                }
+                return this.Encrypt(this.connectionString);
+            }
+            set
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    this.connectionString = this.Decrypt(value);
+                }
+                else
+                {
+                    this.connectionString = string.Empty;
+                }
+            }
+        }
+
 
         public string Path { get; set; }
 
@@ -98,7 +123,7 @@ namespace Plugin.Oracle.Transactions
 
         private void PopulateEntryPoints()
         {
-            var list = this.oracleRepository.ExecuteQuery(this.ConnectionString, Sql.GetEntryPoints);
+            var list = this.oracleRepository.ExecuteQuery(this.connectionString, Sql.GetEntryPoints);
             foreach (DataRow row in list.Tables[0].Rows)
             {
                 Log.Debug(string.Format("Adding Entry point: {0} {1}", row[0], row[1]));
@@ -110,7 +135,7 @@ namespace Plugin.Oracle.Transactions
         {
             var now = DateTime.Now;
             var sql = string.Format(Sql.GetTransactionsCountSql, DataStore.LastMaxId, this.NumberOfSecondsInThePast);
-            var dataSet = this.oracleRepository.ExecuteQuery(this.ConnectionString, sql);
+            var dataSet = this.oracleRepository.ExecuteQuery(this.connectionString, sql);
             var resultDictionary = this.LoadResponseIntoDictionary(dataSet);
             return CreateResponseList(now, resultDictionary); ;
         }
@@ -208,7 +233,7 @@ namespace Plugin.Oracle.Transactions
         private void SetLastId()
         {
             Log.Debug("Setting last id");
-            var ds = this.oracleRepository.ExecuteQuery(this.ConnectionString, Sql.GetMaxIdSql);
+            var ds = this.oracleRepository.ExecuteQuery(this.connectionString, Sql.GetMaxIdSql);
             var row = ds.Tables[0].Rows[0];
             Log.Debug(string.Format("Last Id is: {0}", row[0]));
             DataStore.LastMaxId = Convert.ToInt64(row[0]);

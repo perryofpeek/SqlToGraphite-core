@@ -1,4 +1,7 @@
 ﻿using System;
+
+using SqlToGraphiteInterfaces;
+
 using log4net;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -13,7 +16,22 @@ namespace SqlToGraphite.Plugin.SqlServer.UnitTests
 
         private const string SimpleQuery = "SELECT 234 , DATEADD(day,11,GETDATE())";
 
-        private const string SimplePath =  "Some.Path";
+        private const string SimplePath = "Some.Path";
+
+        private IEncryption encryption;
+
+        private ILog log;
+
+        private Encryption e;
+
+        [SetUp]
+        public void SetUp()
+        {
+            e = new Encryption();
+            encryption = MockRepository.GenerateMock<IEncryption>();
+            log = MockRepository.GenerateMock<ILog>();
+            encryption.Expect(x => x.Decrypt(e.Encrypt(ConnectionString))).Return(ConnectionString);
+        }
 
         [Test]
         public void Should_get_result()
@@ -21,15 +39,15 @@ namespace SqlToGraphite.Plugin.SqlServer.UnitTests
             var metricName = Guid.NewGuid().ToString();
             var serverClientParams = new SqlServerClient
                 {
-                    ConnectionString = ConnectionString,
+                    ConnectionString = e.Encrypt(ConnectionString),
                     Path = SimplePath,
-                    Sql = SimpleQuery ,
+                    Sql = SimpleQuery,
                     ClientName = "GraphiteTcpClient",
                     MetricName = metricName
                 };
-            
-            var log = MockRepository.GenerateMock<ILog>();
-            var sqlServerClient = new SqlServerClient(log, serverClientParams);
+
+
+            var sqlServerClient = new SqlServerClient(log, serverClientParams, encryption);
             //Test
             var results = sqlServerClient.Get();
             //Asset            
@@ -44,15 +62,14 @@ namespace SqlToGraphite.Plugin.SqlServer.UnitTests
             var metricName = Guid.NewGuid().ToString();
             var serverClientParams = new SqlServerClient
             {
-                ConnectionString = ConnectionString,
+                ConnectionString = e.Encrypt(ConnectionString),
                 Path = SimplePath,
                 Sql = SimpleQuery,
                 ClientName = "GraphiteTcpClient",
                 MetricName = metricName
-            };            
-
-            var log = MockRepository.GenerateMock<ILog>();
-            var sqlServerClient = new SqlServerClient(log, serverClientParams);
+            };
+            
+            var sqlServerClient = new SqlServerClient(log, serverClientParams,encryption);
             //Test
             var results = sqlServerClient.Get();
             //Asset            
@@ -68,18 +85,17 @@ namespace SqlToGraphite.Plugin.SqlServer.UnitTests
 
         [Test]
         public void Should_get_result_with_date_and_name_set_in_select()
-        {            
+        {
             var metricName = Guid.NewGuid().ToString();
             var serverClientParams = new SqlServerClient
             {
-                ConnectionString = ConnectionString,
+                ConnectionString = e.Encrypt(ConnectionString),
                 Path = SimplePath,
                 Sql = "SELECT 234 , DATEADD(day,11,GETDATE()), 'someName'",
                 ClientName = "GraphiteTcpClient",
                 MetricName = metricName
             };            
-            var log = MockRepository.GenerateMock<ILog>();
-            var sqlServerClient = new SqlServerClient(log, serverClientParams);
+            var sqlServerClient = new SqlServerClient(log, serverClientParams, encryption);
             //Test
             var results = sqlServerClient.Get();
             //Asset            
@@ -96,14 +112,14 @@ namespace SqlToGraphite.Plugin.SqlServer.UnitTests
             var metricName = Guid.NewGuid().ToString();
             var serverClientParams = new SqlServerClient
             {
-                ConnectionString = ConnectionString,
+                ConnectionString = e.Encrypt(ConnectionString),
                 Path = SimplePath,
                 Sql = "SELECT [dbms_id] FROM [msdb].[dbo].[MSdbms]",
                 ClientName = "GraphiteTcpClient",
                 MetricName = metricName
-            };            
-            var log = MockRepository.GenerateMock<ILog>();
-            var sqlServerClient = new SqlServerClient(log, serverClientParams);
+            };
+            
+            var sqlServerClient = new SqlServerClient(log, serverClientParams,encryption);
             var results = sqlServerClient.Get();
             Assert.That(results.Count, Is.EqualTo(8));
         }

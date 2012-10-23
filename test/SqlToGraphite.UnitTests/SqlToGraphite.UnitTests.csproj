@@ -105,6 +105,7 @@
     <Compile Include="Config_Templates.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Config_generation.cs" />
+    <Compile Include="With_PluginBase.cs" />
     <Compile Include="With_AssemblyResolver.cs" />
     <Compile Include="With_Cache.cs" />
     <Compile Include="With_ConfigReader.cs" />
@@ -176,11 +177,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="TestConfigSchema.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(ProgramFiles)\MSBuild\Microsoft\StyleCop\v4.3\Microsoft.StyleCop.targets" />

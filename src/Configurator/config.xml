@@ -6,29 +6,22 @@
         <Name>GetNumberOfTransactionsASecond</Name>
         <ClientName>GraphiteTcpClient</ClientName>
         <Type>SqlToGraphite.Plugin.SqlServer.SqlServerClient</Type>
-        <ConnectionString>some Cs</ConnectionString>
+        <ConnectionString>VxlQquob6hdGuNh7t2LfZf5PQhBnlZlefBTu1HMv2t/h0jEgLw9nk/30ydNtERmkerRX0ghjjIqXBiU8pwGV5M4aFQBRL1Bei1G7DgIfX/lojxuiqCX9KygtqEVzUba6TWIbOkU955D7VNzBUinADjZUDHgWA3IsgjWQVHlBgw4ekFr90B28H9hNaCXVj/kxdrC8CPMvaJwaRTiLJOMWYA==</ConnectionString>
         <Sql>some sql</Sql>
       </Job>
       <Job xsi:type="SqlServerClient">
         <Name>GetNumberOfDeliveryies</Name>
         <ClientName>GraphiteUdpClient</ClientName>
         <Type>SqlToGraphite.Plugin.SqlServer.SqlServerClient</Type>
-        <ConnectionString>Data Source=localhost;Initial Catalog=Master;User Id=sa;Password=!bcde1234;</ConnectionString>
+        <ConnectionString>VxlQquob6hdGuNh7t2LfZf5PQhBnlZlefBTu1HMv2t/h0jEgLw9nk/30ydNtERmkerRX0ghjjIqXBiU8pwGV5M4aFQBRL1Bei1G7DgIfX/lojxuiqCX9KygtqEVzUba6TWIbOkU955D7VNzBUinADjZUDHgWA3IsgjWQVHlBgw4ekFr90B28H9hNaCXVj/kxdrC8CPMvaJwaRTiLJOMWYA==</ConnectionString>
         <Sql>SELECT 234 , DATEADD(day,11,GETDATE())</Sql>
-      </Job>
-      <Job xsi:type="WmiPlugin">
-        <Name>CpuLoad</Name>
-        <ClientName>GraphiteUdpClient</ClientName>
-        <Type>WmiPlugin</Type>
-        <Sql>w1Sql</Sql>
-        <Hostname>w1Hostname</Hostname>
-      </Job>
+      </Job>     
       <Job xsi:type="OracleTransactions">
         <Name>E03_TracsTransactionCounter</Name>
         <ClientName>GraphiteUdpClient</ClientName>
         <Type>Plugin.Oracle.Transactions.OracleTransactions</Type>
         <MetricName>MetricName</MetricName>
-        <ConnectionString>Data Source=10.40.10.168:80/ttl6dbm2;User Id=E03;Password=password</ConnectionString>
+        <ConnectionString>VxlQquob6hdGuNh7t2LfZTBqxDjBhrOfScw7Kn4UfRv0cyXGgrk5E5Ar9VFQEndJQhRt5j7u9vObtpWzKlB/4DOAFRwVI2fGOIGfX7OS0wVII8Ft8wnUMFxkKkeb/mXmD91zKh7AcUrsqaonTgJduq4D3NnUYEWbyoPfEWTNzHRxIV3FejA53OHzp7Jm8yNE</ConnectionString>
         <Path>Test.Tracs.Transactions.1m</Path>
         <NumberOfSecondsInThePast>60</NumberOfSecondsInThePast>
       </Job>
@@ -198,7 +191,7 @@
             <TaskSet>
               <TaskSet Frequency="60">
                 <Tasks>
-                  <Task JobName="CpuLoad" />
+                  <Task JobName="GetNumberOfDeliveryies" />
                 </Tasks>
               </TaskSet>
             </TaskSet>

@@ -17,7 +17,28 @@ namespace SqlToGraphite.Plugin.SqlServer
 
         public override string Type { get; set; }
 
-        public string ConnectionString { get; set; }
+        public string ConnectionString
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(connectionString))
+                {
+                    return string.Empty;
+                }
+                return this.Encrypt(this.connectionString);
+            }
+            set
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    this.connectionString = this.Decrypt(value);
+                }
+                else
+                {
+                    this.connectionString = string.Empty;
+                }
+            }
+        }
 
         public string Path { get; set; }
 
@@ -25,12 +46,14 @@ namespace SqlToGraphite.Plugin.SqlServer
 
         private static int count;
 
+        private string connectionString;
+
         public SqlServerClient()
         {
         }
 
-        public SqlServerClient(ILog log, Job job)
-            : base(log, job)
+        public SqlServerClient(ILog log, Job job, IEncryption encryption)
+            : base(log, job, encryption)
         {
             this.WireUpProperties(job, this);
         }
@@ -42,7 +65,7 @@ namespace SqlToGraphite.Plugin.SqlServer
             var connection = new SqlConnection();
             try
             {
-                connection.ConnectionString = this.ConnectionString;
+                connection.ConnectionString = this.connectionString;
                 this.Log.Debug(string.Format("running {0}", this.Sql));
                 connection.Open();
                 var records = GetRecords(this.Sql, connection);

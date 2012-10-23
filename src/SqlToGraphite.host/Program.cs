@@ -2,6 +2,9 @@ using System;
 
 using SqlToGraphite.Clients;
 using SqlToGraphite.Conf;
+
+using SqlToGraphiteInterfaces;
+
 using Topshelf;
 using log4net;
 
@@ -12,17 +15,18 @@ namespace SqlToGraphite.host
         private static ILog log;
 
         public static TaskManager CreateTaskManager(SqlToGraphiteSection configuration)
-        {            
+        {
             var cacheLength = new TimeSpan(0, configuration.ConfigCacheLengthMinutes, 0);
             var stop = new Stop();
             var directoryImpl = new DirectoryImpl();
             var assemblyResolver = new AssemblyResolver(directoryImpl);
-            IDataClientFactory dataClientFactory = new DataClientFactory(log,assemblyResolver );
+            IEncryption encryption = new Encryption();
+            IDataClientFactory dataClientFactory = new DataClientFactory(log, assemblyResolver, encryption);
             IGraphiteClientFactory graphiteClientFactory = new GraphiteClientFactory(log);
-            
-            var configReader = new ConfigHttpReader(configuration.ConfigUri,configuration.ConfigUsername,configuration.ConfigPassword);
+
+            var configReader = new ConfigHttpReader(configuration.ConfigUri, configuration.ConfigUsername, configuration.ConfigPassword);
             var cache = new Cache(cacheLength, log);
-            var sleeper = new Sleeper();            
+            var sleeper = new Sleeper();
             var genericSer = new GenericSerializer();
             var cr = new ConfigRepository(configReader, cache, sleeper, log, configuration.MinutesBetweenRetryToGetConfigOnError, genericSer);
             var configMapper = new ConfigMapper(configuration.Hostname, stop, dataClientFactory, graphiteClientFactory, log, cr);
@@ -40,7 +44,7 @@ namespace SqlToGraphite.host
             {
                 log = LogManager.GetLogger("log");
                 log4net.Config.XmlConfigurator.Configure();
-                var configuration = ReadConfigFromAppConfig();                                
+                var configuration = ReadConfigFromAppConfig();
                 RunApplication(CreateTaskManager(configuration));
             }
             catch (Exception ex)

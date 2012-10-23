@@ -26,8 +26,8 @@ namespace SqlToGraphite.Plugin.Wmi
 
         }
 
-        public WmiClient(ILog log, Job job)
-            : base(log, job)
+        public WmiClient(ILog log, Job job, IEncryption encryption)
+            : base(log, job, encryption)
         {
             this.machineName = Environment.MachineName; ;
             this.WireUpProperties(job, this);
@@ -121,7 +121,7 @@ namespace SqlToGraphite.Plugin.Wmi
                 this.Log.Debug(string.Format("{0} {1}", path, query));
                 var queryObject = new ObjectQuery(query);
                 var searcher = new ManagementObjectSearcher(scope, queryObject);
-                return searcher.Get().Cast<ManagementObject>().ToList();               
+                return searcher.Get().Cast<ManagementObject>().ToList();
             }
             catch (Exception e)
             {
