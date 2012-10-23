@@ -31,9 +31,6 @@ namespace Configurator
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.lbHosts = new System.Windows.Forms.ListBox();
-            this.lblHosts = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
@@ -49,7 +46,6 @@ namespace Configurator
             this.jobAdd = new System.Windows.Forms.Panel();
             this.tpHosts = new System.Windows.Forms.TabPage();
             this.resultView = new System.Windows.Forms.DataGridView();
-            this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tpView.SuspendLayout();
@@ -58,42 +54,12 @@ namespace Configurator
             ((System.ComponentModel.ISupportInitialize)(this.resultView)).BeginInit();
             this.SuspendLayout();
             // 
-            // panel1
-            // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.panel1.Controls.Add(this.lbHosts);
-            this.panel1.Controls.Add(this.lblHosts);
-            this.panel1.Location = new System.Drawing.Point(12, 92);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(144, 570);
-            this.panel1.TabIndex = 3;
-            // 
-            // lbHosts
-            // 
-            this.lbHosts.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.lbHosts.FormattingEnabled = true;
-            this.lbHosts.Location = new System.Drawing.Point(6, 16);
-            this.lbHosts.Name = "lbHosts";
-            this.lbHosts.Size = new System.Drawing.Size(127, 524);
-            this.lbHosts.TabIndex = 3;
-            // 
-            // lblHosts
-            // 
-            this.lblHosts.AutoSize = true;
-            this.lblHosts.Location = new System.Drawing.Point(3, 0);
-            this.lblHosts.Name = "lblHosts";
-            this.lblHosts.Size = new System.Drawing.Size(34, 13);
-            this.lblHosts.TabIndex = 0;
-            this.lblHosts.Text = "Hosts";
-            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.btnRefresh);
             this.panel2.Controls.Add(this.btnSave);
             this.panel2.Controls.Add(this.btnLoad);
-            this.panel2.Location = new System.Drawing.Point(18, 12);
+            this.panel2.Location = new System.Drawing.Point(403, 12);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(261, 31);
             this.panel2.TabIndex = 4;
@@ -140,17 +106,17 @@ namespace Configurator
             this.tabControl1.Controls.Add(this.tpView);
             this.tabControl1.Controls.Add(this.tpAdd);
             this.tabControl1.Controls.Add(this.tpHosts);
-            this.tabControl1.Location = new System.Drawing.Point(434, 15);
+            this.tabControl1.Location = new System.Drawing.Point(8, 45);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(650, 494);
+            this.tabControl1.Size = new System.Drawing.Size(656, 494);
             this.tabControl1.TabIndex = 2;
             // 
             // tpRoles
             // 
             this.tpRoles.Location = new System.Drawing.Point(4, 22);
             this.tpRoles.Name = "tpRoles";
-            this.tpRoles.Size = new System.Drawing.Size(642, 468);
+            this.tpRoles.Size = new System.Drawing.Size(648, 468);
             this.tpRoles.TabIndex = 2;
             this.tpRoles.Text = "Roles";
             this.tpRoles.UseVisualStyleBackColor = true;
@@ -234,27 +200,23 @@ namespace Configurator
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.resultView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.resultView.Location = new System.Drawing.Point(434, 515);
+            this.resultView.Location = new System.Drawing.Point(8, 545);
             this.resultView.Name = "resultView";
-            this.resultView.Size = new System.Drawing.Size(646, 150);
+            this.resultView.Size = new System.Drawing.Size(656, 184);
             this.resultView.TabIndex = 5;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1088, 674);
+            this.ClientSize = new System.Drawing.Size(672, 734);
             this.Controls.Add(this.resultView);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.panel2);
-            this.Controls.Add(this.panel1);
             this.Name = "Form1";
-            this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
-            this.MouseHover += new System.EventHandler(this.test);
+            this.Text = "SqlToGraphite Configuration";
+            this.Load += new System.EventHandler(this.Form1_Load);            
             this.Resize += new System.EventHandler(this.Form1_Resize);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tpView.ResumeLayout(false);
@@ -267,9 +229,6 @@ namespace Configurator
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.ListBox lbHosts;
-        private System.Windows.Forms.Label lblHosts;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.OpenFileDialog ofgConfig;
         private System.Windows.Forms.Button btnLoad;

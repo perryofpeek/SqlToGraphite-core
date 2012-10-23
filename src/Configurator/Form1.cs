@@ -19,6 +19,8 @@ namespace Configurator
 
         private AssemblyResolver assemblyResolver;
 
+        private Builder jobAddObject;
+
         private void SetUpDialogues()
         {
             ofgConfig.Multiselect = false;
@@ -35,8 +37,7 @@ namespace Configurator
         }
 
         private void RenderForm()
-        {
-            DisplayHosts();
+        {            
             DisplayJobs();
         }
 
@@ -46,16 +47,7 @@ namespace Configurator
             DisplayAddJob();
             DisplayRolesView();
             DisplayHostsView();
-        }
-       
-        private void DisplayHosts()
-        {
-            lbHosts.Items.Clear();
-            foreach (var host in controller.GetHosts())
-            {
-                lbHosts.Items.Add(host.Name);
-            }
-        }
+        }             
 
         private void DisplayJobs()
         {
@@ -83,7 +75,6 @@ namespace Configurator
             this.RenderForm();
             this.RefreshForm();
         }
-
 
         private void lbJob_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -117,9 +108,7 @@ namespace Configurator
                 this.Refresh();
                 
             }
-        }
-
-        private Builder jobAddObject;
+        }      
 
         private void DisplayAddJob()
         {
@@ -169,11 +158,6 @@ namespace Configurator
             var p = new Position(this.tpRoles.Left, this.tpRoles.Width, this.tpRoles.Top, this.tpRoles.Height - 50);
             var panel = rv.Get(p);
             tpHosts.Controls.Add(panel);
-        }
-
-        private void test(object sender, EventArgs e)
-        {
-            var x = "";
-        }
+        }      
     }
 }
