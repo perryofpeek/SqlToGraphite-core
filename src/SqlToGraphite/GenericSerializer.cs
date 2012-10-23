@@ -11,6 +11,13 @@ namespace SqlToGraphite
     /// </summary>
     public class GenericSerializer : IGenericSerializer
     {
+        public GenericSerializer(string defaultNamespace)
+        {
+            this.defaultNamespace = defaultNamespace;
+        }
+
+        private string defaultNamespace = "SqlToGraphite_1.0.0.0";
+
         /// <summary>
         /// Serializes the given object.
         /// </summary>
@@ -23,7 +30,7 @@ namespace SqlToGraphite
             StringWriter sw = null;
             try
             {
-                xs = new XmlSerializer(typeof(T));
+                xs = new XmlSerializer(typeof(T), defaultNamespace);
                 sw = new StringWriter();
                 xs.Serialize(sw, obj);
                 sw.Flush();
@@ -77,7 +84,7 @@ namespace SqlToGraphite
         /// <param name="writer">The writer to be used for output in the serialization.</param>
         public void Serialize<T>(T obj, XmlWriter writer)
         {
-            XmlSerializer xs = new XmlSerializer(typeof(T));
+            XmlSerializer xs = new XmlSerializer(typeof(T), defaultNamespace);
             xs.Serialize(writer, obj);
         }
 
@@ -102,7 +109,7 @@ namespace SqlToGraphite
         /// <returns>The deserialized object of type T.</returns>
         public T Deserialize<T>(XmlReader reader)
         {
-            XmlSerializer xs = new XmlSerializer(typeof(T));
+            XmlSerializer xs = new XmlSerializer(typeof(T), defaultNamespace);
             return (T)xs.Deserialize(reader);
         }
 
@@ -137,7 +144,7 @@ namespace SqlToGraphite
             StringReader sr = null;
             try
             {
-                xs = new XmlSerializer(typeof(T));
+                xs = new XmlSerializer(typeof(T), defaultNamespace);
                 sr = new StringReader(xml);
                 return (T)xs.Deserialize(sr);
             }

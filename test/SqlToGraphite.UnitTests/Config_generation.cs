@@ -18,6 +18,8 @@ namespace SqlToGraphite.UnitTests
         {
             try
             {
+                Encryption encryption = new Encryption();
+                var simpleCs = encryption.Encrypt("some Cs");
                 var log = LogManager.GetLogger("log");
                 log4net.Config.XmlConfigurator.Configure();
 
@@ -25,8 +27,8 @@ namespace SqlToGraphite.UnitTests
 
                 Type type = assembly.GetType("SqlToGraphite.Plugin.SqlServer.SqlServer");
 
-                var job1 = new SqlServerClient { ClientName = "GraphiteTcpClient", Name = "GetNumberOfTransactionsASecond", ConnectionString = "some Cs", Sql = "some sql" };
-                var job2 = new SqlServerClient { ClientName = "GraphiteUdpClient", Name = "GetNumberOfDeliveryies", ConnectionString = "some Cs1", Sql = "some sql1" };
+                var job1 = new SqlServerClient { ClientName = "GraphiteTcpClient", Name = "GetNumberOfTransactionsASecond", ConnectionString = simpleCs, Sql = "some sql" };
+                var job2 = new SqlServerClient { ClientName = "GraphiteUdpClient", Name = "GetNumberOfDeliveryies", ConnectionString = simpleCs, Sql = "some sql1" };
                var client1 = new GraphiteTcpClient { ClientName = "GraphiteTcpClient", Port = 2003, Hostname = "metrics.london.ttldev.local" };
                 var client2 = new GraphiteUdpClient { ClientName = "GraphiteUdpClient", Port = 2003, Hostname = "metrics.london.ttldev.local" };
 
@@ -67,13 +69,13 @@ namespace SqlToGraphite.UnitTests
 
                 config.Templates.Add(template);
                 config.Clients = new ListOfUniqueType<Client> { client1, client2 };
-                var genericSerializer = new GenericSerializer();
+                var genericSerializer = new GenericSerializer(Global.GetNameSpace());
                 string xml = genericSerializer.Serialize(config);
-                Console.WriteLine(xml);
+                //Console.WriteLine(xml);
                 var sqlToGraphiteConfig = genericSerializer.Deserialize<SqlToGraphiteConfig>(xml);
                 foreach (var job in sqlToGraphiteConfig.Jobs)
                 {
-                    Console.WriteLine(job.Type);
+                    //Console.WriteLine(job.Type);
                 }
             }
             catch (Exception ex)

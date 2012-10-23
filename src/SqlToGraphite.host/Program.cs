@@ -27,7 +27,7 @@ namespace SqlToGraphite.host
             var configReader = new ConfigHttpReader(configuration.ConfigUri, configuration.ConfigUsername, configuration.ConfigPassword);
             var cache = new Cache(cacheLength, log);
             var sleeper = new Sleeper();
-            var genericSer = new GenericSerializer();
+            var genericSer = new GenericSerializer(Global.GetNameSpace());
             var cr = new ConfigRepository(configReader, cache, sleeper, log, configuration.MinutesBetweenRetryToGetConfigOnError, genericSer);
             var configMapper = new ConfigMapper(configuration.Hostname, stop, dataClientFactory, graphiteClientFactory, log, cr);
             var configController = new ConfigController(configMapper, log, cr);

@@ -10,39 +10,29 @@ namespace SqlToGraphite.Plugin.SqlServer
     public class SqlServerClient : PluginBase
     {
         public string MetricName { get; set; }
-            
+
         public override string Name { get; set; }
 
         public override string ClientName { get; set; }
 
         public override string Type { get; set; }
 
+        [Encrypted]
         public string ConnectionString
         {
             get
             {
-                if (string.IsNullOrEmpty(connectionString))
-                {
-                    return string.Empty;
-                }
                 return this.Encrypt(this.connectionString);
             }
             set
             {
-                if (!string.IsNullOrEmpty(value))
-                {
-                    this.connectionString = this.Decrypt(value);
-                }
-                else
-                {
-                    this.connectionString = string.Empty;
-                }
+                this.connectionString = this.Decrypt(value);
             }
         }
 
         public string Path { get; set; }
 
-        public string  Sql { get; set; }
+        public string Sql { get; set; }
 
         private static int count;
 
@@ -60,7 +50,7 @@ namespace SqlToGraphite.Plugin.SqlServer
 
         public override IList<IResult> Get()
         {
-            count++;           
+            count++;
             var rtn = new List<IResult>();
             var connection = new SqlConnection();
             try
@@ -120,8 +110,8 @@ namespace SqlToGraphite.Plugin.SqlServer
             }
 
             this.Log.Debug(string.Format("Got [{1}] {0}", value, dateTime));
-            
-            return new Result(value, name, dateTime, this.Path);            
+
+            return new Result(value, name, dateTime, this.Path);
         }
 
         private static SqlDataReader GetRecords(string sql, SqlConnection connection)

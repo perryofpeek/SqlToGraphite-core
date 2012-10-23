@@ -136,6 +136,7 @@
     <Compile Include="Conf\RoleConfig.cs" />
     <Compile Include="Conf\TaskProperties.cs" />
     <Compile Include="Conf\Templates.cs" />
+    <Compile Include="Global.cs" />
     <Compile Include="GraphiteClient.cs" />
     <Compile Include="GraphiteClientFactory.cs" />
     <Compile Include="GraphiteClients.cs" />

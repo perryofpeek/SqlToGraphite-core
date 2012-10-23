@@ -27,7 +27,7 @@ namespace SqlToGraphite.UnitTests
 
         public static SqlToGraphiteConfig SerialiseDeserialise(SqlToGraphiteConfig hh)
         {
-            var genericSerializer = new GenericSerializer();
+            var genericSerializer = new GenericSerializer(Global.GetNameSpace());
             var xml = genericSerializer.Serialize<SqlToGraphiteConfig>(hh);
             var sqlToGraphiteConfig = genericSerializer.Deserialize<SqlToGraphiteConfig>(xml);
             return sqlToGraphiteConfig;

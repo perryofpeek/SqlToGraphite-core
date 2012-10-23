@@ -17,33 +17,25 @@ namespace SqlToGraphite.Plugin.Oracle
         {
         }
 
-        public OracleClient(ILog log, Job job, IEncryption encryption) : base(log, job, encryption)
+        public OracleClient(ILog log, Job job, IEncryption encryption)
+            : base(log, job, encryption)
         {
             this.WireUpProperties(job, this);
         }
 
         public string MetricName { get; set; }
-       
+
+        [Encrypted]
         public string ConnectionString
         {
             get
             {
-                if (string.IsNullOrEmpty(connectionString))
-                {
-                    return string.Empty;
-                }
                 return this.Encrypt(this.connectionString);
             }
             set
             {
-                if (!string.IsNullOrEmpty(value))
-                {
-                    this.connectionString = this.Decrypt(value);
-                }
-                else
-                {
-                    this.connectionString = string.Empty;    
-                }                
+
+                this.connectionString = this.Decrypt(value);
             }
         }
 

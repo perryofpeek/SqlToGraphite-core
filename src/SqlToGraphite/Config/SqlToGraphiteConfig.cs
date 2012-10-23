@@ -26,7 +26,7 @@ namespace SqlToGraphite.Config
             this.Clients = new ListOfUniqueType<Client>();
             this.Hosts = new List<Host>();
             this.Templates = new List<Template>();
-            this.genericSerializer = new GenericSerializer();
+            this.genericSerializer = new GenericSerializer(Global.GetNameSpace());
         }
 
         public SqlToGraphiteConfig(IAssemblyResolver assemblyResolver)
@@ -40,7 +40,7 @@ namespace SqlToGraphite.Config
             this.Clients = new ListOfUniqueType<Client>();
             this.Hosts = new List<Host>();
             this.Templates = new List<Template>();
-            this.genericSerializer = new GenericSerializer();
+            this.genericSerializer = new GenericSerializer(Global.GetNameSpace());
         }
 
         public ListOfUniqueType<Client> Clients { get; set; }

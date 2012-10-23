@@ -41,7 +41,7 @@ namespace Configurator.code
             var reader = new ConfigHttpReader(path, "", "");
             var cache = new Cache(new TimeSpan(0, 0, 1, 0), log);
             var sleep = new Sleeper();
-            var genericSerializer = new GenericSerializer();
+            var genericSerializer = new GenericSerializer(Global.GetNameSpace());
             var configPersister = new ConfigPersister(new ConfigFileWriter(path), genericSerializer);
 
             repository = new ConfigRepository(reader, cache, sleep, this.log, sleepTime, configPersister, genericSerializer);

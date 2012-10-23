@@ -37,12 +37,12 @@ namespace SqlToGraphiteInterfaces
 
         protected string Encrypt(string clearText)
         {
-            return encryption.Encrypt(clearText);
+            return string.IsNullOrEmpty(clearText) ? string.Empty : this.encryption.Encrypt(clearText);
         }
 
         protected string Decrypt(string clearText)
         {
-            return encryption.Decrypt(clearText);
+            return !string.IsNullOrEmpty(clearText) ? this.encryption.Decrypt(clearText) : string.Empty;
         }
 
         private void SetOrCreateLogObjectIfNull()
