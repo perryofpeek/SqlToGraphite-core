@@ -14,17 +14,24 @@ namespace Plugin.Oracle.Transactions.Test
     {
         private ILog log = MockRepository.GenerateMock<ILog>();
         private IOracleRepository oracleRepository = MockRepository.GenerateMock<IOracleRepository>();
-        private string connectionString;
+        private string connectionStringEncrypted;
 
+        private Encryption crypt;
         private IEncryption encryption;
+
+        private string connectionStringUnEncrypted;
 
         [SetUp]
         public void SetUp()
         {
+            crypt = new Encryption();
+            encryption = new Encryption();
             log = MockRepository.GenerateMock<ILog>();
-            encryption = MockRepository.GenerateMock<IEncryption>();
+            //encryption = MockRepository.GenerateMock<IEncryption>();
             oracleRepository = MockRepository.GenerateMock<IOracleRepository>();
-            connectionString = "someString";
+            this.connectionStringUnEncrypted = "someString";
+            this.connectionStringEncrypted = crypt.Encrypt(connectionStringUnEncrypted);
+
             DataStore.EntryPoints = new Dictionary<int, string>();
             DataStore.LastMaxId = 0;
             DataStore.LastRun = DateTime.Now;
@@ -34,19 +41,21 @@ namespace Plugin.Oracle.Transactions.Test
         public void Should_get_last_max_id_and_use_it_in_the_query_and_get_results_for_each_entry_point()
         {
             int NumberOfSecondsInThePast = 123;
-            var job = new OracleTransactions();
-            job.Path = "Path";
-            job.ConnectionString = connectionString;
-            job.NumberOfSecondsInThePast = NumberOfSecondsInThePast;
+            var job = new OracleTransactions
+                {
+                    Path = "Path",
+                    ConnectionString = this.connectionStringEncrypted,
+                    NumberOfSecondsInThePast = NumberOfSecondsInThePast
+                };
             const int MaxId = 123456;
             const int NewMaxId = 555777;
             DataStore.LastMaxId = 0;
             var sql = string.Format(Sql.GetTransactionsCountSql, MaxId, NumberOfSecondsInThePast);
-            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetEntryPoints)).Return(CreateEntryPointQueryResult()).Repeat.Once();
-            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(MaxId)).Repeat.Once();
-            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, sql)).Return(CreateQueryResult()).Repeat.Once();
-            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(NewMaxId)).Repeat.Once();
-            var oracleTransactions = new OracleTransactions(log, job, oracleRepository,encryption);
+            oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, Sql.GetEntryPoints)).Return(CreateEntryPointQueryResult()).Repeat.Once();
+            oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(MaxId)).Repeat.Once();
+            oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, sql)).Return(CreateQueryResult()).Repeat.Once();
+            oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(NewMaxId)).Repeat.Once();
+            var oracleTransactions = new OracleTransactions(log, job, oracleRepository, encryption);
             //Test
             var result = oracleTransactions.Get();
             //Assert
@@ -66,20 +75,20 @@ namespace Plugin.Oracle.Transactions.Test
             int NumberOfSecondsInThePast = 123;
             var job = new OracleTransactions();
             job.Path = "Path";
-            job.ConnectionString = connectionString;
+            job.ConnectionString = this.connectionStringEncrypted;
             job.NumberOfSecondsInThePast = NumberOfSecondsInThePast;
             const int MaxId = 123456;
             const int NewMaxId = 555777;
             DataStore.LastMaxId = 1000;
             DataStore.LastRun = DateTime.Now.Subtract(new TimeSpan(0, 0, 0, NumberOfSecondsInThePast * 3));
             var sql = string.Format(Sql.GetTransactionsCountSql, MaxId, NumberOfSecondsInThePast);
-            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetEntryPoints)).Return(CreateEntryPointQueryResult()).Repeat.Once();
-            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(MaxId)).Repeat.Once();
-            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, sql)).Return(CreateQueryResult()).Repeat.Once();
-            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(NewMaxId)).Repeat.Once();
-            var oracleTransactions = new OracleTransactions(log, job, oracleRepository,encryption);
+            oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, Sql.GetEntryPoints)).Return(CreateEntryPointQueryResult()).Repeat.Once();
+            oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(MaxId)).Repeat.Once();
+            oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, sql)).Return(CreateQueryResult()).Repeat.Once();
+            oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(NewMaxId)).Repeat.Once();
+            var oracleTransactions = new OracleTransactions(log, job, oracleRepository, encryption);
             //Test
-           oracleTransactions.Get();
+            oracleTransactions.Get();
             //Assert           
             Assert.That(DataStore.LastMaxId, Is.EqualTo(NewMaxId));
             oracleRepository.VerifyAllExpectations();
@@ -91,16 +100,16 @@ namespace Plugin.Oracle.Transactions.Test
             int NumberOfSecondsInThePast = 123;
             var job = new OracleTransactions();
             job.Path = "Path";
-            job.ConnectionString = connectionString;
+            job.ConnectionString = this.connectionStringEncrypted;
             job.NumberOfSecondsInThePast = NumberOfSecondsInThePast;
             const int MaxId = 123456;
             const int NewMaxId = 555777;
             DataStore.LastMaxId = 1000;
             DataStore.LastRun = DateTime.Now.Subtract(new TimeSpan(0, 0, 0, NumberOfSecondsInThePast * 3));
             var sql = string.Format(Sql.GetTransactionsCountSql, MaxId, NumberOfSecondsInThePast);
-            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetEntryPoints)).Return(CreateEntryPointQueryResult()).Repeat.Once();
-            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(MaxId)).Repeat.Once();
-            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, sql)).Return(CreateQueryResult()).Throw(new ApplicationException());
+            oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, Sql.GetEntryPoints)).Return(CreateEntryPointQueryResult()).Repeat.Once();
+            oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(MaxId)).Repeat.Once();
+            oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, sql)).Return(CreateQueryResult()).Throw(new ApplicationException());
             var oracleTransactions = new OracleTransactions(log, job, oracleRepository, encryption);
             //Test
             Assert.Throws<ApplicationException>(() => oracleTransactions.Get());
@@ -113,19 +122,20 @@ namespace Plugin.Oracle.Transactions.Test
         [Test]
         public void Should_deal_with_odd_data_in_entry_point_and_total_count()
         {
+
             int NumberOfSecondsInThePast = 123;
             var job = new OracleTransactions();
             job.Path = "Path";
-            job.ConnectionString = connectionString;
+            job.ConnectionString = this.connectionStringEncrypted;
             job.NumberOfSecondsInThePast = NumberOfSecondsInThePast;
             const int MaxId = 123456;
             const int NewMaxId = 555777;
             DataStore.LastMaxId = 0;
             var sql = string.Format(Sql.GetTransactionsCountSql, MaxId, NumberOfSecondsInThePast);
-            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetEntryPoints)).Return(CreateEntryPointQueryResult()).Repeat.Once();
-            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(MaxId)).Repeat.Once();
-            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, sql)).Return(CreateQueryResultOddData()).Repeat.Once();
-            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(NewMaxId)).Repeat.Once();
+            oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, Sql.GetEntryPoints)).Return(CreateEntryPointQueryResult()).Repeat.Once();
+            oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(MaxId)).Repeat.Once();
+            oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, sql)).Return(CreateQueryResultOddData()).Repeat.Once();
+            oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(NewMaxId)).Repeat.Once();
             var oracleTransactions = new OracleTransactions(log, job, oracleRepository, encryption);
             //Test
             var result = oracleTransactions.Get();
@@ -151,14 +161,14 @@ namespace Plugin.Oracle.Transactions.Test
             int NumberOfSecondsInThePast = 123;
             var job = new OracleTransactions();
             job.Path = "Path";
-            job.ConnectionString = connectionString;
+            job.ConnectionString = this.connectionStringEncrypted;
             job.NumberOfSecondsInThePast = NumberOfSecondsInThePast;
             const int MaxId = 123456;
             DataStore.LastMaxId = 0;
             var sql = string.Format(Sql.GetTransactionsCountSql, MaxId, NumberOfSecondsInThePast);
-            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetEntryPoints)).Return(CreateEntryPointQueryResult()).Repeat.Once();
-            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(MaxId));
-            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, sql)).Return(CreateQueryResult());
+            oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, Sql.GetEntryPoints)).Return(CreateEntryPointQueryResult()).Repeat.Once();
+            oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(MaxId));
+            oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, sql)).Return(CreateQueryResult());
             var oracleTransactions = new OracleTransactions(log, job, oracleRepository, encryption);
             //Test
             oracleTransactions.Get();
@@ -173,16 +183,16 @@ namespace Plugin.Oracle.Transactions.Test
             int NumberOfSecondsInThePast = 123;
             var job = new OracleTransactions();
             job.Path = "Path";
-            job.ConnectionString = connectionString;
+            job.ConnectionString = this.connectionStringEncrypted;
             job.NumberOfSecondsInThePast = NumberOfSecondsInThePast;
             const int MaxId = 123456;
             const int NewMaxId = 555777;
             DataStore.LastMaxId = 0;
             var sql = string.Format(Sql.GetTransactionsCountSql, MaxId, NumberOfSecondsInThePast);
-            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetEntryPoints)).Return(CreateEntryPointQueryResult()).Repeat.Once();
-            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(MaxId)).Repeat.Once();
-            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, sql)).Return(CreateQueryResult()).Repeat.Once();
-            oracleRepository.Expect(x => x.ExecuteQuery(connectionString, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(NewMaxId)).Repeat.Once();
+            oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, Sql.GetEntryPoints)).Return(CreateEntryPointQueryResult()).Repeat.Once();
+            oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(MaxId)).Repeat.Once();
+            oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, sql)).Return(CreateQueryResult()).Repeat.Once();
+            oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(NewMaxId)).Repeat.Once();
             var oracleTransactions = new OracleTransactions(log, job, oracleRepository, encryption);
             //Test
             oracleTransactions.Get();

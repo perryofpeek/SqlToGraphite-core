@@ -1,6 +1,5 @@
 using System;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 using SqlToGraphite;
@@ -125,7 +124,7 @@ namespace Configurator.code
             }
             catch (Exception ex)
             {
-                var s = ex.Message;
+                MessageBox.Show(ex.Message);                
             }
         }
 

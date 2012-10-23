@@ -69,6 +69,7 @@ namespace SqlToGraphiteInterfaces
                         if (info.Name == propertyInfo.Name)
                         {
                             propertyInfo.SetValue(dis, info.GetValue(taskParams, null), null);
+                            break;
                         }
                     }
                 }
