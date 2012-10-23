@@ -20,7 +20,10 @@ namespace Configurator.code
 
         private void LbJobRolesOnMouseDown(object sender, MouseEventArgs mouseEventArgs)
         {
-            this.lbJobRoles.DoDragDrop(this.lbJobRoles.SelectedItem, DragDropEffects.Move);
+            if (this.lbJobRoles != null && this.lbJobRoles.SelectedItem != null)
+            {
+                this.lbJobRoles.DoDragDrop(this.lbJobRoles.SelectedItem, DragDropEffects.Move);    
+            }            
         }
 
         private void DisplayJobs()

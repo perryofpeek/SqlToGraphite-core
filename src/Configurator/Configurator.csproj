@@ -54,6 +54,8 @@
     <Compile Include="code\AddJobBuilder.cs" />
     <Compile Include="code\Builder.cs" />
     <Compile Include="code\BuilderBase.cs" />
+    <Compile Include="code\RoleViewer.cs" />
+    <Compile Include="code\HostsTreeViewer.cs" />
     <Compile Include="code\JobViewer.cs" />
     <Compile Include="code\NoResultsReturnedException.cs" />
     <Compile Include="code\Position.cs" />
@@ -62,13 +64,14 @@
     <Compile Include="code\DefaultJobProperties.cs" />
     <Compile Include="code\ResultView.cs" />
     <Compile Include="code\RolesView.cs" />
-    <Compile Include="code\TreeViewer.cs" />
+    <Compile Include="code\RoleTreeViewer.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="code\HostsViewer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">

@@ -40,13 +40,14 @@ namespace Configurator
             this.btnLoad = new System.Windows.Forms.Button();
             this.ofgConfig = new System.Windows.Forms.OpenFileDialog();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tpRoles = new System.Windows.Forms.TabPage();
             this.tpView = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.jobDisplay = new System.Windows.Forms.Panel();
             this.lbJob = new System.Windows.Forms.ListBox();
             this.tpAdd = new System.Windows.Forms.TabPage();
             this.jobAdd = new System.Windows.Forms.Panel();
-            this.tpRoles = new System.Windows.Forms.TabPage();
+            this.tpHosts = new System.Windows.Forms.TabPage();
             this.resultView = new System.Windows.Forms.DataGridView();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -94,12 +95,12 @@ namespace Configurator
             this.panel2.Controls.Add(this.btnLoad);
             this.panel2.Location = new System.Drawing.Point(18, 12);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(175, 57);
+            this.panel2.Size = new System.Drawing.Size(261, 31);
             this.panel2.TabIndex = 4;
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(14, 28);
+            this.btnRefresh.Location = new System.Drawing.Point(176, 3);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(75, 23);
             this.btnRefresh.TabIndex = 4;
@@ -135,14 +136,24 @@ namespace Configurator
             // 
             this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl1.Controls.Add(this.tpRoles);
             this.tabControl1.Controls.Add(this.tpView);
             this.tabControl1.Controls.Add(this.tpAdd);
-            this.tabControl1.Controls.Add(this.tpRoles);
+            this.tabControl1.Controls.Add(this.tpHosts);
             this.tabControl1.Location = new System.Drawing.Point(434, 15);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(650, 494);
             this.tabControl1.TabIndex = 2;
+            // 
+            // tpRoles
+            // 
+            this.tpRoles.Location = new System.Drawing.Point(4, 22);
+            this.tpRoles.Name = "tpRoles";
+            this.tpRoles.Size = new System.Drawing.Size(642, 468);
+            this.tpRoles.TabIndex = 2;
+            this.tpRoles.Text = "Roles";
+            this.tpRoles.UseVisualStyleBackColor = true;
             // 
             // tpView
             // 
@@ -196,7 +207,7 @@ namespace Configurator
             this.tpAdd.Location = new System.Drawing.Point(4, 22);
             this.tpAdd.Name = "tpAdd";
             this.tpAdd.Padding = new System.Windows.Forms.Padding(3);
-            this.tpAdd.Size = new System.Drawing.Size(642, 508);
+            this.tpAdd.Size = new System.Drawing.Size(642, 468);
             this.tpAdd.TabIndex = 1;
             this.tpAdd.Text = "Add Job";
             this.tpAdd.UseVisualStyleBackColor = true;
@@ -208,14 +219,14 @@ namespace Configurator
             this.jobAdd.Size = new System.Drawing.Size(501, 387);
             this.jobAdd.TabIndex = 0;
             // 
-            // tpRoles
+            // tpHosts
             // 
-            this.tpRoles.Location = new System.Drawing.Point(4, 22);
-            this.tpRoles.Name = "tpRoles";
-            this.tpRoles.Size = new System.Drawing.Size(642, 508);
-            this.tpRoles.TabIndex = 2;
-            this.tpRoles.Text = "Roles";
-            this.tpRoles.UseVisualStyleBackColor = true;
+            this.tpHosts.Location = new System.Drawing.Point(4, 22);
+            this.tpHosts.Name = "tpHosts";
+            this.tpHosts.Size = new System.Drawing.Size(642, 468);
+            this.tpHosts.TabIndex = 3;
+            this.tpHosts.Text = "Hosts";
+            this.tpHosts.UseVisualStyleBackColor = true;
             // 
             // resultView
             // 
@@ -273,6 +284,7 @@ namespace Configurator
         private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.TabPage tpRoles;
         private DataGridView resultView;
+        private TabPage tpHosts;
     }
 }
 

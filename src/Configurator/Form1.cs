@@ -31,7 +31,7 @@ namespace Configurator
             controller = new code.Controller();
             assemblyResolver = new AssemblyResolver(new DirectoryImpl());
             SetUpDialogues();
-            //this.LoadTheConfig();
+            this.LoadTheConfig();
         }
 
         private void RenderForm()
@@ -45,8 +45,9 @@ namespace Configurator
             DisplayJob(selectedJob);
             DisplayAddJob();
             DisplayRolesView();
+            DisplayHostsView();
         }
-
+       
         private void DisplayHosts()
         {
             lbHosts.Items.Clear();
@@ -87,7 +88,10 @@ namespace Configurator
         private void lbJob_SelectedIndexChanged(object sender, EventArgs e)
         {
             var listControl = (ListBox)sender;
-            selectedJob = listControl.SelectedItem.ToString();
+            if(listControl.SelectedItem != null)
+            {
+                selectedJob = listControl.SelectedItem.ToString();    
+            }                       
             this.RefreshForm();
         }
 
@@ -153,10 +157,18 @@ namespace Configurator
 
         private void DisplayRolesView()
         {
-            var rv = new RolesViewer(controller, new TreeViewer(controller));
-            var p = new Position(this.tpRoles.Left, this.tpRoles.Width, this.tpRoles.Top, this.tpRoles.Height);
+            var rv = new RolesViewer(controller, new RoleTreeViewer(controller));
+            var p = new Position(this.tpRoles.Left, this.tpRoles.Width, this.tpRoles.Top, this.tpRoles.Height - 50);
             var panel = rv.Get(p);
             tpRoles.Controls.Add(panel);
+        }
+
+        private void DisplayHostsView()
+        {
+            var rv = new HostsViewer(controller, new HostsTreeViewer(controller));
+            var p = new Position(this.tpRoles.Left, this.tpRoles.Width, this.tpRoles.Top, this.tpRoles.Height - 50);
+            var panel = rv.Get(p);
+            tpHosts.Controls.Add(panel);
         }
 
         private void test(object sender, EventArgs e)

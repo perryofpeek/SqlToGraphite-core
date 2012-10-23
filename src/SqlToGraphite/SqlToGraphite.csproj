@@ -140,6 +140,7 @@
     <Compile Include="GraphiteClientFactory.cs" />
     <Compile Include="GraphiteClients.cs" />
     <Compile Include="GraphiteParams.cs" />
+    <Compile Include="HostNotFoundException.cs" />
     <Compile Include="IAssemblyResolver.cs" />
     <Compile Include="IConfigMapper.cs" />
     <Compile Include="IConfigReader.cs" />
@@ -160,6 +161,7 @@
     <Compile Include="Interfaces\IThread.cs" />
     <Compile Include="PluginNotFoundOrLoadedException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoleNotFoundException.cs" />
     <Compile Include="Sleeper.cs" />
     <Compile Include="Conf\Configuration.cs" />
     <Compile Include="Clients\StatsdClient.cs" />

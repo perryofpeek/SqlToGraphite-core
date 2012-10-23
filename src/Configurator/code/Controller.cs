@@ -163,5 +163,45 @@ namespace Configurator.code
         {
             repository.DeleteJobFromRole(jobName, frequency, roleName);
         }
+
+        public void DeleteFrequency(int frequency, string roleName)
+        {
+            repository.DeleteRoleFrequency(roleName,frequency);
+        }
+
+        public void DeleteRole(string roleName)
+        {
+            repository.DeleteRole(roleName);
+        }
+
+        public void AddRoleFrequency(int frequency, string roleName)
+        {
+            repository.AddRoleFrequency(frequency, roleName);
+        }
+
+        public void AddNewRole(string roleName)
+        {
+            repository.AddNewRole(roleName);
+        }
+
+        public void DeleteHost(string hostname)
+        {
+            repository.DeleteHost(hostname);
+        }
+
+        public void DeleteRoleFromHost(string hostname, string roleName)
+        {
+            repository.DeleteRoleFromHost(roleName, hostname);
+        }
+
+        public void AddNewHost(string hostname)
+        {
+            repository.AddHost(hostname, new List<Role>());
+        }
+
+        public void AddRoleToHost(string hostname, string roleName)
+        {
+            repository.AddRoleToHost(roleName, hostname);
+        }
     }
 }

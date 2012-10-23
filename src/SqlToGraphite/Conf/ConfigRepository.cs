@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using log4net;
 using SqlToGraphite.Clients;
@@ -396,6 +397,73 @@ namespace SqlToGraphite.Conf
                 {
                     role.TaskSet.Remove(taskToDelete);
                 }
+            }
+        }
+
+        public void AddRoleFrequency(int frequency, string roleName)
+        {
+            var role = this.GetRole(roleName);
+            var ts = new TaskSet { Frequency = frequency, Tasks = new List<Task>() };
+            role.TaskSet.Add(ts);
+        }
+
+        public void AddNewRole(string roleName)
+        {
+            var wi = new WorkItems { RoleName = roleName, TaskSet = new List<TaskSet>() };
+            this.masterConfig.Templates[0].WorkItems.Add(wi);
+        }
+
+        public void DeleteHost(string hostname)
+        {
+            masterConfig.Hosts.Remove(this.GetHostByName(hostname));
+        }
+
+        private Host GetHostByName(string hostname)
+        {
+            Host foundHost = null;
+            foreach (var host in this.masterConfig.Hosts.Where(host => host.Name == hostname))
+            {
+                foundHost = host;
+            }
+
+            ThrowExceptionIfHostIsNotFound(hostname, foundHost);
+
+            return foundHost;
+        }
+
+        private static void ThrowExceptionIfHostIsNotFound(string hostname, Host foundHost)
+        {
+            if (foundHost == null)
+            {
+                throw new HostNotFoundException(string.Format("Host {0} has not been found", hostname));
+            }
+        }
+
+        public void AddRoleToHost(string roleName, string hostname)
+        {
+            var host = this.GetHostByName(hostname);
+            host.Roles.Add(new Role() { Name = roleName });
+        }
+
+        public void DeleteRoleFromHost(string roleName, string hostname)
+        {
+            Role foundRole = null;
+            var host = this.GetHostByName(hostname);
+            foreach (var role in host.Roles)
+            {
+                if (role.Name == roleName)
+                {
+                    foundRole = role;
+                }
+            }
+
+            if (foundRole != null)
+            {
+                host.Roles.Remove(foundRole);
+            }
+            else
+            {
+                throw new RoleNotFoundException(string.Format("Role {0} is not found", roleName));
             }
         }
     }

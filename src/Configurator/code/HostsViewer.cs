@@ -1,18 +1,18 @@
-﻿using System;
-using System.Drawing;
 using System.Windows.Forms;
 
-namespace Configurator.code
-{
-    public class RolesViewer
-    {
-        private Controller controller;
+using Configurator.code;
 
-        private readonly RoleTreeViewer roleTreeViewer;
+namespace Configurator
+{
+    internal class HostsViewer
+    {
+         private Controller controller;
+
+         private readonly HostsTreeViewer roleTreeViewer;
 
         private Panel panel;
 
-        public RolesViewer(Controller controller, RoleTreeViewer roleTreeViewer)
+        public HostsViewer(Controller controller, HostsTreeViewer roleTreeViewer)
         {
             this.controller = controller;
             this.roleTreeViewer = roleTreeViewer;
@@ -29,8 +29,8 @@ namespace Configurator.code
                 };
             this.panel.Controls.Clear();
             var jobLbPos = new Position(0, 200, 0, position.Height);
-            var jobViewer = new JobViewer(controller);
-            var lb = jobViewer.Get(jobLbPos);
+            var roleViewer = new RoleViewer(controller);
+            var lb = roleViewer.Get(jobLbPos);
             var tvPos = new Position(250, 300, 0, position.Height);
             var tv = this.roleTreeViewer.Get(tvPos);
             panel.Controls.Add(lb);

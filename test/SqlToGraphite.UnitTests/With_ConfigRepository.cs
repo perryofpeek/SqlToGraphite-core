@@ -487,6 +487,192 @@ namespace SqlToGraphite.UnitTests
         }
 
         [Test]
+        public void Should_add_role_frequency()
+        {
+            int frequency = 123;
+            string roleName = "roleName";
+            var template = this.CreateSingleRoleAndJob("none", frequency, roleName);
+            cache.Expect(x => x.HasExpired()).Return(true).Repeat.Once();
+            string configXml = this.Add(Add(Blank, TwoClients), Templates);
+            genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(config);
+            reader.Expect(x => x.GetXml()).Return(configXml);
+            repository.Load();
+
+            //Test            
+            repository.AddRoleFrequency(frequency, roleName);
+            Assert.That(template.WorkItems.Count, Is.EqualTo(1));
+            Assert.That(template.WorkItems[0].TaskSet[1].Frequency, Is.EqualTo(frequency));
+
+            cache.VerifyAllExpectations();
+            genericSerializer.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Should_add_new_role()
+        {
+            string roleName = "roleName";
+            var template = this.CreateSingleRoleAndJob("none", 123, "someRole");
+            cache.Expect(x => x.HasExpired()).Return(true).Repeat.Once();
+            string configXml = this.Add(Add(Blank, TwoClients), Templates);
+            genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(config);
+            reader.Expect(x => x.GetXml()).Return(configXml);
+            repository.Load();
+
+            //Test            
+            repository.AddNewRole(roleName);
+            Assert.That(template.WorkItems.Count, Is.EqualTo(2));
+            Assert.That(template.WorkItems[1].RoleName, Is.EqualTo(roleName));
+
+            cache.VerifyAllExpectations();
+            genericSerializer.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Should_delete_host()
+        {
+            string hostname = "abc";
+            config = new SqlToGraphiteConfig { Hosts = CreateTwoHosts() };
+            cache.Expect(x => x.HasExpired()).Return(true).Repeat.Once();
+            string configXml = "<xml></xml>";
+            genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(config);
+            reader.Expect(x => x.GetXml()).Return(configXml);
+            repository.Load();
+            //Test            
+            repository.DeleteHost(hostname);
+            Assert.That(config.Hosts.Count, Is.EqualTo(1));
+            Assert.That(config.Hosts[0].Name, Is.EqualTo("def"));
+
+            cache.VerifyAllExpectations();
+            genericSerializer.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Should_add_role_to_host()
+        {
+            string hostname = "abc";
+            string roleName = "newRole";
+            config = new SqlToGraphiteConfig { Hosts = CreateTwoHosts() };
+            cache.Expect(x => x.HasExpired()).Return(true).Repeat.Once();
+            string configXml = "<xml></xml>";
+            genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(config);
+            reader.Expect(x => x.GetXml()).Return(configXml);
+            repository.Load();
+            //Test                        
+            repository.AddRoleToHost(roleName, hostname);
+            Assert.That(config.Hosts[0].Roles.Count, Is.EqualTo(2));
+            Assert.That(config.Hosts[0].Roles[1].Name, Is.EqualTo(roleName));
+
+            cache.VerifyAllExpectations();
+            genericSerializer.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Should_delete_role_from_host()
+        {
+            string hostname = "abc";
+            string roleName = "123";
+            config = new SqlToGraphiteConfig { Hosts = CreateTwoHosts() };
+            cache.Expect(x => x.HasExpired()).Return(true).Repeat.Once();
+            string configXml = "<xml></xml>";
+            genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(config);
+            reader.Expect(x => x.GetXml()).Return(configXml);
+            repository.Load();
+            //Test                        
+            repository.DeleteRoleFromHost(roleName, hostname);
+            Assert.That(config.Hosts[0].Roles.Count, Is.EqualTo(0));            
+
+            cache.VerifyAllExpectations();
+            genericSerializer.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Should_throw_exception_trying_delete_role_from_host_where_host_does_not_exsist()
+        {
+            string hostname = "notFound";
+            string roleName = "123";
+            config = new SqlToGraphiteConfig { Hosts = CreateTwoHosts() };
+            cache.Expect(x => x.HasExpired()).Return(true).Repeat.Once();
+            string configXml = "<xml></xml>";
+            genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(config);
+            reader.Expect(x => x.GetXml()).Return(configXml);
+            repository.Load();
+            //Test                        
+            var ex = Assert.Throws<HostNotFoundException>(() => repository.DeleteRoleFromHost(roleName, hostname));            
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Host {0} has not been found", hostname)));
+            cache.VerifyAllExpectations();
+            genericSerializer.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Should_throw_exception_trying_delete_role_from_host_where_role_does_not_exsist()
+        {
+            string hostname = "abc";
+            string roleName = "notFound";
+            config = new SqlToGraphiteConfig { Hosts = CreateTwoHosts() };
+            cache.Expect(x => x.HasExpired()).Return(true).Repeat.Once();
+            string configXml = "<xml></xml>";
+            genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(config);
+            reader.Expect(x => x.GetXml()).Return(configXml);
+            repository.Load();
+            //Test                     
+            var ex = Assert.Throws<RoleNotFoundException>(() => repository.DeleteRoleFromHost(roleName, hostname));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Role {0} is not found", roleName)));
+            cache.VerifyAllExpectations();
+            genericSerializer.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Should_throw_exception_if_host_not_found_tring_to_add_role_to_host()
+        {
+            string hostname = "notFound";
+            string roleName = "newRole";
+            config = new SqlToGraphiteConfig { Hosts = CreateTwoHosts() };
+            cache.Expect(x => x.HasExpired()).Return(true).Repeat.Once();
+            string configXml = "<xml></xml>";
+            genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(config);
+            reader.Expect(x => x.GetXml()).Return(configXml);
+            repository.Load();
+            //Test                        
+            var ex = Assert.Throws<HostNotFoundException>(() => repository.AddRoleToHost(roleName, hostname));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Host {0} has not been found", hostname)));
+            
+            cache.VerifyAllExpectations();
+            genericSerializer.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Should_throw_exception_if_host_not_found()
+        {
+            string hostname = "notFound";
+            config = new SqlToGraphiteConfig { Hosts = CreateTwoHosts() };
+            cache.Expect(x => x.HasExpired()).Return(true).Repeat.Once();
+            string configXml = "<xml></xml>";
+            genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(config);
+            reader.Expect(x => x.GetXml()).Return(configXml);
+            repository.Load();
+            //Test            
+            var ex = Assert.Throws<HostNotFoundException>(() => repository.DeleteHost(hostname));
+            Assert.That(ex.Message, Is.EqualTo(string.Format("Host {0} has not been found", hostname)));
+            Assert.That(config.Hosts.Count, Is.EqualTo(2));
+            Assert.That(config.Hosts[0].Name, Is.EqualTo("abc"));
+            cache.VerifyAllExpectations();
+            genericSerializer.VerifyAllExpectations();
+        }
+
+        private static List<Host> CreateTwoHosts()
+        {
+            var hosts = new List<Host>();
+            var host1 = new Host { Name = "abc" };
+            host1.Roles.Add(new Role { Name = "123" });
+            var host2 = new Host { Name = "def" };
+            host2.Roles.Add(new Role { Name = "456" });
+            host2.Roles.Add(new Role { Name = "789" });
+            hosts.Add(host1);
+            hosts.Add(host2);
+            return hosts;
+        }
+
+        [Test]
         public void Should_throw_job_not_found_exception()
         {
             cache.Expect(x => x.HasExpired()).Return(true).Repeat.Once();
