@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using log4net;
-using SqlToGraphite.Clients;
 using SqlToGraphite.Config;
 using SqlToGraphite.UnitTests;
 using SqlToGraphiteInterfaces;
@@ -15,8 +13,6 @@ namespace SqlToGraphite.Conf
         private readonly IConfigPersister configPersister;
 
         private readonly IConfigReader configReader;
-
-        private readonly IKnownGraphiteClients knownGraphiteClients;
 
         private readonly ICache cache;
 

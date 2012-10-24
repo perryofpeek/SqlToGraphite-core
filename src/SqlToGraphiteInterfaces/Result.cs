@@ -6,7 +6,11 @@ namespace SqlToGraphiteInterfaces
     {
         public Result(int value, string name, DateTime dateTime, string path)
         {
-            this.Name = name.Replace(":", string.Empty);
+            this.Name = string.Empty;
+            if(!string.IsNullOrEmpty(name))
+            {
+                this.Name = name.Replace(":", string.Empty);    
+            }            
             this.TimeStamp = dateTime;
             this.Path = path;
             this.Value = value;
@@ -49,8 +53,12 @@ namespace SqlToGraphiteInterfaces
 
         private string ReplaceHostname()
         {
-            var p = this.Path.Replace("%h", Environment.MachineName);
-            return p;
+            if(!string.IsNullOrEmpty(this.Path))
+            {
+                var p = this.Path.Replace("%h", Environment.MachineName);
+                return p;
+            }
+            return this.Path;
         }
     }
 }

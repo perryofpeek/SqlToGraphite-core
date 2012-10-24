@@ -129,7 +129,6 @@
     <Compile Include="With_TaskManager.cs" />
     <Compile Include="With_TaskSet.cs" />
     <Compile Include="With_templates.cs" />
-    <Compile Include="With_ThreadImpl.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\SqlToGraphite.host\SqlToGraphite.host.csproj">

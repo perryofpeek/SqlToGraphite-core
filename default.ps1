@@ -7,29 +7,25 @@ properties {
   $Build_Artifacts = 'output'
   $fullPath= 'src\SqlToGraphite.host\output'
   $version = '0.3.0.0'
+  $Debug = 'Debug'
 }
 
 task default -depends Package
 
-task Test -depends Init, Compile, Clean, StartOracle {  
-  Exec { packages\NUnit.Runners.2.6.0.12051\tools\nunit-console-x86.exe /nologo /config=SqlToGraphite.UnitTests.dll.config test\SqlToGraphite.UnitTests\output\SqlToGraphite.UnitTests.dll }
-  Exec { packages\NUnit.Runners.2.6.0.12051\tools\nunit-console-x86.exe .\test\SqlToGraphite.Host.UnitTests\output\SqlToGraphite.Host.UnitTests.dll }
-  Exec { packages\NUnit.Runners.2.6.0.12051\tools\nunit-console-x86.exe .\test\SqlToGraphite.Plugin.SqlServer.UnitTests\output\SqlToGraphite.Plugin.SqlServer.UnitTests.dll }
-  Exec { packages\NUnit.Runners.2.6.0.12051\tools\nunit-console-x86.exe .\test\SqlToGraphite.Plugin.Oracle.UnitTests\output\SqlToGraphite.Plugin.Oracle.UnitTests.dll }
-  Exec { packages\NUnit.Runners.2.6.0.12051\tools\nunit-console-x86.exe .\test\SqlToGraphite.Plugin.Wmi.UnitTests\output\SqlToGraphite.Plugin.Wmi.UnitTests.dll }
-  Exec { packages\NUnit.Runners.2.6.0.12051\tools\nunit-console-x86.exe .\test\Plugin.Oracle.Transactions.Test\output\Plugin.Oracle.Transactions.Test.dll }
-}
+task Test -depends Init, Compile, Clean, StartOracle {    
+  Exec { packages\NUnit.Runners.2.6.0.12051\tools\nunit-console-x86.exe /err=unittest.error.txt /output=unittest.output.txt /nologo /config=SqlToGraphite.UnitTests.dll.config test\SqlToGraphite.UnitTests\output\SqlToGraphite.UnitTests.dll .\test\SqlToGraphite.Host.UnitTests\output\SqlToGraphite.Host.UnitTests.dll .\test\SqlToGraphite.Plugin.SqlServer.UnitTests\output\SqlToGraphite.Plugin.SqlServer.UnitTests.dll .\test\SqlToGraphite.Plugin.Oracle.UnitTests\output\SqlToGraphite.Plugin.Oracle.UnitTests.dll .\test\SqlToGraphite.Plugin.Wmi.UnitTests\output\SqlToGraphite.Plugin.Wmi.UnitTests.dll .\test\Plugin.Oracle.Transactions.Test\output\Plugin.Oracle.Transactions.Test.dll }
+  }
 
 task Compile -depends  Clean { 
-   Exec {  C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe /p:OutDir=""$Build_Artifacts\"" /t:Rebuild /p:Configuration=$Build_Configuration $Build_Solution }
+   Exec {  C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe /m:4 /verbosity:quiet /p:OutDir=""$Build_Artifacts\"" /t:Rebuild /p:Configuration=$Build_Configuration $Build_Solution }
 }
 
 task Clean {
   if((test-path  $Build_Artifacts -pathtype container))
   {
 	rmdir -Force -Recurse $Build_Artifacts;
-  }     
-  Exec {  C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe /p:OutDir=""$Build_Artifacts\"" /t:Clean $Build_Solution }  
+  }       
+  Exec {  C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe /m:4 /verbosity:quiet /p:OutDir=""$Build_Artifacts\"" /t:Clean $Build_Solution }  
 }
 
 task Init {
@@ -108,7 +104,7 @@ task Ilmerge -depends Test  {
 }
 # -depends Ilmerge
 task Package -depends Ilmerge {
-	Exec { c:\Apps\NSIS\makensis.exe sqlToGraphite.nsi }	
+	Exec { c:\Apps\NSIS\makensis.exe /p4 /v2 sqlToGraphite.nsi }	
 }
 
 task StartOracle {

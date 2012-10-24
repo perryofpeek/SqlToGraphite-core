@@ -11,7 +11,7 @@ namespace Configurator
         private Controller controller;
         private TreeView treeView;
         private ContextMenuStrip docMenu;
-        private TreeNode nodeMouseClickSelectedNode;        
+        private TreeNode nodeMouseClickSelectedNode;
         private const int HostnameNodePosition = 1;
         private const int RoleNodePosition = 2;
         //private const int JobNodePosition = 3;
@@ -63,7 +63,7 @@ namespace Configurator
             }
 
             if (nodeToDropIn.Level == 1)
-            {                
+            {
                 hostname = nodeToDropIn.Text;
             }
 
@@ -74,7 +74,7 @@ namespace Configurator
             }
 
 
-            if (hostname != string.Empty && roleName != string.Empty)
+            if ((hostname != string.Empty) && (roleName.ToString() != string.Empty))
             {
                 nodeToDropIn.Nodes.Add(roleName.ToString());
                 this.controller.AddRoleToHost(hostname, roleName.ToString());
@@ -119,7 +119,7 @@ namespace Configurator
                     if (this.nodeMouseClickSelectedNode.Level == 0)
                     {
                         var hostNode = e;
-                        controller.AddNewHost(hostNode.Label);                        
+                        controller.AddNewHost(hostNode.Label);
                     }
                 }
                 else
@@ -135,11 +135,11 @@ namespace Configurator
         private void AddLabelOnClick(object sender, EventArgs e)
         {
             if (this.nodeMouseClickSelectedNode.Level == 0)
-            {                
+            {
                 var treeNode = new TreeNode("NewHost");
                 this.nodeMouseClickSelectedNode.Nodes.Add(treeNode);
                 treeNode.ExpandAll();
-                treeNode.BeginEdit();                
+                treeNode.BeginEdit();
             }
         }
 
@@ -163,11 +163,11 @@ namespace Configurator
             if (this.nodeMouseClickSelectedNode.Level == RoleNodePosition)
             {
                 var roleNode = this.nodeMouseClickSelectedNode;
-                var roleName = roleNode.Text; 
-                var hostnameNode = roleNode.Parent;                
+                var roleName = roleNode.Text;
+                var hostnameNode = roleNode.Parent;
                 var hostname = hostnameNode.Text;
                 //Delete Job
-                controller.DeleteRoleFromHost(hostname,roleName);
+                controller.DeleteRoleFromHost(hostname, roleName);
                 this.nodeMouseClickSelectedNode.Remove();
             }
 
@@ -185,8 +185,8 @@ namespace Configurator
         }
 
         //private bool NodeIsRole()
-       // {
-       //     return this.nodeMouseClickSelectedNode.Level == JobNodePosition;
+        // {
+        //     return this.nodeMouseClickSelectedNode.Level == JobNodePosition;
         //}
 
         private void PopulateTree()
@@ -198,7 +198,7 @@ namespace Configurator
             {
                 var treeNode = new TreeNode(w.Name);
                 foreach (var ts in w.Roles)
-                {                    
+                {
                     treeNode.Nodes.Add(new TreeNode(ts.Name));
                 }
                 rolesNode.Nodes.Add(treeNode);

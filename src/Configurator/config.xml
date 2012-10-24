@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-16"?>
-<SqlToGraphiteConfig>
+<SqlToGraphiteConfig xmlns="SqlToGraphite_0.0.0.1">
   <Jobs>
-    <ArrayOfJob xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <ArrayOfJob xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="">
       <Job xsi:type="SqlServerClient">
         <Name>GetNumberOfTransactionsASecond</Name>
         <ClientName>GraphiteTcpClient</ClientName>
@@ -118,7 +118,7 @@
     </ArrayOfJob>
   </Jobs>
   <Clients>
-    <ArrayOfClient xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <ArrayOfClient xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="">
       <Client xsi:type="GraphiteTcpClient" Hostname="metrics.london.ttldev.local" ClientName="GraphiteTcpClient" Port="2003" />
       <Client xsi:type="GraphiteUdpClient" Hostname="metrics.london.ttldev.local" ClientName="GraphiteUdpClient" Port="2003" />
     </ArrayOfClient>

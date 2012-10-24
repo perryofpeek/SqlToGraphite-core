@@ -25,7 +25,7 @@ namespace SqlToGraphite.UnitTests
                     SecretValue = this.Encrypt(value);
                 }
             }
-                      
+
             public string SecretValue { get; set; }
 
             public override IList<IResult> Get()
@@ -34,12 +34,12 @@ namespace SqlToGraphite.UnitTests
             }
         }
 
-        [Test]
-        public void Should_encrypt_string_default()
+        [Test, Ignore()]
+        public void Create_encrypted_string_for_testing()
         {
-            var secret = "SomeCs";            
+            var secret = "SomeCs";
             var testPlugin = new TestPlugin { Secret = secret };
-            Console.WriteLine(testPlugin.SecretValue);
+            //Console.WriteLine(testPlugin.SecretValue);
             //Assert.That(testPlugin.Secret, Is.EqualTo(secret));            
             //Assert.That(testPlugin.SecretValue, Is.EqualTo(secretValue));           
         }
@@ -50,8 +50,8 @@ namespace SqlToGraphite.UnitTests
             var secret = "abc123";
             string secretValue = "Myu0uW3E+PbIbaFkSIrLwA==";
             var testPlugin = new TestPlugin { Secret = secret };
-            Assert.That(testPlugin.Secret, Is.EqualTo(secret));            
-            Assert.That(testPlugin.SecretValue, Is.EqualTo(secretValue));           
+            Assert.That(testPlugin.Secret, Is.EqualTo(secret));
+            Assert.That(testPlugin.SecretValue, Is.EqualTo(secretValue));
         }
     }
 }

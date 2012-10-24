@@ -33,3 +33,5 @@ AssemblyInfo.cs
 TestResult.xml
 output
 SqlToGraphite-Setup.exe
+unittest.error.txt
+unittest.output.txt

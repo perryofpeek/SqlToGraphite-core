@@ -102,8 +102,7 @@ namespace Plugin.Oracle.Transactions.Test
             job.Path = "Path";
             job.ConnectionString = this.connectionStringEncrypted;
             job.NumberOfSecondsInThePast = NumberOfSecondsInThePast;
-            const int MaxId = 123456;
-            const int NewMaxId = 555777;
+            const int MaxId = 123456;            
             DataStore.LastMaxId = 1000;
             DataStore.LastRun = DateTime.Now.Subtract(new TimeSpan(0, 0, 0, NumberOfSecondsInThePast * 3));
             var sql = string.Format(Sql.GetTransactionsCountSql, MaxId, NumberOfSecondsInThePast);
