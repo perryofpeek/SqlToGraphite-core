@@ -8,24 +8,53 @@ properties {
   $fullPath= 'src\SqlToGraphite.host\output'
   $version = '0.3.0.0'
   $Debug = 'Debug'
+  $pwd = pwd
+  $msbuild = "C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe"
+  $nunit =  "$pwd\packages\NUnit.Runners.2.6.2\tools\nunit-console-x86.exe"
+  $openCover = "$pwd\packages\OpenCover.4.0.804\OpenCover.Console.exe"
+  $reportGenerator = "$pwd\packages\ReportGenerator.1.6.1.0\ReportGenerator.exe"
+  $TestOutput = "$pwd\TestOutput"
+  $UnitTestOutputFolder = "$TestOutput\UnitTestOutput";
 }
 
 task default -depends Package
 
-task Test -depends Init, Compile, Clean, StartOracle {    
-  Exec { packages\NUnit.Runners.2.6.0.12051\tools\nunit-console-x86.exe /err=unittest.error.txt /output=unittest.output.txt /nologo /config=SqlToGraphite.UnitTests.dll.config test\SqlToGraphite.UnitTests\output\SqlToGraphite.UnitTests.dll .\test\SqlToGraphite.Host.UnitTests\output\SqlToGraphite.Host.UnitTests.dll .\test\SqlToGraphite.Plugin.SqlServer.UnitTests\output\SqlToGraphite.Plugin.SqlServer.UnitTests.dll .\test\SqlToGraphite.Plugin.Oracle.UnitTests\output\SqlToGraphite.Plugin.Oracle.UnitTests.dll .\test\SqlToGraphite.Plugin.Wmi.UnitTests\output\SqlToGraphite.Plugin.Wmi.UnitTests.dll .\test\Plugin.Oracle.Transactions.Test\output\Plugin.Oracle.Transactions.Test.dll }
-  }
+task Test -depends Init, Compile, Clean, StartOracle { 			
+	mkdir $TestOutput -Verbose:$false;  
+    mkdir $UnitTestOutputFolder -Verbose:$false;  
+	
+	$unitTestFolders = Get-ChildItem test\* -recurse | Where-Object {$_.PSIsContainer -eq $True} | where-object {$_.Fullname.Contains("bin\x86\Debug")} | where-object {$_.Fullname.Contains("bin\x86\Debug\") -eq $false}| select-object FullName
+	foreach($folder in $unitTestFolders)
+	{
+		$x = [string] $folder.FullName
+		copy-item -force -path $x\* -Destination "$UnitTestOutputFolder\" 
+	}
+	#Copy all the unit test folders into one folder 
+	cd $UnitTestOutputFolder
+	foreach($file in Get-ChildItem *test*.dll)
+	{
+		$files = $files + " " + $file.Name
+	}
+	#write-host " $openCover -target:$nunit -filter:+[SqlToGraphite*]* -register:user -mergebyhash -targetargs:$files /err=err.nunit.txt /noshadow /nologo /config=SqlToGraphite.UnitTests.dll.config"
+	Exec { & $openCover "-target:$nunit" -filter:+[SqlToGraphite*]* -register:user -mergebyhash "-targetargs:$files /err=err.nunit.txt /noshadow /nologo /config=SqlToGraphite.UnitTests.dll.config" } 
+	Exec { & $reportGenerator "-reports:results.xml" "-targetdir:..\report" "-verbosity:Error"}
+	cd $pwd
+}
 
 task Compile -depends  Clean { 
-   Exec {  C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe /m:4 /verbosity:quiet /p:OutDir=""$Build_Artifacts\"" /t:Rebuild /p:Configuration=$Build_Configuration $Build_Solution }
+   Exec {  & $msbuild /m:4 /verbosity:quiet /nologo /p:OutDir=""$Build_Artifacts\"" /t:Rebuild /p:Configuration=$Build_Configuration $Build_Solution }   	
 }
 
 task Clean {
   if((test-path  $Build_Artifacts -pathtype container))
   {
 	rmdir -Force -Recurse $Build_Artifacts;
-  }       
-  Exec {  C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe /m:4 /verbosity:quiet /p:OutDir=""$Build_Artifacts\"" /t:Clean $Build_Solution }  
+  }     
+  if (Test-Path $TestOutput) 
+  {
+		Remove-Item -force -recurse $TestOutput
+  }  
+  Exec {  & $msbuild /m:4 /verbosity:quiet /nologo /p:OutDir=""$Build_Artifacts\"" /t:Clean $Build_Solution }  
 }
 
 task Init {
@@ -36,59 +65,18 @@ task Init {
 	$Title = "SqlToGraphite $version";
 	$Copyright = "PerryOfPeek 2012";	
 
-	Generate-Assembly-Info `
-        -file "src\SqlToGraphite.Plugin.Wmi\Properties\AssemblyInfo.cs" `
-        -title $Title `
-        -description $Description `
-        -company $Company `
-        -product $Product `
-        -version "1.0.0.0" `
-        -copyright $Copyright
-	
-	 Generate-Assembly-Info `
-        -file "src\SqlToGraphite.Plugin.Oracle\Properties\AssemblyInfo.cs" `
-        -title $Title `
-        -description $Description `
-        -company $Company `
-        -product $Product `
-        -version "1.0.0.0" `
-        -copyright $Copyright
-
-	 Generate-Assembly-Info `
-        -file "src\SqlToGraphite.Plugin.SqlServer\Properties\AssemblyInfo.cs" `
-        -title $Title `
-        -description $Description `
-        -company $Company `
-        -product $Product `
-        -version "1.0.0.0" `
-        -copyright $Copyright
-
-    Generate-Assembly-Info `
-        -file "src\SqlToGraphite.host\Properties\AssemblyInfo.cs" `
+	$files = Get-ChildItem src\* -recurse | Where-Object {$_.Fullname.Contains("AssemblyInfo.cs")}
+	foreach ($file in $files)
+	{
+		Generate-Assembly-Info `
+        -file $file.Fullname `
         -title $Title `
         -description $Description `
         -company $Company `
         -product $Product `
         -version $version `
         -copyright $Copyright
-
-    Generate-Assembly-Info `
-        -file "src\SqlToGraphiteInterfaces\Properties\AssemblyInfo.cs" `
-        -title $Title `
-        -description $Description `
-        -company $Company `
-        -product $Product `
-        -version $version `
-        -copyright $Copyright
-        
-     Generate-Assembly-Info `
-        -file "src\SqlToGraphite\Properties\AssemblyInfo.cs" `
-        -title $Title `
-        -description $Description `
-        -company $Company `
-        -product $Product `
-        -version $version `
-        -copyright $Copyright    
+	}
 }
 
 task Ilmerge -depends Test  {
@@ -159,6 +147,6 @@ using System.Runtime.InteropServices;
         Write-Host "Creating directory $dir"
         [System.IO.Directory]::CreateDirectory($dir)
     }
-    Write-Host "Generating assembly info file: $file"
+   # Write-Host "Generating assembly info file: $file"
     out-file -filePath $file -encoding UTF8 -inputObject $asmInfo
 }

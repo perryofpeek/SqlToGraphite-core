@@ -55,11 +55,11 @@ namespace SqlToGraphite.Plugin.LogParser
                 value = Convert.ToInt32(r);
             }
             
-            Console.WriteLine(record.getValue(0).GetType());
-            Console.WriteLine(record.getValue(1).GetType());
+            //Console.WriteLine(record.getValue(0).GetType());
+            //Console.WriteLine(record.getValue(1).GetType());
             try
             {
-                Console.WriteLine(record.getValue(2));
+                //Console.WriteLine(record.getValue(2));
             }
             catch (Exception ex)
             {
@@ -67,7 +67,7 @@ namespace SqlToGraphite.Plugin.LogParser
                 var s = ex.Message;
             }
             
-            Console.WriteLine(string.Format("{0} {1}", record.getValue(0), record.getValue(1)));
+            //Console.WriteLine(string.Format("{0} {1}", record.getValue(0), record.getValue(1)));
 
 
             //for (int i = 0; i < record.; i++)
@@ -140,9 +140,9 @@ namespace SqlToGraphite.Plugin.LogParser
             while (!logRecordset.atEnd())
             {
                 var logRecord = logRecordset.getRecord();
-                Console.WriteLine(logRecord.getValue(0).GetType());
-                Console.WriteLine(logRecord.getValue(1).GetType());
-                Console.WriteLine(string.Format("{0} {1}", logRecord.getValue(0), logRecord.getValue(1)));
+                //Console.WriteLine(logRecord.getValue(0).GetType());
+                //Console.WriteLine(logRecord.getValue(1).GetType());
+                //Console.WriteLine(string.Format("{0} {1}", logRecord.getValue(0), logRecord.getValue(1)));
                 logRecordset.moveNext();
             }
         }

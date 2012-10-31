@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head><title>SqlToGraphite.Plugin.Oracle.OracleClient - Coverage Report</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="report.css" />
+
+</head><body><div class="container">
+<h1>Summary</h1>
+<table class="overview">
+<colgroup>
+<col width="130" />
+<col />
+</colgroup>
+<tr><th>Class:</th><td>SqlToGraphite.Plugin.Oracle.OracleClient</td></tr>
+<tr><th>Assembly:</th><td>SqlToGraphite.Plugin.Oracle</td></tr>
+<tr><th>File(s):</th><td><a href="#CgitperryOfPeekSqlToGraphiteSrcSqlToGraphitePluginOracleOracleClientcs">C:\git\perryOfPeek\SqlToGraphite\Src\SqlToGraphite.Plugin.Oracle\OracleClient.cs</a></td></tr>
+<tr><th>Coverage:</th><td>27.9%</td></tr>
+<tr><th>Covered lines:</th><td>19</td></tr>
+<tr><th>Coverable lines:</th><td>68</td></tr>
+<tr><th>Total lines:</th><td>116</td></tr>
+</table>
+<h1>Metrics</h1>
+<table class="overview">
+<tr><th>Method</th><th>Cyclomatic Complexity</th><th>Sequence Coverage</th><th>Branch Coverage</th></tr>
+<tr><td title="System.Void SqlToGraphite.Plugin.Oracle.OracleClient::.ctor()">.ctor()</td><td>1</td><td>100</td><td>100</td></tr>
+<tr><td title="System.Void SqlToGraphite.Plugin.Oracle.OracleClient::.ctor(log4net.ILog,Job,SqlToGraphiteInterfaces.IEncryption)">.ctor(...)</td><td>1</td><td>100</td><td>100</td></tr>
+<tr><td title="System.Collections.Generic.IList`1&lt;SqlToGraphiteInterfaces.IResult&gt; SqlToGraphite.Plugin.Oracle.OracleClient::Get()">Get()</td><td>3</td><td>0</td><td>0</td></tr>
+<tr><td title="SqlToGraphiteInterfaces.Result SqlToGraphite.Plugin.Oracle.OracleClient::Map(System.Data.DataRow)">Map(...)</td><td>8</td><td>0</td><td>0</td></tr>
+<tr><td title="System.Data.DataSet SqlToGraphite.Plugin.Oracle.OracleClient::ExecuteQuery(System.String,System.String)">ExecuteQuery(...)</td><td>2</td><td>0</td><td>0</td></tr>
+</table>
+<h1>File(s)</h1>
+<h2 id="CgitperryOfPeekSqlToGraphiteSrcSqlToGraphitePluginOracleOracleClientcs">C:\git\perryOfPeek\SqlToGraphite\Src\SqlToGraphite.Plugin.Oracle\OracleClient.cs</h2>
+<table>
+<tr><th></th><th>#</th><th>Line</th><th>Coverage</th></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>1</code></td><td class="light"><code>using&nbsp;System;</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>2</code></td><td class="light"><code>using&nbsp;System.Collections.Generic;</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>3</code></td><td class="light"><code>using&nbsp;System.Data;</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>4</code></td><td class="light"><code>using&nbsp;System.Data.OracleClient;</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>5</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>6</code></td><td class="light"><code>using&nbsp;log4net;</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>7</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>8</code></td><td class="light"><code>using&nbsp;SqlToGraphiteInterfaces;</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>9</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>10</code></td><td class="light"><code>namespace&nbsp;SqlToGraphite.Plugin.Oracle</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>11</code></td><td class="light"><code>{</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>12</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;class&nbsp;OracleClient&nbsp;:&nbsp;PluginBase</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>13</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>14</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;string&nbsp;connectionString;</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>15</code></td><td class="light"><code></code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>16</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;OracleClient()</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>17</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>18</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>19</code></td><td class="light"><code></code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>20</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;OracleClient(ILog&nbsp;log,&nbsp;Job&nbsp;job,&nbsp;IEncryption&nbsp;encryption)</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>21</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;base(log,&nbsp;job,&nbsp;encryption)</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>22</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>23</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.WireUpProperties(job,&nbsp;this);</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>24</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>25</code></td><td class="light"><code></code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">2</td><td class="right"><code>26</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;string&nbsp;MetricName&nbsp;{&nbsp;get;&nbsp;set;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>27</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>28</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Encrypted]</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>29</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;string&nbsp;ConnectionString</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>30</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>31</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;get</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>32</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>33</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;this.Encrypt(this.connectionString);</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>34</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>35</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">2</td><td class="right"><code>36</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>37</code></td><td class="light"><code></code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">2</td><td class="right"><code>38</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.connectionString&nbsp;=&nbsp;this.Decrypt(value);</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">2</td><td class="right"><code>39</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>40</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>41</code></td><td class="light"><code></code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">2</td><td class="right"><code>42</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;string&nbsp;Path&nbsp;{&nbsp;get;&nbsp;set;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>43</code></td><td class="light"><code></code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">2</td><td class="right"><code>44</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;string&nbsp;Sql&nbsp;{&nbsp;get;&nbsp;set;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>45</code></td><td class="light"><code></code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">4</td><td class="right"><code>46</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;override&nbsp;string&nbsp;Name&nbsp;{&nbsp;get;&nbsp;set;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>47</code></td><td class="light"><code></code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">4</td><td class="right"><code>48</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;override&nbsp;string&nbsp;ClientName&nbsp;{&nbsp;get;&nbsp;set;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>49</code></td><td class="light"><code></code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">5</td><td class="right"><code>50</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;override&nbsp;string&nbsp;Type&nbsp;{&nbsp;get;&nbsp;set;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>51</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>52</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;override&nbsp;IList&lt;IResult&gt;&nbsp;Get()</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>53</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>54</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;rtn&nbsp;=&nbsp;new&nbsp;List&lt;IResult&gt;();</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>55</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;dataSet&nbsp;=&nbsp;this.ExecuteQuery(this.connectionString,&nbsp;this.Sql);</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>56</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;(DataRow&nbsp;row&nbsp;in&nbsp;dataSet.Tables[0].Rows)</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>57</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>58</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rtn.Add(this.Map(row));</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>59</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>60</code></td><td class="light"><code></code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>61</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;rtn;</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>62</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>63</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>64</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;Result&nbsp;Map(DataRow&nbsp;record)</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>65</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>66</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;value&nbsp;=&nbsp;-1;</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>67</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;dateTime&nbsp;=&nbsp;DateTime.Now;</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>68</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;name&nbsp;=&nbsp;string.Empty;</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>69</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;(int&nbsp;i&nbsp;=&nbsp;0;&nbsp;i&nbsp;&lt;&nbsp;record.ItemArray.Length;&nbsp;i++)</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>70</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>71</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(record[i]&nbsp;is&nbsp;string)</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>72</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>73</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name&nbsp;=&nbsp;Convert.ToString(record[i]);</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>74</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>75</code></td><td class="light"><code></code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>76</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(record[i]&nbsp;is&nbsp;int&nbsp;||&nbsp;record[i]&nbsp;is&nbsp;decimal)</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>77</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>78</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value&nbsp;=&nbsp;Convert.ToInt32(record[i]);</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>79</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>80</code></td><td class="light"><code></code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>81</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(record[i]&nbsp;is&nbsp;DateTime)</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>82</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>83</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dateTime&nbsp;=&nbsp;Convert.ToDateTime(record[i]);</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>84</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>85</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>86</code></td><td class="light"><code></code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>87</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(this.MetricName&nbsp;!=&nbsp;string.Empty&nbsp;&amp;&amp;&nbsp;name&nbsp;==&nbsp;string.Empty)</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>88</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>89</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name&nbsp;=&nbsp;this.MetricName;</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>90</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>91</code></td><td class="light"><code></code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>92</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.Log.Debug(string.Format(&quot;Got&nbsp;[{1}]&nbsp;{0}&quot;,&nbsp;value,&nbsp;dateTime));</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>93</code></td><td class="light"><code></code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>94</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;new&nbsp;Result(value,&nbsp;name,&nbsp;dateTime,&nbsp;this.Path);</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>95</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>96</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>97</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;DataSet&nbsp;ExecuteQuery(string&nbsp;connectionString,&nbsp;string&nbsp;sql)</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>98</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>99</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;ds&nbsp;=&nbsp;new&nbsp;DataSet();</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>100</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;using&nbsp;(var&nbsp;connection&nbsp;=&nbsp;new&nbsp;OracleConnection())</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>101</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>102</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connection.ConnectionString&nbsp;=&nbsp;connectionString;</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>103</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connection.Open();</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>104</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//Console.WriteLine(&quot;State:&nbsp;{0}&quot;,&nbsp;connection.State);</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>105</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//Console.WriteLine(&quot;ConnectionString:&nbsp;{0}&quot;,&nbsp;connection.ConnectionString);</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>106</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;command&nbsp;=&nbsp;connection.CreateCommand();</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>107</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;command.CommandText&nbsp;=&nbsp;sql;</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>108</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;command.ExecuteReader();</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>109</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;da&nbsp;=&nbsp;new&nbsp;OracleDataAdapter(command);</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>110</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;da.Fill(ds);</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>111</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>112</code></td><td class="light"><code></code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>113</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;ds;</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>114</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>115</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>116</code></td><td class="light"><code>}</code></td></tr>
+</table>
+<div class="footer">Generated by: ReportGenerator 1.6.1.0<br />31/10/2012 - 09:09:45<br /><a href="http://www.palmmedia.de">www.palmmedia.de</a></div></div></body></html>

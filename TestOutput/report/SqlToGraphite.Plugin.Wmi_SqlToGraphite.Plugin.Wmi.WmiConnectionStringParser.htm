@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head><title>SqlToGraphite.Plugin.Wmi.WmiConnectionStringParser - Coverage Report</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="report.css" />
+
+</head><body><div class="container">
+<h1>Summary</h1>
+<table class="overview">
+<colgroup>
+<col width="130" />
+<col />
+</colgroup>
+<tr><th>Class:</th><td>SqlToGraphite.Plugin.Wmi.WmiConnectionStringParser</td></tr>
+<tr><th>Assembly:</th><td>SqlToGraphite.Plugin.Wmi</td></tr>
+<tr><th>File(s):</th><td><a href="#CgitperryOfPeekSqlToGraphitesrcSqlToGraphitePluginWmiWmiConnectionStringParsercs">C:\git\perryOfPeek\SqlToGraphite\src\SqlToGraphite.Plugin.Wmi\WmiConnectionStringParser.cs</a></td></tr>
+<tr><th>Coverage:</th><td>0%</td></tr>
+<tr><th>Covered lines:</th><td>0</td></tr>
+<tr><th>Coverable lines:</th><td>25</td></tr>
+<tr><th>Total lines:</th><td>36</td></tr>
+</table>
+<h1>Metrics</h1>
+<table class="overview">
+<tr><th>Method</th><th>Cyclomatic Complexity</th><th>Sequence Coverage</th><th>Branch Coverage</th></tr>
+<tr><td title="System.Void SqlToGraphite.Plugin.Wmi.WmiConnectionStringParser::.ctor(System.String)">.ctor(...)</td><td>5</td><td>0</td><td>0</td></tr>
+</table>
+<h1>File(s)</h1>
+<h2 id="CgitperryOfPeekSqlToGraphitesrcSqlToGraphitePluginWmiWmiConnectionStringParsercs">C:\git\perryOfPeek\SqlToGraphite\src\SqlToGraphite.Plugin.Wmi\WmiConnectionStringParser.cs</h2>
+<table>
+<tr><th></th><th>#</th><th>Line</th><th>Coverage</th></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>1</code></td><td class="light"><code>namespace&nbsp;SqlToGraphite.Plugin.Wmi</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>2</code></td><td class="light"><code>{</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>3</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;class&nbsp;WmiConnectionStringParser</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>4</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>5</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;string&nbsp;Username&nbsp;{&nbsp;get;&nbsp;private&nbsp;set;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>6</code></td><td class="light"><code></code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>7</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;string&nbsp;Password&nbsp;{&nbsp;get;&nbsp;private&nbsp;set;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>8</code></td><td class="light"><code></code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>9</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;object&nbsp;Hostname&nbsp;{&nbsp;get;&nbsp;private&nbsp;set;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>10</code></td><td class="light"><code></code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>11</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;WmiConnectionStringParser(string&nbsp;connectionString)</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>12</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>13</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.Username&nbsp;=&nbsp;string.Empty;</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>14</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.Password&nbsp;=&nbsp;string.Empty;</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>15</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;parts&nbsp;=&nbsp;connectionString.Split(&#39;;&#39;);</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>16</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;(var&nbsp;part&nbsp;in&nbsp;parts)</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>17</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>18</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;nameValuePairs&nbsp;=&nbsp;part.Split(&#39;=&#39;);</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>19</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(nameValuePairs[0].ToLower()&nbsp;==&nbsp;&quot;username&quot;)</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>20</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>21</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.Username&nbsp;=&nbsp;nameValuePairs[1];</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>22</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>23</code></td><td class="light"><code></code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>24</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(nameValuePairs[0].ToLower()&nbsp;==&nbsp;&quot;password&quot;)</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>25</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>26</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.Password&nbsp;=&nbsp;nameValuePairs[1];</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>27</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>28</code></td><td class="light"><code></code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>29</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(nameValuePairs[0].ToLower()&nbsp;==&nbsp;&quot;hostname&quot;)</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>30</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>31</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.Hostname&nbsp;=&nbsp;nameValuePairs[1];</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>32</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>33</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>34</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>35</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>36</code></td><td class="light"><code>}</code></td></tr>
+</table>
+<div class="footer">Generated by: ReportGenerator 1.6.1.0<br />31/10/2012 - 09:09:45<br /><a href="http://www.palmmedia.de">www.palmmedia.de</a></div></div></body></html>

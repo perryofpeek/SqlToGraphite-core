@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head><title>SqlToGraphite.AssemblyResolver - Coverage Report</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="report.css" />
+
+</head><body><div class="container">
+<h1>Summary</h1>
+<table class="overview">
+<colgroup>
+<col width="130" />
+<col />
+</colgroup>
+<tr><th>Class:</th><td>SqlToGraphite.AssemblyResolver</td></tr>
+<tr><th>Assembly:</th><td>SqlToGraphite</td></tr>
+<tr><th>File(s):</th><td><a href="#CgitperryOfPeekSqlToGraphitesrcSqlToGraphiteAssemblyResolvercs">C:\git\perryOfPeek\SqlToGraphite\src\SqlToGraphite\AssemblyResolver.cs</a></td></tr>
+<tr><th>Coverage:</th><td>83.9%</td></tr>
+<tr><th>Covered lines:</th><td>47</td></tr>
+<tr><th>Coverable lines:</th><td>56</td></tr>
+<tr><th>Total lines:</th><td>97</td></tr>
+</table>
+<h1>Metrics</h1>
+<table class="overview">
+<tr><th>Method</th><th>Cyclomatic Complexity</th><th>Sequence Coverage</th><th>Branch Coverage</th></tr>
+<tr><td title="System.Void SqlToGraphite.AssemblyResolver::.ctor(SqlToGraphite.IDirectory)">.ctor(...)</td><td>1</td><td>100</td><td>100</td></tr>
+<tr><td title="System.Type SqlToGraphite.AssemblyResolver::ResolveType(Job)">ResolveType(...)</td><td>2</td><td>100</td><td>100</td></tr>
+<tr><td title="System.Type[] SqlToGraphite.AssemblyResolver::ResolveTypes(SqlToGraphite.Config.JobImpl)">ResolveTypes(...)</td><td>2</td><td>100</td><td>100</td></tr>
+<tr><td title="System.Collections.Generic.Dictionary`2&lt;System.String,System.Type&gt; SqlToGraphite.AssemblyResolver::GetJobTypes(System.String)">GetJobTypes(...)</td><td>4</td><td>100</td><td>83</td></tr>
+<tr><td title="System.Void SqlToGraphite.AssemblyResolver::ImportTypes(System.String)">ImportTypes(...)</td><td>1</td><td>100</td><td>100</td></tr>
+<tr><td title="System.Void SqlToGraphite.AssemblyResolver::LoadTypes(System.Reflection.Assembly,System.Type)">LoadTypes(...)</td><td>7</td><td>100</td><td>83</td></tr>
+<tr><td title="System.Type SqlToGraphite.AssemblyResolver::ResolveType(System.String)">ResolveType(...)</td><td>3</td><td>0</td><td>0</td></tr>
+</table>
+<h1>File(s)</h1>
+<h2 id="CgitperryOfPeekSqlToGraphitesrcSqlToGraphiteAssemblyResolvercs">C:\git\perryOfPeek\SqlToGraphite\src\SqlToGraphite\AssemblyResolver.cs</h2>
+<table>
+<tr><th></th><th>#</th><th>Line</th><th>Coverage</th></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>1</code></td><td class="light"><code>using&nbsp;System;</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>2</code></td><td class="light"><code>using&nbsp;System.Collections.Generic;</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>3</code></td><td class="light"><code>using&nbsp;System.Linq;</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>4</code></td><td class="light"><code>using&nbsp;System.Reflection;</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>5</code></td><td class="light"><code>using&nbsp;SqlToGraphite.Config;</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>6</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>7</code></td><td class="light"><code>namespace&nbsp;SqlToGraphite</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>8</code></td><td class="light"><code>{</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>9</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;class&nbsp;AssemblyResolver&nbsp;:&nbsp;IAssemblyResolver</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>10</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>11</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;const&nbsp;string&nbsp;FilesToScan&nbsp;=&nbsp;&quot;*.dll&quot;;</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>12</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>13</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;readonly&nbsp;IDirectory&nbsp;directory;</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>14</code></td><td class="light"><code></code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">94</td><td class="right"><code>15</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;AssemblyResolver(IDirectory&nbsp;directory)</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">94</td><td class="right"><code>16</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">94</td><td class="right"><code>17</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.directory&nbsp;=&nbsp;directory;</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">94</td><td class="right"><code>18</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;types&nbsp;=&nbsp;new&nbsp;Dictionary&lt;string,&nbsp;Type&gt;();</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">94</td><td class="right"><code>19</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.GetJobTypes(FilesToScan);</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">94</td><td class="right"><code>20</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.GetJobTypes(&quot;*.exe&quot;);</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">94</td><td class="right"><code>21</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>22</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>23</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;Dictionary&lt;string,&nbsp;Type&gt;&nbsp;types;</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>24</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>25</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;Type&nbsp;ResolveType(Job&nbsp;job)</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">3</td><td class="right"><code>26</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>27</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//log.Debug(string.Format(&quot;Resolving&nbsp;job&nbsp;of&nbsp;type&nbsp;{0}&quot;,&nbsp;job.GetType().FullName));</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">3</td><td class="right"><code>28</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(!this.types.ContainsKey(job.Type))</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>29</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>30</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;new&nbsp;PluginNotFoundOrLoadedException(string.Format(&quot;The&nbsp;plugin&nbsp;{0}&nbsp;is&nbsp;not&nbsp;found&nbsp;or&nbsp;loaded&quot;,&nbsp;job.Typ</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>31</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>32</code></td><td class="light"><code></code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">2</td><td class="right"><code>33</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;this.types[job.Type];</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">2</td><td class="right"><code>34</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>35</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>36</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;Type[]&nbsp;ResolveTypes(JobImpl&nbsp;job)</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">91</td><td class="right"><code>37</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">637</td><td class="right"><code>38</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;this.types.Select(type&nbsp;=&gt;&nbsp;type.Value).ToArray();</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">91</td><td class="right"><code>39</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>40</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>41</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;Dictionary&lt;string,&nbsp;Type&gt;&nbsp;GetJobTypes(string&nbsp;filesToScan)</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">188</td><td class="right"><code>42</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">188</td><td class="right"><code>43</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;files&nbsp;=&nbsp;directory.GetFilesInCurrentDirectory(filesToScan);</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">188</td><td class="right"><code>44</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(files&nbsp;!=&nbsp;null)</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">184</td><td class="right"><code>45</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">4744</td><td class="right"><code>46</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;(var&nbsp;dll&nbsp;in&nbsp;files)</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">2096</td><td class="right"><code>47</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">2096</td><td class="right"><code>48</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.ImportTypes(dll);</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">2096</td><td class="right"><code>49</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">184</td><td class="right"><code>50</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>51</code></td><td class="light"><code></code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">188</td><td class="right"><code>52</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;types;</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">188</td><td class="right"><code>53</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>54</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>55</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;void&nbsp;ImportTypes(string&nbsp;dll)</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">2096</td><td class="right"><code>56</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>57</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">2096</td><td class="right"><code>58</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">2096</td><td class="right"><code>59</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.LoadTypes(Assembly.LoadFile(dll),&nbsp;typeof(Job));</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">2095</td><td class="right"><code>60</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>61</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;catch&nbsp;(BadImageFormatException)</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>62</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>63</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//this.log.Error(string.Format(&quot;Ignore&nbsp;bad&nbsp;image&nbsp;format&nbsp;exception&nbsp;{0}&quot;,&nbsp;dll));</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>64</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">2096</td><td class="right"><code>65</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>66</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>67</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;void&nbsp;LoadTypes(Assembly&nbsp;asm,&nbsp;Type&nbsp;typeToLoad)</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">2095</td><td class="right"><code>68</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>69</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//Query&nbsp;our&nbsp;types.&nbsp;We&nbsp;could&nbsp;also&nbsp;load&nbsp;any&nbsp;other&nbsp;assemblies&nbsp;and</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>70</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//query&nbsp;them&nbsp;for&nbsp;any&nbsp;types&nbsp;that&nbsp;inherit&nbsp;from&nbsp;Animal</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">708627</td><td class="right"><code>71</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;(Type&nbsp;currType&nbsp;in&nbsp;asm.GetTypes())</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">351171</td><td class="right"><code>72</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">351171</td><td class="right"><code>73</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(!currType.IsAbstract&nbsp;&amp;&amp;&nbsp;!currType.IsInterface&nbsp;&amp;&amp;&nbsp;typeToLoad.IsAssignableFrom(currType)&nbsp;&amp;&amp;&nbsp;currType.I</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">548</td><td class="right"><code>74</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">548</td><td class="right"><code>75</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(!types.ContainsKey(currType.FullName))</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">548</td><td class="right"><code>76</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">548</td><td class="right"><code>77</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;types.Add(currType.FullName,&nbsp;currType);</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">548</td><td class="right"><code>78</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">548</td><td class="right"><code>79</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">351171</td><td class="right"><code>80</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">2095</td><td class="right"><code>81</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>82</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>83</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//TODO:&nbsp;write&nbsp;test(s)&nbsp;for&nbsp;this.</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>84</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;Type&nbsp;ResolveType(string&nbsp;name)</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>85</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>86</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;(var&nbsp;type&nbsp;in&nbsp;types)</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>87</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>88</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(type.Key&nbsp;==&nbsp;name)</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>89</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>90</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;type.Value;</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>91</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>92</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>93</code></td><td class="light"><code></code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>94</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;null;</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>95</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>96</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>97</code></td><td class="light"><code>}</code></td></tr>
+</table>
+<div class="footer">Generated by: ReportGenerator 1.6.1.0<br />31/10/2012 - 09:09:45<br /><a href="http://www.palmmedia.de">www.palmmedia.de</a></div></div></body></html>

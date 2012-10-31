@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head><title>SqlToGraphite.UnitTests.With_PluginBase - Coverage Report</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="report.css" />
+
+</head><body><div class="container">
+<h1>Summary</h1>
+<table class="overview">
+<colgroup>
+<col width="130" />
+<col />
+</colgroup>
+<tr><th>Class:</th><td>SqlToGraphite.UnitTests.With_PluginBase</td></tr>
+<tr><th>Assembly:</th><td>SqlToGraphite.UnitTests</td></tr>
+<tr><th>File(s):</th><td><a href="#CgitperryOfPeekSqlToGraphitetestSqlToGraphiteUnitTestsWith_PluginBasecs">C:\git\perryOfPeek\SqlToGraphite\test\SqlToGraphite.UnitTests\With_PluginBase.cs</a></td></tr>
+<tr><th>Coverage:</th><td>65%</td></tr>
+<tr><th>Covered lines:</th><td>13</td></tr>
+<tr><th>Coverable lines:</th><td>20</td></tr>
+<tr><th>Total lines:</th><td>57</td></tr>
+</table>
+<h1>Metrics</h1>
+<table class="overview">
+<tr><th>Method</th><th>Cyclomatic Complexity</th><th>Sequence Coverage</th><th>Branch Coverage</th></tr>
+<tr><td title="System.Void SqlToGraphite.UnitTests.With_PluginBase::Create_encrypted_string_for_testing()">Create_encrypted_string_for_testing()</td><td>1</td><td>0</td><td>0</td></tr>
+<tr><td title="System.Void SqlToGraphite.UnitTests.With_PluginBase::Should_encrypt_string()">Should_encrypt_string()</td><td>1</td><td>100</td><td>100</td></tr>
+<tr><td title="System.Collections.Generic.IList`1&lt;SqlToGraphiteInterfaces.IResult&gt; SqlToGraphite.UnitTests.With_PluginBase/TestPlugin::Get()">Get()</td><td>1</td><td>0</td><td>0</td></tr>
+</table>
+<h1>File(s)</h1>
+<h2 id="CgitperryOfPeekSqlToGraphitetestSqlToGraphiteUnitTestsWith_PluginBasecs">C:\git\perryOfPeek\SqlToGraphite\test\SqlToGraphite.UnitTests\With_PluginBase.cs</h2>
+<table>
+<tr><th></th><th>#</th><th>Line</th><th>Coverage</th></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>1</code></td><td class="light"><code>using&nbsp;System;</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>2</code></td><td class="light"><code>using&nbsp;System.Collections.Generic;</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>3</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>4</code></td><td class="light"><code>using&nbsp;NUnit.Framework;</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>5</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>6</code></td><td class="light"><code>using&nbsp;SqlToGraphiteInterfaces;</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>7</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>8</code></td><td class="light"><code>namespace&nbsp;SqlToGraphite.UnitTests</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>9</code></td><td class="light"><code>{</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>10</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;ReSharper&nbsp;disable&nbsp;InconsistentNaming</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>11</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;[TestFixture]</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>12</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;class&nbsp;With_PluginBase</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>13</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>14</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;internal&nbsp;class&nbsp;TestPlugin&nbsp;:&nbsp;PluginBase</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>15</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>16</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;string&nbsp;Secret</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>17</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>18</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;get</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>19</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>20</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;this.Decrypt(SecretValue);</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>21</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>22</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>23</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>24</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>25</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SecretValue&nbsp;=&nbsp;this.Encrypt(value);</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>26</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>27</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>28</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>29</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;string&nbsp;SecretValue&nbsp;{&nbsp;get;&nbsp;set;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>30</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>31</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;override&nbsp;IList&lt;IResult&gt;&nbsp;Get()</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>32</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>33</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;new&nbsp;List&lt;IResult&gt;();</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>34</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>35</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>36</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>37</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Test,&nbsp;Ignore()]</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>38</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;void&nbsp;Create_encrypted_string_for_testing()</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>39</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>40</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;secret&nbsp;=&nbsp;&quot;SomeCs&quot;;</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>41</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;testPlugin&nbsp;=&nbsp;new&nbsp;TestPlugin&nbsp;{&nbsp;Secret&nbsp;=&nbsp;secret&nbsp;};</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>42</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//Console.WriteLine(testPlugin.SecretValue);</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>43</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//Assert.That(testPlugin.Secret,&nbsp;Is.EqualTo(secret));</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>44</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//Assert.That(testPlugin.SecretValue,&nbsp;Is.EqualTo(secretValue));</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>45</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>46</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>47</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Test]</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>48</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;void&nbsp;Should_encrypt_string()</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>49</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>50</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;secret&nbsp;=&nbsp;&quot;abc123&quot;;</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>51</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;secretValue&nbsp;=&nbsp;&quot;Myu0uW3E+PbIbaFkSIrLwA==&quot;;</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>52</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;testPlugin&nbsp;=&nbsp;new&nbsp;TestPlugin&nbsp;{&nbsp;Secret&nbsp;=&nbsp;secret&nbsp;};</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>53</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assert.That(testPlugin.Secret,&nbsp;Is.EqualTo(secret));</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>54</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assert.That(testPlugin.SecretValue,&nbsp;Is.EqualTo(secretValue));</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>55</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>56</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>57</code></td><td class="light"><code>}</code></td></tr>
+</table>
+<div class="footer">Generated by: ReportGenerator 1.6.1.0<br />31/10/2012 - 09:09:45<br /><a href="http://www.palmmedia.de">www.palmmedia.de</a></div></div></body></html>

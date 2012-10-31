@@ -1,0 +1,355 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head><title>Summary - Coverage Report</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="report.css" />
+<script type="text/javascript">
+/* <![CDATA[ */
+document.getElementsByClassName = function(cl) {
+  var retnode = [];
+  var myclass = new RegExp('\\b'+cl+'\\b');
+  var elem = this.getElementsByTagName('*');
+  for (var i = 0; i < elem.length; i++) {
+    var classes = elem[i].className;
+    if (myclass.test(classes)) {
+      retnode.push(elem[i]);
+    }
+  }
+  return retnode;
+}; 
+
+function getSiblingNode(element) {
+    do {
+        element = element.nextSibling;
+    } while (element && element.nodeType != 1);
+    return element;
+}
+
+function toggleAssemblyDetails() {
+  var popup = getSiblingNode(this); 
+  if (popup.style.display == 'block') { 
+    popup.style.display = 'none'; 
+  }
+  else {
+    var popups = document.getElementsByClassName('detailspopup');
+    for (var i = 0, j = popups.length; i < j; i++) { 
+      popups[i].style.display = 'none';
+    }
+    popup.style.display = 'block'; 
+  }
+  return false;
+}
+
+function collapseAllClasses() {
+  var classRows = document.getElementsByClassName('classrow');
+  for (var i = 0, j = classRows.length; i < j; i++) {
+    classRows[i].style.display = 'none';
+  }
+  var expandedRows = document.getElementsByClassName('expanded');
+  for (var i = 0, j = expandedRows.length; i < j; i++) {
+    expandedRows[i].className = 'collapsed';
+  }
+  return false;
+}
+
+function expandAllClasses() {
+  var classRows = document.getElementsByClassName('classrow');
+  for (var i = 0, j = classRows.length; i < j; i++) {
+    classRows[i].style.display = '';
+  }
+  var collapsedRows = document.getElementsByClassName('collapsed');
+  for (var i = 0, j = collapsedRows.length; i < j; i++) {
+    collapsedRows[i].className = 'expanded';
+  }
+  return false;
+}
+
+function toggleClassesInAssembly() {
+  var assemblyRow = this.parentNode.parentNode;
+  assemblyRow.className = assemblyRow.className == 'collapsed' ? 'expanded' : 'collapsed';
+  var classRow = getSiblingNode(assemblyRow);
+  while (classRow && classRow.className == 'classrow') {
+    classRow.style.display = classRow.style.display == 'none' ? '' : 'none';
+    classRow = getSiblingNode(classRow);
+  }
+  return false;
+}
+
+function init() {
+  var toggleAssemblyDetailsLinks = document.getElementsByClassName('toggleAssemblyDetails');
+  for (var i = 0, j = toggleAssemblyDetailsLinks.length; i < j; i++) {
+    toggleAssemblyDetailsLinks[i].onclick = toggleAssemblyDetails;
+  }
+
+  document.getElementById('collapseAllClasses').onclick = collapseAllClasses;
+  document.getElementById('expandAllClasses').onclick = expandAllClasses;
+
+  var toggleClassesInAssemblyLinks = document.getElementsByClassName('toggleClassesInAssembly');
+  for (var i = 0, j = toggleClassesInAssemblyLinks.length; i < j; i++) {
+    toggleClassesInAssemblyLinks[i].onclick = toggleClassesInAssembly;
+  }
+}
+
+window.onload = init;
+/* ]]> */
+</script>
+</head><body><div class="container">
+<h1>Summary</h1>
+<table class="overview">
+<colgroup>
+<col width="130" />
+<col />
+</colgroup>
+<tr><th>Generated on:</th><td>31/10/2012 - 09:09:45</td></tr>
+<tr><th>Parser:</th><td>OpenCoverParser</td></tr>
+<tr><th>Assemblies:</th><td>13</td></tr>
+<tr><th>Files:</th><td>100</td></tr>
+<tr><th>Coverage:</th><td>77.4%</td></tr>
+<tr><th>Covered lines:</th><td>2766</td></tr>
+<tr><th>Coverable lines:</th><td>3571</td></tr>
+<tr><th>Total lines:</th><td>6730</td></tr>
+</table>
+<h1>Assemblies</h1>
+<p class="toggleClasses"><a id="collapseAllClasses" href="#">Collapse all assemblies</a> | <a id="expandAllClasses" href="#">Expand all assemblies</a></p>
+<table class="overview">
+<colgroup>
+<col />
+<col width="60" />
+<col width="105" />
+</colgroup>
+<tr class="expanded"><th><a href="#" class="toggleClassesInAssembly" title="Collapse/Expand assembly"> </a> SqlToGraphite <a href="#" class="toggleAssemblyDetails" title="Show details of assembly">Details</a>
+<div class="detailspopup">
+<table class="overview">
+<colgroup>
+<col width="130" />
+<col />
+</colgroup>
+<tr><th>Classes:</th><td>54</td></tr><tr><th>Coverage:</th><td>72.3%</td></tr><tr><th>Covered lines:</th><td>928</td></tr><tr><th>Coverable lines:</th><td>1282</td></tr><tr><th>Total lines:</th><td>2475</td></tr></table>
+</div>
+</th><th title="LineCoverage">72.3%</th><td><table class="coverage"><tr><td class="green" style="width: 72px;">&nbsp;</td><td class="red" style="width: 28px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.AssemblyResolver.htm">SqlToGraphite.AssemblyResolver</a></td><td title="LineCoverage">83.9%</td><td><table class="coverage"><tr><td class="green" style="width: 84px;">&nbsp;</td><td class="red" style="width: 16px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.Clients.KnownDataClients.htm">SqlToGraphite.Clients.KnownDataClients</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.Clients.KnownGraphiteClients1.htm">SqlToGraphite.Clients.KnownGraphiteClients1</a></td><td title="LineCoverage">0%</td><td><table class="coverage"><tr><td class="red" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.Conf.Cache.htm">SqlToGraphite.Conf.Cache</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.Conf.ConfigController.htm">SqlToGraphite.Conf.ConfigController</a></td><td title="LineCoverage">0%</td><td><table class="coverage"><tr><td class="red" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.Conf.ConfigPersister.htm">SqlToGraphite.Conf.ConfigPersister</a></td><td title="LineCoverage">0%</td><td><table class="coverage"><tr><td class="red" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.Conf.ConfigRepository.htm">SqlToGraphite.Conf.ConfigRepository</a></td><td title="LineCoverage">85.3%</td><td><table class="coverage"><tr><td class="green" style="width: 85px;">&nbsp;</td><td class="red" style="width: 15px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.Conf.JobNotFoundException.htm">SqlToGraphite.Conf.JobNotFoundException</a></td><td title="MethodCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.Conf.RoleConfig.htm">SqlToGraphite.Conf.RoleConfig</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.Conf.TaskDetails.htm">SqlToGraphite.Conf.TaskDetails</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.Conf.TaskProperties.htm">SqlToGraphite.Conf.TaskProperties</a></td><td title="LineCoverage">0%</td><td><table class="coverage"><tr><td class="red" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.Conf.Templates1.htm">SqlToGraphite.Conf.Templates1</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.Config.CannotAddAnotherInstanceOfTypeException.htm">SqlToGraphite.Config.CannotAddAnotherInstanceOfTypeException</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.Config.ClientNotDefinedException.htm">SqlToGraphite.Config.ClientNotDefinedException</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.Config.Host.htm">SqlToGraphite.Config.Host</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.Config.JobImpl.htm">SqlToGraphite.Config.JobImpl</a></td><td title="LineCoverage">0%</td><td><table class="coverage"><tr><td class="red" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.Config.JobNotDefinedForTaskException.htm">SqlToGraphite.Config.JobNotDefinedForTaskException</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.Config.ListOfUniqueType_1.htm">SqlToGraphite.Config.ListOfUniqueType`1</a></td><td title="LineCoverage">56.6%</td><td><table class="coverage"><tr><td class="green" style="width: 57px;">&nbsp;</td><td class="red" style="width: 43px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.Config.Role.htm">SqlToGraphite.Config.Role</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.Config.RoleNotDefinedForHostException.htm">SqlToGraphite.Config.RoleNotDefinedForHostException</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.Config.SqlToGraphiteConfig.htm">SqlToGraphite.Config.SqlToGraphiteConfig</a></td><td title="LineCoverage">96.7%</td><td><table class="coverage"><tr><td class="green" style="width: 97px;">&nbsp;</td><td class="red" style="width: 3px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.Config.Task.htm">SqlToGraphite.Config.Task</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.Config.TaskSet.htm">SqlToGraphite.Config.TaskSet</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.Config.Template.htm">SqlToGraphite.Config.Template</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.Config.WorkItems.htm">SqlToGraphite.Config.WorkItems</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.ConfigFileWriter.htm">SqlToGraphite.ConfigFileWriter</a></td><td title="LineCoverage">70%</td><td><table class="coverage"><tr><td class="green" style="width: 70px;">&nbsp;</td><td class="red" style="width: 30px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.ConfigHttpReader.htm">SqlToGraphite.ConfigHttpReader</a></td><td title="LineCoverage">76.9%</td><td><table class="coverage"><tr><td class="green" style="width: 77px;">&nbsp;</td><td class="red" style="width: 23px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.ConfigMapper.htm">SqlToGraphite.ConfigMapper</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.Controller.htm">SqlToGraphite.Controller</a></td><td title="LineCoverage">64%</td><td><table class="coverage"><tr><td class="green" style="width: 64px;">&nbsp;</td><td class="red" style="width: 36px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.DataClientFactory.htm">SqlToGraphite.DataClientFactory</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.DirectoryImpl.htm">SqlToGraphite.DirectoryImpl</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.GenericSerializer.htm">SqlToGraphite.GenericSerializer</a></td><td title="LineCoverage">33.9%</td><td><table class="coverage"><tr><td class="green" style="width: 34px;">&nbsp;</td><td class="red" style="width: 66px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.Global.htm">SqlToGraphite.Global</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.GraphiteClient.htm">SqlToGraphite.GraphiteClient</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.GraphiteClientFactory.htm">SqlToGraphite.GraphiteClientFactory</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.GraphiteClients.htm">SqlToGraphite.GraphiteClients</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.GraphiteParams1.htm">SqlToGraphite.GraphiteParams1</a></td><td title="LineCoverage">0%</td><td><table class="coverage"><tr><td class="red" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.GraphiteTcpClient.htm">SqlToGraphite.GraphiteTcpClient</a></td><td title="LineCoverage">73.3%</td><td><table class="coverage"><tr><td class="green" style="width: 73px;">&nbsp;</td><td class="red" style="width: 27px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.GraphiteUdpClient.htm">SqlToGraphite.GraphiteUdpClient</a></td><td title="LineCoverage">73.3%</td><td><table class="coverage"><tr><td class="green" style="width: 73px;">&nbsp;</td><td class="red" style="width: 27px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.HostConfiguration.htm">SqlToGraphite.HostConfiguration</a></td><td title="LineCoverage">0%</td><td><table class="coverage"><tr><td class="red" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.PluginNotFoundOrLoadedException.htm">SqlToGraphite.PluginNotFoundOrLoadedException</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.RunableRunTask.htm">SqlToGraphite.RunableRunTask</a></td><td title="LineCoverage">80%</td><td><table class="coverage"><tr><td class="green" style="width: 80px;">&nbsp;</td><td class="red" style="width: 20px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.RunTaskSetWithProcess.htm">SqlToGraphite.RunTaskSetWithProcess</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.Sleeper.htm">SqlToGraphite.Sleeper</a></td><td title="LineCoverage">0%</td><td><table class="coverage"><tr><td class="red" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.StatsdClient.htm">SqlToGraphite.StatsdClient</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.Stop.htm">SqlToGraphite.Stop</a></td><td title="LineCoverage">0%</td><td><table class="coverage"><tr><td class="red" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.TaskBag.htm">SqlToGraphite.TaskBag</a></td><td title="LineCoverage">64.7%</td><td><table class="coverage"><tr><td class="green" style="width: 65px;">&nbsp;</td><td class="red" style="width: 35px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.TaskManager.htm">SqlToGraphite.TaskManager</a></td><td title="LineCoverage">87.1%</td><td><table class="coverage"><tr><td class="green" style="width: 87px;">&nbsp;</td><td class="red" style="width: 13px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.ThreadImpl.htm">SqlToGraphite.ThreadImpl</a></td><td title="LineCoverage">0%</td><td><table class="coverage"><tr><td class="red" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.UnitTests.ClientNotFoundException.htm">SqlToGraphite.UnitTests.ClientNotFoundException</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.UnitTests.HostNotFoundException.htm">SqlToGraphite.UnitTests.HostNotFoundException</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.UnitTests.RoleNotFoundException.htm">SqlToGraphite.UnitTests.RoleNotFoundException</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.UnknownDataClientException.htm">SqlToGraphite.UnknownDataClientException</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite_SqlToGraphite.UnknownGraphiteClientTypeException.htm">SqlToGraphite.UnknownGraphiteClientTypeException</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="expanded"><th><a href="#" class="toggleClassesInAssembly" title="Collapse/Expand assembly"> </a> SqlToGraphite.host <a href="#" class="toggleAssemblyDetails" title="Show details of assembly">Details</a>
+<div class="detailspopup">
+<table class="overview">
+<colgroup>
+<col width="130" />
+<col />
+</colgroup>
+<tr><th>Classes:</th><td>3</td></tr><tr><th>Coverage:</th><td>0%</td></tr><tr><th>Covered lines:</th><td>0</td></tr><tr><th>Coverable lines:</th><td>87</td></tr><tr><th>Total lines:</th><td>184</td></tr></table>
+</div>
+</th><th title="LineCoverage">0%</th><td><table class="coverage"><tr><td class="red" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.host_SqlToGraphite.host.Application.htm">SqlToGraphite.host.Application</a></td><td title="LineCoverage">0%</td><td><table class="coverage"><tr><td class="red" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.host_SqlToGraphite.host.Program.htm">SqlToGraphite.host.Program</a></td><td title="LineCoverage">0%</td><td><table class="coverage"><tr><td class="red" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.host_SqlToGraphite.host.SqlToGraphiteSection.htm">SqlToGraphite.host.SqlToGraphiteSection</a></td><td title="LineCoverage">0%</td><td><table class="coverage"><tr><td class="red" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="expanded"><th><a href="#" class="toggleClassesInAssembly" title="Collapse/Expand assembly"> </a> SqlToGraphite.Host.UnitTests <a href="#" class="toggleAssemblyDetails" title="Show details of assembly">Details</a>
+<div class="detailspopup">
+<table class="overview">
+<colgroup>
+<col width="130" />
+<col />
+</colgroup>
+<tr><th>Classes:</th><td>1</td></tr><tr><th>Coverage:</th><td>100%</td></tr><tr><th>Covered lines:</th><td>2</td></tr><tr><th>Coverable lines:</th><td>2</td></tr><tr><th>Total lines:</th><td>23</td></tr></table>
+</div>
+</th><th title="LineCoverage">100%</th><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.Host.UnitTests_SqlToGraphite.Host.UnitTests.Should_do_things_with_config.htm">SqlToGraphite.Host.UnitTests.Should_do_things_with_config</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="expanded"><th><a href="#" class="toggleClassesInAssembly" title="Collapse/Expand assembly"> </a> SqlToGraphite.Plugin.LogParser <a href="#" class="toggleAssemblyDetails" title="Show details of assembly">Details</a>
+<div class="detailspopup">
+<table class="overview">
+<colgroup>
+<col width="130" />
+<col />
+</colgroup>
+<tr><th>Classes:</th><td>1</td></tr><tr><th>Coverage:</th><td>67.6%</td></tr><tr><th>Covered lines:</th><td>48</td></tr><tr><th>Coverable lines:</th><td>71</td></tr><tr><th>Total lines:</th><td>150</td></tr></table>
+</div>
+</th><th title="LineCoverage">67.6%</th><td><table class="coverage"><tr><td class="green" style="width: 68px;">&nbsp;</td><td class="red" style="width: 32px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.Plugin.LogParser_SqlToGraphite.Plugin.LogParser.LogParserClient.htm">SqlToGraphite.Plugin.LogParser.LogParserClient</a></td><td title="LineCoverage">67.6%</td><td><table class="coverage"><tr><td class="green" style="width: 68px;">&nbsp;</td><td class="red" style="width: 32px;">&nbsp;</td></tr></table></td></tr>
+<tr class="expanded"><th><a href="#" class="toggleClassesInAssembly" title="Collapse/Expand assembly"> </a> SqlToGraphite.Plugin.LogParser.UnitTests <a href="#" class="toggleAssemblyDetails" title="Show details of assembly">Details</a>
+<div class="detailspopup">
+<table class="overview">
+<colgroup>
+<col width="130" />
+<col />
+</colgroup>
+<tr><th>Classes:</th><td>1</td></tr><tr><th>Coverage:</th><td>93.3%</td></tr><tr><th>Covered lines:</th><td>56</td></tr><tr><th>Coverable lines:</th><td>60</td></tr><tr><th>Total lines:</th><td>143</td></tr></table>
+</div>
+</th><th title="LineCoverage">93.3%</th><td><table class="coverage"><tr><td class="green" style="width: 93px;">&nbsp;</td><td class="red" style="width: 7px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.Plugin.LogParser.UnitTests_SqlToGraphite.Plugin.LogParser.UnitTests.With_LogParserClient.htm">SqlToGraphite.Plugin.LogParser.UnitTests.With_LogParserClient</a></td><td title="LineCoverage">93.3%</td><td><table class="coverage"><tr><td class="green" style="width: 93px;">&nbsp;</td><td class="red" style="width: 7px;">&nbsp;</td></tr></table></td></tr>
+<tr class="expanded"><th><a href="#" class="toggleClassesInAssembly" title="Collapse/Expand assembly"> </a> SqlToGraphite.Plugin.Oracle <a href="#" class="toggleAssemblyDetails" title="Show details of assembly">Details</a>
+<div class="detailspopup">
+<table class="overview">
+<colgroup>
+<col width="130" />
+<col />
+</colgroup>
+<tr><th>Classes:</th><td>1</td></tr><tr><th>Coverage:</th><td>27.9%</td></tr><tr><th>Covered lines:</th><td>19</td></tr><tr><th>Coverable lines:</th><td>68</td></tr><tr><th>Total lines:</th><td>116</td></tr></table>
+</div>
+</th><th title="LineCoverage">27.9%</th><td><table class="coverage"><tr><td class="green" style="width: 28px;">&nbsp;</td><td class="red" style="width: 72px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.Plugin.Oracle_SqlToGraphite.Plugin.Oracle.OracleClient.htm">SqlToGraphite.Plugin.Oracle.OracleClient</a></td><td title="LineCoverage">27.9%</td><td><table class="coverage"><tr><td class="green" style="width: 28px;">&nbsp;</td><td class="red" style="width: 72px;">&nbsp;</td></tr></table></td></tr>
+<tr class="expanded"><th><a href="#" class="toggleClassesInAssembly" title="Collapse/Expand assembly"> </a> SqlToGraphite.Plugin.Oracle.UnitTests <a href="#" class="toggleAssemblyDetails" title="Show details of assembly">Details</a>
+<div class="detailspopup">
+<table class="overview">
+<colgroup>
+<col width="130" />
+<col />
+</colgroup>
+<tr><th>Classes:</th><td>1</td></tr><tr><th>Coverage:</th><td>0%</td></tr><tr><th>Covered lines:</th><td>0</td></tr><tr><th>Coverable lines:</th><td>53</td></tr><tr><th>Total lines:</th><td>112</td></tr></table>
+</div>
+</th><th title="LineCoverage">0%</th><td><table class="coverage"><tr><td class="red" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.Plugin.Oracle.UnitTests_SqlToGraphite.Plugin.Oracle.UnitTests.With_OracleClient.htm">SqlToGraphite.Plugin.Oracle.UnitTests.With_OracleClient</a></td><td title="LineCoverage">0%</td><td><table class="coverage"><tr><td class="red" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="expanded"><th><a href="#" class="toggleClassesInAssembly" title="Collapse/Expand assembly"> </a> SqlToGraphite.Plugin.SqlServer <a href="#" class="toggleAssemblyDetails" title="Show details of assembly">Details</a>
+<div class="detailspopup">
+<table class="overview">
+<colgroup>
+<col width="130" />
+<col />
+</colgroup>
+<tr><th>Classes:</th><td>1</td></tr><tr><th>Coverage:</th><td>94.8%</td></tr><tr><th>Covered lines:</th><td>73</td></tr><tr><th>Coverable lines:</th><td>77</td></tr><tr><th>Total lines:</th><td>124</td></tr></table>
+</div>
+</th><th title="LineCoverage">94.8%</th><td><table class="coverage"><tr><td class="green" style="width: 95px;">&nbsp;</td><td class="red" style="width: 5px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.Plugin.SqlServer_SqlToGraphite.Plugin.SqlServer.SqlServerClient.htm">SqlToGraphite.Plugin.SqlServer.SqlServerClient</a></td><td title="LineCoverage">94.8%</td><td><table class="coverage"><tr><td class="green" style="width: 95px;">&nbsp;</td><td class="red" style="width: 5px;">&nbsp;</td></tr></table></td></tr>
+<tr class="expanded"><th><a href="#" class="toggleClassesInAssembly" title="Collapse/Expand assembly"> </a> SqlToGraphite.Plugin.SqlServer.UnitTests <a href="#" class="toggleAssemblyDetails" title="Show details of assembly">Details</a>
+<div class="detailspopup">
+<table class="overview">
+<colgroup>
+<col width="130" />
+<col />
+</colgroup>
+<tr><th>Classes:</th><td>1</td></tr><tr><th>Coverage:</th><td>100%</td></tr><tr><th>Covered lines:</th><td>47</td></tr><tr><th>Coverable lines:</th><td>47</td></tr><tr><th>Total lines:</th><td>127</td></tr></table>
+</div>
+</th><th title="LineCoverage">100%</th><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.Plugin.SqlServer.UnitTests_SqlToGraphite.Plugin.SqlServer.UnitTests.With_SqlServerClient.htm">SqlToGraphite.Plugin.SqlServer.UnitTests.With_SqlServerClient</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="expanded"><th><a href="#" class="toggleClassesInAssembly" title="Collapse/Expand assembly"> </a> SqlToGraphite.Plugin.Wmi <a href="#" class="toggleAssemblyDetails" title="Show details of assembly">Details</a>
+<div class="detailspopup">
+<table class="overview">
+<colgroup>
+<col width="130" />
+<col />
+</colgroup>
+<tr><th>Classes:</th><td>2</td></tr><tr><th>Coverage:</th><td>13.4%</td></tr><tr><th>Covered lines:</th><td>16</td></tr><tr><th>Coverable lines:</th><td>119</td></tr><tr><th>Total lines:</th><td>180</td></tr></table>
+</div>
+</th><th title="LineCoverage">13.4%</th><td><table class="coverage"><tr><td class="green" style="width: 13px;">&nbsp;</td><td class="red" style="width: 87px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.Plugin.Wmi_SqlToGraphite.Plugin.Wmi.WmiClient.htm">SqlToGraphite.Plugin.Wmi.WmiClient</a></td><td title="LineCoverage">17%</td><td><table class="coverage"><tr><td class="green" style="width: 17px;">&nbsp;</td><td class="red" style="width: 83px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.Plugin.Wmi_SqlToGraphite.Plugin.Wmi.WmiConnectionStringParser.htm">SqlToGraphite.Plugin.Wmi.WmiConnectionStringParser</a></td><td title="LineCoverage">0%</td><td><table class="coverage"><tr><td class="red" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="expanded"><th><a href="#" class="toggleClassesInAssembly" title="Collapse/Expand assembly"> </a> SqlToGraphite.Plugin.Wmi.UnitTests <a href="#" class="toggleAssemblyDetails" title="Show details of assembly">Details</a>
+<div class="detailspopup">
+<table class="overview">
+<colgroup>
+<col width="130" />
+<col />
+</colgroup>
+<tr><th>Classes:</th><td>2</td></tr><tr><th>Coverage:</th><td>0%</td></tr><tr><th>Covered lines:</th><td>0</td></tr><tr><th>Coverable lines:</th><td>63</td></tr><tr><th>Total lines:</th><td>128</td></tr></table>
+</div>
+</th><th title="LineCoverage">0%</th><td><table class="coverage"><tr><td class="red" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.Plugin.Wmi.UnitTests_SqlToGraphite.Plugin.Wmi.UnitTests.With_WmiClient.htm">SqlToGraphite.Plugin.Wmi.UnitTests.With_WmiClient</a></td><td title="LineCoverage">0%</td><td><table class="coverage"><tr><td class="red" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.Plugin.Wmi.UnitTests_SqlToGrpahite.Plugin.Wmi.UnitTests.With_WmiConnectionStringParser.htm">SqlToGrpahite.Plugin.Wmi.UnitTests.With_WmiConnectionStringParser</a></td><td title="LineCoverage">0%</td><td><table class="coverage"><tr><td class="red" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="expanded"><th><a href="#" class="toggleClassesInAssembly" title="Collapse/Expand assembly"> </a> SqlToGraphite.UnitTests <a href="#" class="toggleAssemblyDetails" title="Show details of assembly">Details</a>
+<div class="detailspopup">
+<table class="overview">
+<colgroup>
+<col width="130" />
+<col />
+</colgroup>
+<tr><th>Classes:</th><td>30</td></tr><tr><th>Coverage:</th><td>96.1%</td></tr><tr><th>Covered lines:</th><td>1459</td></tr><tr><th>Coverable lines:</th><td>1518</td></tr><tr><th>Total lines:</th><td>2765</td></tr></table>
+</div>
+</th><th title="LineCoverage">96.1%</th><td><table class="coverage"><tr><td class="green" style="width: 96px;">&nbsp;</td><td class="red" style="width: 4px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_ConfigSpike.Config_Templates.htm">ConfigSpike.Config_Templates</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_SqlToGraphite.UnitTests.Config_Clients.htm">SqlToGraphite.UnitTests.Config_Clients</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_SqlToGraphite.UnitTests.Config_generation.htm">SqlToGraphite.UnitTests.Config_generation</a></td><td title="LineCoverage">92.7%</td><td><table class="coverage"><tr><td class="green" style="width: 93px;">&nbsp;</td><td class="red" style="width: 7px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_SqlToGraphite.UnitTests.Config_Hosts.htm">SqlToGraphite.UnitTests.Config_Hosts</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_SqlToGraphite.UnitTests.Config_Jobs.htm">SqlToGraphite.UnitTests.Config_Jobs</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_SqlToGraphite.UnitTests.ConfigUiTest.htm">SqlToGraphite.UnitTests.ConfigUiTest</a></td><td title="LineCoverage">0%</td><td><table class="coverage"><tr><td class="red" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_SqlToGraphite.UnitTests.Helper.htm">SqlToGraphite.UnitTests.Helper</a></td><td title="LineCoverage">30%</td><td><table class="coverage"><tr><td class="green" style="width: 30px;">&nbsp;</td><td class="red" style="width: 70px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_SqlToGraphite.UnitTests.ManualTests.htm">SqlToGraphite.UnitTests.ManualTests</a></td><td title="LineCoverage">0%</td><td><table class="coverage"><tr><td class="red" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_SqlToGraphite.UnitTests.With_AssemblyResolver.htm">SqlToGraphite.UnitTests.With_AssemblyResolver</a></td><td title="LineCoverage">93.5%</td><td><table class="coverage"><tr><td class="green" style="width: 94px;">&nbsp;</td><td class="red" style="width: 6px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_SqlToGraphite.UnitTests.With_Cache.htm">SqlToGraphite.UnitTests.With_Cache</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_SqlToGraphite.UnitTests.With_ConfigMapper.htm">SqlToGraphite.UnitTests.With_ConfigMapper</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_SqlToGraphite.UnitTests.With_ConfigReader.htm">SqlToGraphite.UnitTests.With_ConfigReader</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_SqlToGraphite.UnitTests.With_ConfigRepository.htm">SqlToGraphite.UnitTests.With_ConfigRepository</a></td><td title="LineCoverage">99.4%</td><td><table class="coverage"><tr><td class="green" style="width: 99px;">&nbsp;</td><td class="red" style="width: 1px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_SqlToGraphite.UnitTests.With_ConfigWriter.htm">SqlToGraphite.UnitTests.With_ConfigWriter</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_SqlToGraphite.UnitTests.With_Controller.htm">SqlToGraphite.UnitTests.With_Controller</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_SqlToGraphite.UnitTests.With_DataClientFactory.htm">SqlToGraphite.UnitTests.With_DataClientFactory</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_SqlToGraphite.UnitTests.With_DirectoryImpl.htm">SqlToGraphite.UnitTests.With_DirectoryImpl</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_SqlToGraphite.UnitTests.With_GraphiteClient.htm">SqlToGraphite.UnitTests.With_GraphiteClient</a></td><td title="LineCoverage">0%</td><td><table class="coverage"><tr><td class="red" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_SqlToGraphite.UnitTests.With_GraphiteClientFactory.htm">SqlToGraphite.UnitTests.With_GraphiteClientFactory</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_SqlToGraphite.UnitTests.With_GraphiteClients.htm">SqlToGraphite.UnitTests.With_GraphiteClients</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_SqlToGraphite.UnitTests.With_KnownDataClients.htm">SqlToGraphite.UnitTests.With_KnownDataClients</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_SqlToGraphite.UnitTests.With_PluginBase.htm">SqlToGraphite.UnitTests.With_PluginBase</a></td><td title="LineCoverage">65%</td><td><table class="coverage"><tr><td class="green" style="width: 65px;">&nbsp;</td><td class="red" style="width: 35px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_SqlToGraphite.UnitTests.With_result.htm">SqlToGraphite.UnitTests.With_result</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_SqlToGraphite.UnitTests.With_RolesConfig.htm">SqlToGraphite.UnitTests.With_RolesConfig</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_SqlToGraphite.UnitTests.With_statsd_client.htm">SqlToGraphite.UnitTests.With_statsd_client</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_SqlToGraphite.UnitTests.With_task.htm">SqlToGraphite.UnitTests.With_task</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_SqlToGraphite.UnitTests.With_TaskBag.htm">SqlToGraphite.UnitTests.With_TaskBag</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_SqlToGraphite.UnitTests.With_TaskManager.htm">SqlToGraphite.UnitTests.With_TaskManager</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_SqlToGraphite.UnitTests.With_TaskSet.htm">SqlToGraphite.UnitTests.With_TaskSet</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphite.UnitTests_SqlToGraphite.UnitTests.With_templates.htm">SqlToGraphite.UnitTests.With_templates</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="expanded"><th><a href="#" class="toggleClassesInAssembly" title="Collapse/Expand assembly"> </a> SqlToGraphiteInterfaces <a href="#" class="toggleAssemblyDetails" title="Show details of assembly">Details</a>
+<div class="detailspopup">
+<table class="overview">
+<colgroup>
+<col width="130" />
+<col />
+</colgroup>
+<tr><th>Classes:</th><td>7</td></tr><tr><th>Coverage:</th><td>95.1%</td></tr><tr><th>Covered lines:</th><td>118</td></tr><tr><th>Coverable lines:</th><td>124</td></tr><tr><th>Total lines:</th><td>203</td></tr></table>
+</div>
+</th><th title="LineCoverage">95.1%</th><td><table class="coverage"><tr><td class="green" style="width: 95px;">&nbsp;</td><td class="red" style="width: 5px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphiteInterfaces_Job.htm">Job</a></td><td title="MethodCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphiteInterfaces_SqlToGraphiteInterfaces.Client.htm">SqlToGraphiteInterfaces.Client</a></td><td title="MethodCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphiteInterfaces_SqlToGraphiteInterfaces.EncryptedAttribute.htm">SqlToGraphiteInterfaces.EncryptedAttribute</a></td><td title="MethodCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphiteInterfaces_SqlToGraphiteInterfaces.Encryption.htm">SqlToGraphiteInterfaces.Encryption</a></td><td title="LineCoverage">100%</td><td><table class="coverage"><tr><td class="green" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphiteInterfaces_SqlToGraphiteInterfaces.Helper.htm">SqlToGraphiteInterfaces.Helper</a></td><td title="MethodCoverage">0%</td><td><table class="coverage"><tr><td class="red" style="width: 103px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphiteInterfaces_SqlToGraphiteInterfaces.PluginBase.htm">SqlToGraphiteInterfaces.PluginBase</a></td><td title="LineCoverage">95.9%</td><td><table class="coverage"><tr><td class="green" style="width: 96px;">&nbsp;</td><td class="red" style="width: 4px;">&nbsp;</td></tr></table></td></tr>
+<tr class="classrow"><td><a href="SqlToGraphiteInterfaces_SqlToGraphiteInterfaces.Result.htm">SqlToGraphiteInterfaces.Result</a></td><td title="LineCoverage">89.7%</td><td><table class="coverage"><tr><td class="green" style="width: 90px;">&nbsp;</td><td class="red" style="width: 10px;">&nbsp;</td></tr></table></td></tr>
+</table>
+<div class="footer">Generated by: ReportGenerator 1.6.1.0<br />31/10/2012 - 09:09:45<br /><a href="http://www.palmmedia.de">www.palmmedia.de</a></div></div></body></html>

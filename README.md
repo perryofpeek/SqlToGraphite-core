@@ -3,6 +3,10 @@ Sql2Graphite
 
 Windows service that can run SQL  Oracle and WMI Queries and post results to Graphite
 
+Licence
+=======
+All Original Software is licensed under the MIT Licence and does not apply to any other 3rd party tools, utilities or code which may be used to develop this application.
+
 Overview 
 ========
 

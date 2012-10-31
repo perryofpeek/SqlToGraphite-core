@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head><title>SqlToGraphite.Controller - Coverage Report</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="report.css" />
+
+</head><body><div class="container">
+<h1>Summary</h1>
+<table class="overview">
+<colgroup>
+<col width="130" />
+<col />
+</colgroup>
+<tr><th>Class:</th><td>SqlToGraphite.Controller</td></tr>
+<tr><th>Assembly:</th><td>SqlToGraphite</td></tr>
+<tr><th>File(s):</th><td><a href="#CgitperryOfPeekSqlToGraphitesrcSqlToGraphiteControllercs">C:\git\perryOfPeek\SqlToGraphite\src\SqlToGraphite\Controller.cs</a></td></tr>
+<tr><th>Coverage:</th><td>64%</td></tr>
+<tr><th>Covered lines:</th><td>16</td></tr>
+<tr><th>Coverable lines:</th><td>25</td></tr>
+<tr><th>Total lines:</th><td>49</td></tr>
+</table>
+<h1>Metrics</h1>
+<table class="overview">
+<tr><th>Method</th><th>Cyclomatic Complexity</th><th>Sequence Coverage</th><th>Branch Coverage</th></tr>
+<tr><td title="System.Void SqlToGraphite.Controller::.ctor(SqlToGraphite.IRunTaskSet,SqlToGraphite.ISleep,SqlToGraphite.IStop,log4net.ILog)">.ctor(...)</td><td>1</td><td>100</td><td>100</td></tr>
+<tr><td title="System.Void SqlToGraphite.Controller::.ctor(SqlToGraphite.HostConfiguration,log4net.ILog)">.ctor(...)</td><td>1</td><td>0</td><td>0</td></tr>
+<tr><td title="System.Void SqlToGraphite.Controller::Process()">Process()</td><td>2</td><td>100</td><td>100</td></tr>
+<tr><td title="System.Void SqlToGraphite.Controller::Stop()">Stop()</td><td>1</td><td>0</td><td>0</td></tr>
+</table>
+<h1>File(s)</h1>
+<h2 id="CgitperryOfPeekSqlToGraphitesrcSqlToGraphiteControllercs">C:\git\perryOfPeek\SqlToGraphite\src\SqlToGraphite\Controller.cs</h2>
+<table>
+<tr><th></th><th>#</th><th>Line</th><th>Coverage</th></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>1</code></td><td class="light"><code>using&nbsp;log4net;</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>2</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>3</code></td><td class="light"><code>namespace&nbsp;SqlToGraphite</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>4</code></td><td class="light"><code>{</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>5</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;class&nbsp;Controller&nbsp;:&nbsp;IController</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>6</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>7</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;readonly&nbsp;HostConfiguration&nbsp;config;</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>8</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>9</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;readonly&nbsp;IRunTaskSet&nbsp;runTaskSet;</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>10</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>11</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;readonly&nbsp;ISleep&nbsp;sleep;</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>12</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>13</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;readonly&nbsp;IStop&nbsp;stop;</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>14</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>15</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;readonly&nbsp;ILog&nbsp;log;</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>16</code></td><td class="light"><code></code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>17</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;Controller(IRunTaskSet&nbsp;runTaskSet,&nbsp;ISleep&nbsp;sleep,&nbsp;IStop&nbsp;stop,&nbsp;ILog&nbsp;log)</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>18</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>19</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//this.config&nbsp;=&nbsp;config;</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>20</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.runTaskSet&nbsp;=&nbsp;runTaskSet;</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>21</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.sleep&nbsp;=&nbsp;sleep;</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>22</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.stop&nbsp;=&nbsp;stop;</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>23</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.log&nbsp;=&nbsp;log;</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>24</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>25</code></td><td class="light"><code></code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>26</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;Controller(HostConfiguration&nbsp;config,&nbsp;ILog&nbsp;log)</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>27</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>28</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.config&nbsp;=&nbsp;config;</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>29</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.log&nbsp;=&nbsp;log;</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>30</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>31</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>32</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;void&nbsp;Process()</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>33</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>34</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log.Debug(&quot;Processing&quot;);</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">2</td><td class="right"><code>35</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while&nbsp;(!stop.ShouldStop())</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>36</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>37</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.runTaskSet.Process();</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>38</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log.Debug(string.Format(&quot;sleep&nbsp;{0}&quot;,&nbsp;this.runTaskSet.Frequency));</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>39</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sleep.SleepSeconds(this.runTaskSet.Frequency);</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>40</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>41</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>42</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>43</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;void&nbsp;Stop()</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>44</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>45</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log.Debug(&quot;Stop&quot;);</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>46</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stop.SetStop(true);</code></td></tr>
+<tr><td class="red">&nbsp;</td><td class="leftmargin right">0</td><td class="right"><code>47</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>48</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>49</code></td><td class="light"><code>}</code></td></tr>
+</table>
+<div class="footer">Generated by: ReportGenerator 1.6.1.0<br />31/10/2012 - 09:09:45<br /><a href="http://www.palmmedia.de">www.palmmedia.de</a></div></div></body></html>

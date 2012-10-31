@@ -89,9 +89,9 @@ namespace SqlToGraphite.Plugin.LogParser.UnitTests
             while (!logRecordset.atEnd())
             {
                 var logRecord = logRecordset.getRecord();
-                Console.WriteLine(logRecord.getValue(0).GetType());
-                Console.WriteLine(logRecord.getValue(1).GetType());
-                Console.WriteLine(string.Format("{0} {1}", logRecord.getValue(0), logRecord.getValue(1)));
+                //Console.WriteLine(logRecord.getValue(0).GetType());
+                //Console.WriteLine(logRecord.getValue(1).GetType());
+                //Console.WriteLine(string.Format("{0} {1}", logRecord.getValue(0), logRecord.getValue(1)));
                 logRecordset.moveNext();
             }
         }
@@ -127,7 +127,7 @@ namespace SqlToGraphite.Plugin.LogParser.UnitTests
                 // Browse the recordset
                 for (; !oRecordSet.atEnd(); oRecordSet.moveNext())
                 {
-                    Console.WriteLine(oRecordSet.getRecord().toNativeString(","));
+                    //Console.WriteLine(oRecordSet.getRecord().toNativeString(","));
                 }
 
                 // Close the recordset

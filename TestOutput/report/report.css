@@ -1,0 +1,24 @@
+﻿html { font-family: sans-serif; margin: 20px; font-size: 0.9em; background-color: #f5f5f5; }
+h1 { font-size: 1.2em; font-weight: bold; margin: 20px 0 15px 0; padding: 0; }
+h2 { font-size: 1.0em; font-weight: bold; margin: 10px 0 15px 0; padding: 0; }
+th { text-align: left; }
+a { color: #cc0000; text-decoration: none; }
+a:hover { color: #000000; text-decoration: none; }
+.container { margin: auto; width: 960px; border: solid 1px #a7bac5; padding: 0 20px 20px 20px; background-color: #ffffff; }
+.overview { border: solid 1px #a7bac5; border-collapse: collapse; width: 100%; word-wrap: break-word; table-layout:fixed; }
+.overview th { border: solid 1px #a7bac5; border-collapse: collapse; padding: 2px 5px 2px 5px; background-color: #d2dbe1; }
+.overview td { border: solid 1px #a7bac5; border-collapse: collapse; padding: 2px 5px 2px 5px; }
+.coverage { border: solid 1px #a7bac5; border-collapse: collapse; font-size: 5px; }
+.coverage td { padding: 0; }
+.toggleClasses { font-size: 0.7em; padding: 0 0 0 5px; margin: 0 0 3px 0; }
+tr.expanded a.toggleClassesInAssembly { width: 12px; height: 12px; display: inline-block; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAadEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41LjEwMPRyoQAAAClJREFUKFNj+P//PwMpmCTFIIMHo4YzQFeRghlIUQxSOxg9TUoskxVxAAc+kbB1wVv5AAAAAElFTkSuQmCC); }
+tr.collapsed a.toggleClassesInAssembly { width: 12px; height: 12px; display: inline-block; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAadEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41LjEwMPRyoQAAACdJREFUKFNj+P//PwM6ZmBg+A/CWOWGgwaYB0mgISFCNB4OoUSqHwDx71a4nIsouAAAAABJRU5ErkJggg==); }
+.toggleAssemblyDetails { float:right; font-size: 0.7em; margin-top: 3px; }
+.detailspopup { border: solid 1px #a7bac5; width: 250px; position: absolute; background-color: #ffffff; margin: 2px 0 0 517px; padding: 10px; display: none; font-weight: normal; }
+.right { text-align: right; padding-right: 8px; }
+.light { color: #888888; }
+.leftmargin { padding-left: 5px; }
+.green { background-color: #00ff21; }
+.red { background-color: #ff0000; }
+.gray { background-color: #dcdcdc; }
+.footer { font-size: 0.7em; text-align: center; margin-top: 35px; }

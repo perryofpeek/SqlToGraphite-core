@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head><title>SqlToGraphite.UnitTests.With_GraphiteClients - Coverage Report</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="report.css" />
+
+</head><body><div class="container">
+<h1>Summary</h1>
+<table class="overview">
+<colgroup>
+<col width="130" />
+<col />
+</colgroup>
+<tr><th>Class:</th><td>SqlToGraphite.UnitTests.With_GraphiteClients</td></tr>
+<tr><th>Assembly:</th><td>SqlToGraphite.UnitTests</td></tr>
+<tr><th>File(s):</th><td><a href="#CgitperryOfPeekSqlToGraphitetestSqlToGraphiteUnitTestsWith_GraphiteClientscs">C:\git\perryOfPeek\SqlToGraphite\test\SqlToGraphite.UnitTests\With_GraphiteClients.cs</a></td></tr>
+<tr><th>Coverage:</th><td>100%</td></tr>
+<tr><th>Covered lines:</th><td>23</td></tr>
+<tr><th>Coverable lines:</th><td>23</td></tr>
+<tr><th>Total lines:</th><td>41</td></tr>
+</table>
+<h1>Metrics</h1>
+<table class="overview">
+<tr><th>Method</th><th>Cyclomatic Complexity</th><th>Sequence Coverage</th><th>Branch Coverage</th></tr>
+<tr><td title="System.Void SqlToGraphite.UnitTests.With_GraphiteClients::Should_Add_client()">Should_Add_client()</td><td>1</td><td>100</td><td>100</td></tr>
+<tr><td title="System.Void SqlToGraphite.UnitTests.With_GraphiteClients::Should_throw_ClientNotFoundException_as_client_is_not_known()">Should_throw_ClientNotFoundException_as_client_is_not_known()</td><td>1</td><td>100</td><td>100</td></tr>
+<tr><td title="System.Void SqlToGraphite.UnitTests.With_GraphiteClients::Should_not_care_about_client_name_case()">Should_not_care_about_client_name_case()</td><td>1</td><td>100</td><td>100</td></tr>
+</table>
+<h1>File(s)</h1>
+<h2 id="CgitperryOfPeekSqlToGraphitetestSqlToGraphiteUnitTestsWith_GraphiteClientscs">C:\git\perryOfPeek\SqlToGraphite\test\SqlToGraphite.UnitTests\With_GraphiteClients.cs</h2>
+<table>
+<tr><th></th><th>#</th><th>Line</th><th>Coverage</th></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>1</code></td><td class="light"><code>using&nbsp;NUnit.Framework;</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>2</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>3</code></td><td class="light"><code>namespace&nbsp;SqlToGraphite.UnitTests</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>4</code></td><td class="light"><code>{</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>5</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;ReSharper&nbsp;disable&nbsp;InconsistentNaming</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>6</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;[TestFixture]</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>7</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;class&nbsp;With_GraphiteClients</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>8</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>9</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Test]</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>10</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;void&nbsp;Should_Add_client()</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>11</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>12</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;name&nbsp;=&nbsp;&quot;name&quot;;</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>13</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;graphiteClients&nbsp;=&nbsp;new&nbsp;GraphiteClients();</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>14</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graphiteClients.Add(name,&nbsp;&quot;1234&quot;);</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>15</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;client&nbsp;=&nbsp;graphiteClients.Get(name);</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>16</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assert.That(client.Name,&nbsp;Is.EqualTo(name));</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>17</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assert.That(client.Port,&nbsp;Is.EqualTo(1234));</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>18</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>19</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>20</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Test]</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>21</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;void&nbsp;Should_throw_ClientNotFoundException_as_client_is_not_known()</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>22</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>23</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;name&nbsp;=&nbsp;&quot;name&quot;;</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>24</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;graphiteClients&nbsp;=&nbsp;new&nbsp;GraphiteClients();</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>25</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graphiteClients.Add(name,&nbsp;&quot;1234&quot;);</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">2</td><td class="right"><code>26</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;ex&nbsp;=&nbsp;Assert.Throws&lt;ClientNotFoundException&gt;(()&nbsp;=&gt;&nbsp;graphiteClients.Get(&quot;notFound&quot;));</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>27</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assert.That(ex.Message,&nbsp;Is.EqualTo(&quot;Client&nbsp;notFound&nbsp;is&nbsp;not&nbsp;known&nbsp;add&nbsp;this&nbsp;into&nbsp;the&nbsp;conifiguration&nbsp;xml&quot;));</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>28</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>29</code></td><td class="light"><code></code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>30</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Test]</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>31</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;void&nbsp;Should_not_care_about_client_name_case()</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>32</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>33</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;name&nbsp;=&nbsp;&quot;name&quot;;</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>34</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;graphiteClients&nbsp;=&nbsp;new&nbsp;GraphiteClients();</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>35</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graphiteClients.Add(name,&nbsp;&quot;1234&quot;);</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>36</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;client&nbsp;=&nbsp;graphiteClients.Get(&quot;NaMe&quot;);</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>37</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assert.That(client.Name,&nbsp;Is.EqualTo(name));</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>38</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assert.That(client.Port,&nbsp;Is.EqualTo(1234));</code></td></tr>
+<tr><td class="green">&nbsp;</td><td class="leftmargin right">1</td><td class="right"><code>39</code></td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>40</code></td><td class="light"><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr><td class="gray">&nbsp;</td><td class="leftmargin right"></td><td class="right"><code>41</code></td><td class="light"><code>}</code></td></tr>
+</table>
+<div class="footer">Generated by: ReportGenerator 1.6.1.0<br />31/10/2012 - 09:09:45<br /><a href="http://www.palmmedia.de">www.palmmedia.de</a></div></div></body></html>

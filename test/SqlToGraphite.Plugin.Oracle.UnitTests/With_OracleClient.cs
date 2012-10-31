@@ -9,7 +9,7 @@ using Rhino.Mocks;
 namespace SqlToGraphite.Plugin.Oracle.UnitTests
 {
     // ReSharper disable InconsistentNaming
-    [TestFixture]
+    [TestFixture, Ignore()]
     public class With_OracleClient
     {
         private const string Cs = "Data Source=localhost:1521/XE;User Id=owain;Password=abcd1234;";
@@ -30,9 +30,9 @@ namespace SqlToGraphite.Plugin.Oracle.UnitTests
         public void SetUp()
         {
             var e = new Encryption();
-            
+
             param = new OracleClient { Name = "TestName", ClientName = "TestClientName", ConnectionString = "", Path = "path" };
-            param.ConnectionString = e.Encrypt(Cs);
+            param.ConnectionString = e.Encrypt(Cs);            
             log = MockRepository.GenerateMock<ILog>();
             encryption = MockRepository.GenerateMock<IEncryption>();
             encryption.Expect(x => x.Decrypt(e.Encrypt(Cs))).Return(Cs);
