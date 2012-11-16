@@ -1,6 +1,6 @@
 namespace SqlToGraphite.Plugin.Wmi
 {
-    public class WmiConnectionStringParser
+    public class WmiConnectionStringParser1
     {
         public string Username { get; private set; }
 
@@ -8,7 +8,7 @@ namespace SqlToGraphite.Plugin.Wmi
 
         public object Hostname { get; private set; }
 
-        public WmiConnectionStringParser(string connectionString)
+        public WmiConnectionStringParser1(string connectionString)
         {
             this.Username = string.Empty;
             this.Password = string.Empty;

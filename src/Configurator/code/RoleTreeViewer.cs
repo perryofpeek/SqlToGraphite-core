@@ -4,6 +4,9 @@ using System.Windows.Forms;
 
 namespace Configurator.code
 {
+    // A delegate type for hooking up change notifications.
+    public delegate void ChangedEventHandler(object sender, EventArgs e);
+
     public class RoleTreeViewer
     {
         private Controller controller;
@@ -13,6 +16,15 @@ namespace Configurator.code
         private const int RoleNodePosition = 1;
         private const int FrequencyNodePosition = 2;
         private const int JobNodePosition = 3;
+
+        public event ChangedEventHandler Changed;
+
+        // Invoke the Changed event; called whenever list changes
+        protected virtual void OnChanged(EventArgs e)
+        {
+            if (Changed != null)
+                Changed(this, e);
+        }
 
         public RoleTreeViewer(Controller controller)
         {
@@ -70,7 +82,8 @@ namespace Configurator.code
                 var role = nodeToDropIn.Parent.Text;
                 var frequency = Convert.ToInt32(nodeToDropIn.Text);
                 this.controller.AddJobToRoleAndFrequency(role, frequency, jobName.ToString());
-            }
+                OnChanged(EventArgs.Empty);
+            }         
         }
 
         private void InitTreeView()
@@ -104,6 +117,7 @@ namespace Configurator.code
                         else
                         {
                             controller.AddRoleFrequency(frequency, roleNode.Text);
+                            OnChanged(EventArgs.Empty);
                         }
                     }
 
@@ -111,7 +125,8 @@ namespace Configurator.code
                     if (this.nodeMouseClickSelectedNode.Level == 0)
                     {
                         var roleNode = e;
-                        controller.AddNewRole(roleNode.Label);                        
+                        controller.AddNewRole(roleNode.Label);
+                        OnChanged(EventArgs.Empty);
                     }
                 }
                 else
@@ -122,6 +137,8 @@ namespace Configurator.code
                     e.Node.BeginEdit();
                 }
             }
+
+            OnChanged(EventArgs.Empty);
         }
 
         private void AddLabelOnClick(object sender, EventArgs e)
@@ -143,7 +160,7 @@ namespace Configurator.code
                 this.nodeMouseClickSelectedNode.Nodes.Add(treeNode);
                 treeNode.ExpandAll();
                 treeNode.BeginEdit();                
-            }
+            }            
         }
 
         private void DeleteLabelOnClick(object sender, EventArgs e)
@@ -184,7 +201,7 @@ namespace Configurator.code
                 //Delete Job
                 controller.DeleteJobFromRole(jobName, frequency, roleName);
                 this.nodeMouseClickSelectedNode.Remove();
-            }
+            }            
         }
 
         private bool NodeIsRole()

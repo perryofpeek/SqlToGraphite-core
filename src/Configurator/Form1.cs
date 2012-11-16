@@ -19,7 +19,17 @@ namespace Configurator
 
         private AssemblyResolver assemblyResolver;
 
+        private Builder b;
+        
         private Builder jobAddObject;
+
+        private RolesViewer rv;
+
+        private HostsViewer hv;
+
+        private RoleTreeViewer roleTreeViewer;
+
+        private HostsTreeViewer hostsTreeViewer;
 
         private void SetUpDialogues()
         {
@@ -65,6 +75,12 @@ namespace Configurator
             {
                 this.LoadTheConfig();
             }
+        }      
+
+        // This will be called whenever the list changes.
+        private void TreeViewerOnChanged(object sender, EventArgs e)
+        {
+            RefreshTheForm();
         }
 
         private void LoadTheConfig()
@@ -72,6 +88,11 @@ namespace Configurator
             var newPath = this.ofgConfig.FileName.Replace(@"\", "/");
             var path = string.Format("file:///{0}", newPath);
             this.controller.LoadConfig(path);
+            roleTreeViewer = new RoleTreeViewer(controller);
+            hostsTreeViewer = new HostsTreeViewer(controller);
+            roleTreeViewer.Changed += this.TreeViewerOnChanged;
+            this.rv = new RolesViewer(controller, roleTreeViewer);
+            this.hv = new HostsViewer(controller, hostsTreeViewer);   
             this.RenderForm();
             this.RefreshForm();
         }
@@ -85,8 +106,6 @@ namespace Configurator
             }                       
             this.RefreshForm();
         }
-
-        private Builder b;
 
         private void DisplayJob(string name)
         {
@@ -145,18 +164,18 @@ namespace Configurator
         }
 
         private void DisplayRolesView()
-        {
-            var rv = new RolesViewer(controller, new RoleTreeViewer(controller));
+        {            
             var p = new Position(this.tpRoles.Left, this.tpRoles.Width, this.tpRoles.Top, this.tpRoles.Height - 50);
             var panel = rv.Get(p);
+            tpRoles.Controls.Clear();
             tpRoles.Controls.Add(panel);
         }
 
         private void DisplayHostsView()
-        {
-            var rv = new HostsViewer(controller, new HostsTreeViewer(controller));
+        {            
             var p = new Position(this.tpRoles.Left, this.tpRoles.Width, this.tpRoles.Top, this.tpRoles.Height - 50);
-            var panel = rv.Get(p);
+            var panel = hv.Get(p);
+            tpHosts.Controls.Clear();
             tpHosts.Controls.Add(panel);
         }      
     }

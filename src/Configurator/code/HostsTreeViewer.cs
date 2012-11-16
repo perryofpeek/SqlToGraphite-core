@@ -16,6 +16,15 @@ namespace Configurator
         private const int RoleNodePosition = 2;
         //private const int JobNodePosition = 3;
 
+        public event ChangedEventHandler Changed;
+
+        // Invoke the Changed event; called whenever list changes
+        protected virtual void OnChanged(EventArgs e)
+        {
+            if (Changed != null)
+                Changed(this, e);
+        }
+
         public HostsTreeViewer(Controller controller)
         {
             this.controller = controller;
@@ -79,6 +88,8 @@ namespace Configurator
                 nodeToDropIn.Nodes.Add(roleName.ToString());
                 this.controller.AddRoleToHost(hostname, roleName.ToString());
             }
+
+            OnChanged(EventArgs.Empty);
         }
 
         private void InitTreeView()
@@ -112,14 +123,15 @@ namespace Configurator
                         else
                         {
                             controller.AddRoleFrequency(frequency, roleNode.Text);
+                            OnChanged(EventArgs.Empty);
                         }
                     }
-
 
                     if (this.nodeMouseClickSelectedNode.Level == 0)
                     {
                         var hostNode = e;
                         controller.AddNewHost(hostNode.Label);
+                        OnChanged(EventArgs.Empty);
                     }
                 }
                 else
@@ -140,7 +152,7 @@ namespace Configurator
                 this.nodeMouseClickSelectedNode.Nodes.Add(treeNode);
                 treeNode.ExpandAll();
                 treeNode.BeginEdit();
-            }
+            }            
         }
 
         private void DeleteLabelOnClick(object sender, EventArgs e)

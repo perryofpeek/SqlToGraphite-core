@@ -15,7 +15,7 @@
         <Type>SqlToGraphite.Plugin.SqlServer.SqlServerClient</Type>
         <ConnectionString>VxlQquob6hdGuNh7t2LfZf5PQhBnlZlefBTu1HMv2t/h0jEgLw9nk/30ydNtERmkerRX0ghjjIqXBiU8pwGV5M4aFQBRL1Bei1G7DgIfX/lojxuiqCX9KygtqEVzUba6TWIbOkU955D7VNzBUinADjZUDHgWA3IsgjWQVHlBgw4ekFr90B28H9hNaCXVj/kxdrC8CPMvaJwaRTiLJOMWYA==</ConnectionString>
         <Sql>SELECT 234 , DATEADD(day,11,GETDATE())</Sql>
-      </Job>     
+      </Job>
       <Job xsi:type="OracleTransactions">
         <Name>E03_TracsTransactionCounter</Name>
         <ClientName>GraphiteUdpClient</ClientName>
@@ -115,6 +115,16 @@
         <Sql>SELECT PercentProcessorTime FROM Win32_PerfFormattedData_PerfOS_Processor WHERE Name="_Total"</Sql>
         <Password />
       </Job>
+      <Job xsi:type="WmiClient">
+        <Name>GetIISStat</Name>
+        <ClientName>GraphiteUdpClient</ClientName>
+        <Type>SqlToGraphite.Plugin.Wmi.WmiClient</Type>
+        <Username />
+        <Hostname>localhost</Hostname>
+        <Path>a.b.c.d.%h</Path>
+        <Sql>SELECT PercentFreeSpace, Name FROM Win32_PerfFormattedData_PerfDisk_LogicalDisk Where Name &amp;lt;&amp;gt; "_Total"</Sql>
+        <Password />
+      </Job>
     </ArrayOfJob>
   </Jobs>
   <Clients>
@@ -136,6 +146,9 @@
           <Role Name="default" />
           <Role Name="SqlTests" />
         </Roles>
+      </Host>
+      <Host Name="RTMPRD-Web01v">
+        <Roles />
       </Host>
     </ArrayOfHost>
   </Hosts>
@@ -192,6 +205,15 @@
               <TaskSet Frequency="60">
                 <Tasks>
                   <Task JobName="GetNumberOfDeliveryies" />
+                </Tasks>
+              </TaskSet>
+            </TaskSet>
+          </WorkItems>
+          <WorkItems RoleName="IIS">
+            <TaskSet>
+              <TaskSet Frequency="60">
+                <Tasks>
+                  <Task JobName="GetIISStat" />
                 </Tasks>
               </TaskSet>
             </TaskSet>
