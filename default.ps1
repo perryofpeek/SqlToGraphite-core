@@ -6,24 +6,25 @@ properties {
   $Build_Configuration = 'Release'
   $Build_Artifacts = 'output'
   $fullPath= 'src\SqlToGraphite.host\output'
-  $version = '0.3.0.0'
+  $version = '0.3.0.1'
   $Debug = 'Debug'
   $pwd = pwd
   $msbuild = "C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe"
   $nunit =  "$pwd\packages\NUnit.Runners.2.6.2\tools\nunit-console-x86.exe"
   $openCover = "$pwd\packages\OpenCover.4.0.804\OpenCover.Console.exe"
   $reportGenerator = "$pwd\packages\ReportGenerator.1.6.1.0\ReportGenerator.exe"
-  $TestOutput = "$pwd\TestOutput"
+  $TestOutput = "$pwd\BuildOutput"
   $UnitTestOutputFolder = "$TestOutput\UnitTestOutput";
+  $TestReport = "";
 }
 
-task default -depends Package
+task default -depends Report
 
 task Test -depends Init, Compile, Clean, StartOracle { 			
-	mkdir $TestOutput -Verbose:$false;  
-    mkdir $UnitTestOutputFolder -Verbose:$false;  
+	$sinkoutput = mkdir $TestOutput -Verbose:$false;  
+    $sinkoutput = mkdir $UnitTestOutputFolder -Verbose:$false;  
 	
-	$unitTestFolders = Get-ChildItem test\* -recurse | Where-Object {$_.PSIsContainer -eq $True} | where-object {$_.Fullname.Contains("bin\x86\Debug")} | where-object {$_.Fullname.Contains("bin\x86\Debug\") -eq $false}| select-object FullName
+	$unitTestFolders = Get-ChildItem test\* -recurse | Where-Object {$_.PSIsContainer -eq $True} | where-object {$_.Fullname.Contains("output")} | where-object {$_.Fullname.Contains("output\") -eq $false}| select-object FullName
 	foreach($folder in $unitTestFolders)
 	{
 		$x = [string] $folder.FullName
@@ -35,13 +36,14 @@ task Test -depends Init, Compile, Clean, StartOracle {
 	{
 		$files = $files + " " + $file.Name
 	}
+	#write-host $files
 	#write-host " $openCover -target:$nunit -filter:+[SqlToGraphite*]* -register:user -mergebyhash -targetargs:$files /err=err.nunit.txt /noshadow /nologo /config=SqlToGraphite.UnitTests.dll.config"
-	Exec { & $openCover "-target:$nunit" -filter:+[SqlToGraphite*]* -register:user -mergebyhash "-targetargs:$files /err=err.nunit.txt /noshadow /nologo /config=SqlToGraphite.UnitTests.dll.config" } 
-	Exec { & $reportGenerator "-reports:results.xml" "-targetdir:..\report" "-verbosity:Error"}
-	cd $pwd
+	Exec { & $openCover "-target:$nunit" "-filter:-[.*test*]* +[SqlToGraphite*]* " -register:user -mergebyhash "-targetargs:$files /err=err.nunit.txt /noshadow /nologo /config=SqlToGraphite.UnitTests.dll.config" } 
+	Exec { & $reportGenerator "-reports:results.xml" "-targetdir:..\report" "-verbosity:Error" "-reporttypes:Html;HtmlSummary;XmlSummary"}	
+	cd $pwd	
 }
 
-task Compile -depends  Clean { 
+task Compile -depends  Clean {  
    Exec {  & $msbuild /m:4 /verbosity:quiet /nologo /p:OutDir=""$Build_Artifacts\"" /t:Rebuild /p:Configuration=$Build_Configuration $Build_Solution }   	
 }
 
@@ -52,7 +54,7 @@ task Clean {
   }     
   if (Test-Path $TestOutput) 
   {
-		Remove-Item -force -recurse $TestOutput
+	Remove-Item -force -recurse $TestOutput
   }  
   Exec {  & $msbuild /m:4 /verbosity:quiet /nologo /p:OutDir=""$Build_Artifacts\"" /t:Clean $Build_Solution }  
 }
@@ -81,7 +83,7 @@ task Init {
 
 task Ilmerge -depends Test  {
     
-	mkdir $Build_Artifacts;
+	$sinkoutput = mkdir $Build_Artifacts;
     #$var = "" + "$fullPath" + "" + "$fullPath" + "\log4net.dll " + "$fullPath" + "\SqlToGraphite.dll " + "$fullPath" + "\Topshelf.dll";
     #Write-Host $var;
     Exec { tools\ilmerge.exe /closed /t:exe /out:output\sqlToGraphite.exe /targetplatform:v4 src\SqlToGraphite.host\output\SqlToGraphite.host.exe src\SqlToGraphite.host\output\Graphite.dll src\SqlToGraphite.host\output\SqlToGraphite.Plugin.Oracle.dll src\SqlToGraphite.host\output\SqlToGraphite.Plugin.Wmi.dll src\SqlToGraphite.host\output\SqlToGraphite.Plugin.SqlServer.dll src\SqlToGraphite.host\output\SqlToGraphiteInterfaces.dll src\Plugin.Oracle.Transactions\output\Plugin.Oracle.Transactions.dll src\SqlToGraphite.host\output\Topshelf.dll src\SqlToGraphite.host\output\log4net.dll };
@@ -92,12 +94,30 @@ task Ilmerge -depends Test  {
 }
 # -depends Ilmerge
 task Package -depends Ilmerge {
-	Exec { c:\Apps\NSIS\makensis.exe /p4 /v2 sqlToGraphite.nsi }	
+	Exec { c:\Apps\NSIS\makensis.exe /p4 /v2 sqlToGraphite.nsi }
+    Move-item -Force SqlToGraphite-Setup.exe "SqlToGraphite-Setup-$version.exe"	
 }
 
 task StartOracle {
      Start-Service "OracleServiceXE";
      Start-Service "OracleXETNSListener";
+}
+
+task Report -depends package {
+	write-host "================================================================="	
+	$xmldata = [xml](get-content BuildOutput\UnitTestOutput\testresult.xml)
+	
+	write-host "Total tests "$xmldata."test-results".GetAttribute("total") " Errors "$xmldata."test-results".GetAttribute("errors") " Failures " $xmldata."test-results".GetAttribute("failures") "Not-run "$xmldata."test-results".GetAttribute("not-run") "Ignored "$xmldata."test-results".GetAttribute("ignored")
+	#write-host "Total errors "$xmldata."test-results".GetAttribute("errors")
+	#write-host "Total failures "$xmldata."test-results".GetAttribute("failures")
+	#write-host "Total not-run "$xmldata."test-results".GetAttribute("not-run")
+	#write-host "Total inconclusive "$xmldata."test-results".GetAttribute("inconclusive")
+	#write-host "Total ignored "$xmldata."test-results".GetAttribute("ignored")
+	#write-host "Total skipped "$xmldata."test-results".GetAttribute("skipped")
+	#write-host "Total invalid "$xmldata."test-results".GetAttribute("invalid")
+
+	$xmldata1 = [xml](get-content "$TestOutput\report\summary.xml")
+	$xmldata1.SelectNodes("/CoverageReport/Summary")
 }
 
 task ? -Description "Helper to display task info" {

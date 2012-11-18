@@ -14,6 +14,9 @@
 
 [oO]utput/
 [o]utput/ 
+BuildOutput
+
+SqlToGraphite-Setup*.*
 
 #standard visual studio 
 *.user

@@ -84,6 +84,9 @@
     <Reference Include="Rhino.Mocks">
       <HintPath>..\..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
     </Reference>
+    <Reference Include="SqlToGraphiteInterfaces, Version=0.3.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SqlToGraphiteInterfaces.0.3.0\lib\net40\SqlToGraphiteInterfaces.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -146,10 +149,6 @@
     <ProjectReference Include="..\..\src\SqlToGraphite.Plugin.Wmi\SqlToGraphite.Plugin.Wmi.csproj">
       <Project>{574D9188-DD86-41DB-A141-9542A84B2B46}</Project>
       <Name>SqlToGraphite.Plugin.Wmi</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\SqlToGraphiteInterfaces\SqlToGraphiteInterfaces.csproj">
-      <Project>{B9B8475A-BF93-4D8C-819A-E2303DA40DD0}</Project>
-      <Name>SqlToGraphiteInterfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\SqlToGraphite\SqlToGraphite.csproj">
       <Project>{D7B42279-98D3-4017-8AF9-A863B3B79E2F}</Project>

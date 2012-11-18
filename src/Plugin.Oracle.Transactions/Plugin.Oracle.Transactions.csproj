@@ -51,8 +51,11 @@
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net">
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="SqlToGraphiteInterfaces, Version=0.3.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SqlToGraphiteInterfaces.0.3.0\lib\net40\SqlToGraphiteInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -72,10 +75,7 @@
     <Compile Include="DataStore.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SqlToGraphiteInterfaces\SqlToGraphiteInterfaces.csproj">
-      <Project>{B9B8475A-BF93-4D8C-819A-E2303DA40DD0}</Project>
-      <Name>SqlToGraphiteInterfaces</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

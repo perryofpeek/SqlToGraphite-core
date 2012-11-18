@@ -74,10 +74,6 @@
       <Project>{380F6AFF-E6EC-4F56-B35C-D73042724D21}</Project>
       <Name>SqlToGraphite.host</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\SqlToGraphiteInterfaces\SqlToGraphiteInterfaces.csproj">
-      <Project>{B9B8475A-BF93-4D8C-819A-E2303DA40DD0}</Project>
-      <Name>SqlToGraphiteInterfaces</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -9,7 +9,7 @@ using Rhino.Mocks;
 namespace SqlToGraphite.Plugin.Oracle.UnitTests
 {
     // ReSharper disable InconsistentNaming
-    [TestFixture, Ignore()]
+    [TestFixture]
     public class With_OracleClient
     {
         private const string Cs = "Data Source=localhost:1521/XE;User Id=owain;Password=abcd1234;";

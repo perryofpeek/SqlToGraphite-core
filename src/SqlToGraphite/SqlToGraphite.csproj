@@ -78,6 +78,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="SqlToGraphiteInterfaces, Version=0.3.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SqlToGraphiteInterfaces.0.3.0\lib\net40\SqlToGraphiteInterfaces.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
@@ -195,12 +198,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SqlToGraphiteInterfaces\SqlToGraphiteInterfaces.csproj">
-      <Project>{B9B8475A-BF93-4D8C-819A-E2303DA40DD0}</Project>
-      <Name>SqlToGraphiteInterfaces</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Temp\" />
