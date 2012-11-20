@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 
-using SqlToGraphite.UnitTests;
-
 namespace SqlToGraphite
 {
     public class GraphiteClients

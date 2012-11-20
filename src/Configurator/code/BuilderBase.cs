@@ -67,20 +67,25 @@ namespace Configurator.code
             else
             {
                 object obj = null;
-                if(this.IsEncrypted(property))
+                if (this.IsEncrypted(property))
                 {
-                    Encryption encryption = new Encryption();
-                    var value = property.GetValue(typedJob, null).ToString();
-                    if (value != string.Empty)
+                    var encryption = new Encryption();
+                    var v = property.GetValue(typedJob, null);
+                   
+                    if(v != null)
                     {
-                        obj = encryption.Decrypt(property.GetValue(typedJob, null).ToString());                    
-                    }                        
+                        var value = v.ToString();
+                        if (value != string.Empty)
+                        {
+                            obj = encryption.Decrypt(property.GetValue(typedJob, null).ToString());
+                        }
+                    }
                 }
                 else
                 {
-                    obj = property.GetValue(typedJob, null);       
+                    obj = property.GetValue(typedJob, null);
                 }
-                
+
                 rtn = obj == null ? string.Empty : obj.ToString();
             }
             return rtn;
@@ -91,7 +96,7 @@ namespace Configurator.code
             return new Panel { Top = this.nextTop, Width = this.panel.Width, Height = this.panel.Height - this.nextTop };
         }
 
-        protected void AddPair(string name, string value)
+        protected void AddPair(string name, string value, string help)
         {
             var lbl = new Label { Text = name, Top = this.nextTop, Width = this.defaultJobProperties.DefaultLabelWidth };
             var txb = new TextBox
@@ -102,8 +107,14 @@ namespace Configurator.code
                 Width = defaultJobProperties.TextWidth,
                 Name = name
             };
+            txb.GotFocus += (sender, e) => TxbOnGotFocus(sender, e, help); ;
             panel.Controls.Add(lbl);
             panel.Controls.Add(txb);
+        }
+
+        private void TxbOnGotFocus(object sender, EventArgs eventArgs, string help)
+        {
+            SetHelp(help);            
         }
 
         private void AddButton(ISqlClient c, string name, EventHandler eventHandler)
@@ -112,6 +123,23 @@ namespace Configurator.code
             var button = new Button { Text = name, Top = this.GetNextTop(), Left = 0 };
             button.Click += eventHandler;
             panel.Controls.Add(button);
+        }
+
+        private TextBox helpPanel;
+
+        private void HelpPanel()
+        {
+            var lbl = new Label { Text = "Help", Top = this.nextTop, Width = this.defaultJobProperties.DefaultLabelWidth };
+            helpPanel = new TextBox { Top = this.GetNextTop(), Left = this.defaultJobProperties.DefaultLabelWidth + this.defaultJobProperties.DefaultSpace, Width = panel.Width - this.defaultJobProperties.DefaultLabelWidth, BorderStyle = BorderStyle.FixedSingle, Multiline = true, Height = this.defaultJobProperties.DefaultHeight * 3};            
+            panel.Controls.Add(lbl);
+            panel.Controls.Add(helpPanel);
+            GetNextTop();
+            GetNextTop();
+        }
+
+        private void SetHelp(string msg)
+        {
+            helpPanel.Text = msg;
         }
 
         private void TestButtonClick(object sender, EventArgs e)
@@ -124,7 +152,7 @@ namespace Configurator.code
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);                
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -138,9 +166,11 @@ namespace Configurator.code
                 if (property.Name != "ClientName" && property.Name != "Type")
                 {
                     var value = GetPropertyValue(client, property);
-                    this.AddPair(property.Name, value);
+                    var help = GetHelp(property);
+                    this.AddPair(property.Name, value, help);
                 }
             }
+            HelpPanel();
             this.AddButton(client, "Test", this.TestButtonClick);
             this.AddButton(client, "Add", this.AddJobButtonClick);
         }
@@ -175,19 +205,22 @@ namespace Configurator.code
                 if (property.PropertyType.Name == typeof(Int32).Name)
                 {
                     property.SetValue(this.client, Convert.ToInt32(value), null);
-                }                
+                }
 
                 if (property.PropertyType.Name == typeof(string).Name)
                 {
-                    if(IsEncrypted(property))
+
+                    var help = GetHelp(property);
+
+                    if (IsEncrypted(property))
                     {
                         var encryption = new Encryption();
                         property.SetValue(this.client, encryption.Encrypt(value), null);
                     }
                     else
                     {
-                        property.SetValue(this.client, value, null);    
-                    }                    
+                        property.SetValue(this.client, value, null);
+                    }
                 }
 
                 if (property.PropertyType.Name == typeof(bool).Name)
@@ -197,13 +230,27 @@ namespace Configurator.code
             }
         }
 
+        private string GetHelp(PropertyInfo property)
+        {
+            PropertyInfo[] properties = property.GetType().GetProperties();
+            foreach (PropertyInfo prop in properties)
+            {
+                var attribute = Attribute.GetCustomAttribute(property, typeof(HelpAttribute)) as HelpAttribute;
+                if (attribute != null)
+                {
+                    return attribute.Details;
+                }
+            }
+            return string.Empty;
+        }
+
         private bool IsEncrypted(PropertyInfo property)
         {
             PropertyInfo[] properties = property.GetType().GetProperties();
             foreach (PropertyInfo prop in properties)
             {
                 var attribute = Attribute.GetCustomAttribute(property, typeof(EncryptedAttribute)) as EncryptedAttribute;
-                if (attribute != null) 
+                if (attribute != null)
                 {
                     return true;
                 }
@@ -251,8 +298,10 @@ namespace Configurator.code
             foreach (var property in typedJob.GetType().GetProperties())
             {
                 var value = GetPropertyValue(typedJob, property);
-                this.AddPair(property.Name, value);
+                var help = GetHelp(property);
+                this.AddPair(property.Name, value, help);
             }
+            HelpPanel();
             this.AddButton(typedJob, "Test", this.TestButtonClick);
             this.DisplayResultsPannel();
         }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using log4net;
 using SqlToGraphite.Config;
-using SqlToGraphite.UnitTests;
+
 using SqlToGraphiteInterfaces;
 
 namespace SqlToGraphite.Conf

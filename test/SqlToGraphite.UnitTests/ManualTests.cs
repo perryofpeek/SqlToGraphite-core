@@ -11,6 +11,14 @@ namespace SqlToGraphite.UnitTests
     [TestFixture]
     public class ManualTests
     {
+        [Test]
+        public void Should_get_location()
+        {
+            var location = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            var dirname = System.IO.Path.GetDirectoryName(location);
+            Console.WriteLine(dirname);
+        }
+
         [Test, Explicit]
         public void Should_()
         {

@@ -58,9 +58,10 @@ namespace SqlToGraphite
             {
                 this.LoadTypes(Assembly.LoadFile(dll), typeof(Job));
             }
-            catch (BadImageFormatException)
+            catch (BadImageFormatException badImageFormat)
             {
-                //this.log.Error(string.Format("Ignore bad image format exception {0}", dll));
+                var s = "a";
+                var y = badImageFormat.Message;
             }
         }
 

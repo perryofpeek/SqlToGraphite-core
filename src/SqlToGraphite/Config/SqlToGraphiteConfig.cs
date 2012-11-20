@@ -169,7 +169,15 @@ namespace SqlToGraphite.Config
 
             reader.MoveToContent();
             reader.ReadStartElement("Jobs");
-            this.Jobs = this.genericSerializer.Deserialize<List<Job>>(reader, jobTypes);
+            try
+            {
+                this.Jobs = this.genericSerializer.Deserialize<List<Job>>(reader, jobTypes);
+            }
+            catch (Exception ex)
+            {
+                var s = ex.Message;
+            }
+            
             reader.ReadEndElement();
 
             reader.ReadStartElement("Clients");

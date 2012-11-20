@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SessionServer.UnitTests")]
+[assembly: AssemblyTitle("SqlToGraphite")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("TheTrainLine.com")]
-[assembly: AssemblyProduct("SessionServer.UnitTests")]
-[assembly: AssemblyCopyright("Copyright © TheTrainLine.com 2010")]
+[assembly: AssemblyCompany("PerryOfPeek")]
+[assembly: AssemblyProduct("SqlToGraphite")]
+[assembly: AssemblyCopyright("Copyright © perryofpeek 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

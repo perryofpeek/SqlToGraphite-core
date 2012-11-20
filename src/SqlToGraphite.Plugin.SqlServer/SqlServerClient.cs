@@ -9,8 +9,9 @@ namespace SqlToGraphite.Plugin.SqlServer
 {
     public class SqlServerClient : PluginBase
     {
-        public string MetricName { get; set; }
-
+        private string connectionString;
+        
+        [Help("Name of the metric")]
         public override string Name { get; set; }
 
         public override string ClientName { get; set; }
@@ -18,39 +19,37 @@ namespace SqlToGraphite.Plugin.SqlServer
         public override string Type { get; set; }
 
         [Encrypted]
+        [Help("The connection string in sql server format.")]
         public string ConnectionString
         {
             get
             {
                 return this.Encrypt(this.connectionString);
             }
+
             set
             {
                 this.connectionString = this.Decrypt(value);
             }
         }
 
+        [Help("Namespace path for the metric in graphite, use %h to substitute the hostname")]
         public string Path { get; set; }
 
+        [Help("The Sql query to run, use a string column and return multiple rows, the value of the column will be used at the end of the metric path, return a date time column the value will be used as the metric datetime")]
         public string Sql { get; set; }
-
-        private static int count;
-
-        private string connectionString;
 
         public SqlServerClient()
         {
         }
 
-        public SqlServerClient(ILog log, Job job, IEncryption encryption)
-            : base(log, job, encryption)
+        public SqlServerClient(ILog log, Job job, IEncryption encryption) : base(log, job, encryption)
         {
             this.WireUpProperties(job, this);
         }
 
         public override IList<IResult> Get()
-        {
-            count++;
+        {            
             var rtn = new List<IResult>();
             var connection = new SqlConnection();
             try
@@ -103,14 +102,8 @@ namespace SqlToGraphite.Plugin.SqlServer
                     dateTime = record.GetDateTime(i);
                 }
             }
-
-            if (this.MetricName != string.Empty && name == string.Empty)
-            {
-                name = this.MetricName;
-            }
-
+           
             this.Log.Debug(string.Format("Got [{1}] {0}", value, dateTime));
-
             return new Result(value, name, dateTime, this.Path);
         }
 

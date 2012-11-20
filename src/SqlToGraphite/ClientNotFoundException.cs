@@ -1,8 +1,8 @@
-using System;
-
-namespace SqlToGraphite.UnitTests
+namespace SqlToGraphite
 {
-    public class ClientNotFoundException : Exception
+    using System;
+
+    internal class ClientNotFoundException : Exception
     {
         public ClientNotFoundException(string message)
             : base(message)

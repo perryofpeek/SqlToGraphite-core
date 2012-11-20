@@ -42,8 +42,7 @@ namespace SqlToGraphite.Plugin.SqlServer.UnitTests
                     ConnectionString = e.Encrypt(ConnectionString),
                     Path = SimplePath,
                     Sql = SimpleQuery,
-                    ClientName = "GraphiteTcpClient",
-                    MetricName = metricName
+                    ClientName = "GraphiteTcpClient",                    
                 };
 
 
@@ -65,8 +64,7 @@ namespace SqlToGraphite.Plugin.SqlServer.UnitTests
                 ConnectionString = e.Encrypt(ConnectionString),
                 Path = SimplePath,
                 Sql = SimpleQuery,
-                ClientName = "GraphiteTcpClient",
-                MetricName = metricName
+                ClientName = "GraphiteTcpClient",                
             };
             
             var sqlServerClient = new SqlServerClient(log, serverClientParams,encryption);
@@ -92,9 +90,9 @@ namespace SqlToGraphite.Plugin.SqlServer.UnitTests
                 ConnectionString = e.Encrypt(ConnectionString),
                 Path = SimplePath,
                 Sql = "SELECT 234 , DATEADD(day,11,GETDATE()), 'someName'",
-                ClientName = "GraphiteTcpClient",
-                MetricName = metricName
+                ClientName = "GraphiteTcpClient",                
             };            
+
             var sqlServerClient = new SqlServerClient(log, serverClientParams, encryption);
             //Test
             var results = sqlServerClient.Get();
@@ -115,8 +113,7 @@ namespace SqlToGraphite.Plugin.SqlServer.UnitTests
                 ConnectionString = e.Encrypt(ConnectionString),
                 Path = SimplePath,
                 Sql = "SELECT [dbms_id] FROM [msdb].[dbo].[MSdbms]",
-                ClientName = "GraphiteTcpClient",
-                MetricName = metricName
+                ClientName = "GraphiteTcpClient",                
             };
             
             var sqlServerClient = new SqlServerClient(log, serverClientParams,encryption);

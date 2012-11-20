@@ -6,7 +6,7 @@ properties {
   $Build_Configuration = 'Release'
   $Build_Artifacts = 'output'
   $fullPath= 'src\SqlToGraphite.host\output'
-  $version = '0.3.0.1'
+  $version = '0.3.0.4'
   $Debug = 'Debug'
   $pwd = pwd
   $msbuild = "C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe"

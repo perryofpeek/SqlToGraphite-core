@@ -7,7 +7,9 @@ namespace SqlToGraphite
     {
         public IList<string> GetFilesInCurrentDirectory(string filesToScan)
         {
-            return Directory.GetFiles(Directory.GetCurrentDirectory(), filesToScan);
+            var location = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            var dirName = Path.GetDirectoryName(location);
+            return Directory.GetFiles(dirName, filesToScan);
         }
     }
 }

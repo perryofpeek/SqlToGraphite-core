@@ -16,17 +16,19 @@ namespace Plugin.Oracle.Transactions
         private const int TimeDrift = 2;
 
         public OracleTransactions()
-        {           
+        {
             oracleRepository = new OracleRepository();
         }
 
-        public OracleTransactions(ILog log, Job job,IEncryption encryption) : base(log, job, encryption)
-        {           
+        public OracleTransactions(ILog log, Job job, IEncryption encryption)
+            : base(log, job, encryption)
+        {
             oracleRepository = new OracleRepository();
             this.WireUpProperties(job, this);
         }
 
-        public OracleTransactions(ILog log, Job job, IOracleRepository oracleRepository, IEncryption encryption) : base(log, job, encryption)
+        public OracleTransactions(ILog log, Job job, IOracleRepository oracleRepository, IEncryption encryption)
+            : base(log, job, encryption)
         {
             this.oracleRepository = oracleRepository;
             this.WireUpProperties(job, this);
@@ -86,7 +88,7 @@ namespace Plugin.Oracle.Transactions
                 Log.Error(ex);
                 DataStore.LastMaxId = 0;
                 throw;
-            }          
+            }
         }
 
         private static void UpdateLastRunTime()
@@ -142,7 +144,7 @@ namespace Plugin.Oracle.Transactions
 
         private List<IResult> CreateResponseList(DateTime now, Dictionary<string, int> resultDictionary)
         {
-           
+
             var responseList = this.CreateResultSetForEveryEntryPoint(now, resultDictionary);
             this.AddResultsThatAreNotListedAsEntryPoints(now, resultDictionary, responseList);
             this.AddTotalTransactionCount(now, responseList);
@@ -170,8 +172,9 @@ namespace Plugin.Oracle.Transactions
             foreach (var entryPoint in DataStore.EntryPoints)
             {
                 var value = SetEntrypointValueIfReturnedInResultSet(resultDictionary, entryPoint);
-                this.Log.Debug(string.Format("Adding response {0} {1} {2} {3}", value, this.ReplaceDotsAndSpaces(entryPoint.Value), now, this.Path));
-                responseList.Add(new Result(value, this.ReplaceDotsAndSpaces(entryPoint.Value), now, this.Path));
+                var name = string.Format("{0}_{1}", this.ReplaceDotsAndSpaces(entryPoint.Value), entryPoint.Key);
+                this.Log.Debug(string.Format("Adding response {0} {1} {2} {3}", value, name, now, this.Path));
+                responseList.Add(new Result(value, name, now, this.Path));
             }
             return responseList;
         }
@@ -193,7 +196,7 @@ namespace Plugin.Oracle.Transactions
             foreach (DataRow row in dataSet.Tables[0].Rows)
             {
                 Log.Debug(string.Format("Orig_system [{0}] Value[{1}]", row[0], row[1]));
-                AddResultToDictionary(resultDictionary, this.CleanOrigSystem(row), Convert.ToInt32(row[1]));               
+                AddResultToDictionary(resultDictionary, this.CleanOrigSystem(row), Convert.ToInt32(row[1]));
             }
             return resultDictionary;
         }

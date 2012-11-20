@@ -59,9 +59,9 @@ namespace Plugin.Oracle.Transactions.Test
             //Test
             var result = oracleTransactions.Get();
             //Assert
-            Assert.That(result[0].FullPath, Is.EqualTo(string.Format("{0}.{1}", "Path", "trainline")));
-            Assert.That(result[1].FullPath, Is.EqualTo(string.Format("{0}.{1}", "Path", "tracs")));
-            Assert.That(result[2].FullPath, Is.EqualTo(string.Format("{0}.{1}", "Path", "10_20_40_50")));
+            Assert.That(result[0].FullPath, Is.EqualTo(string.Format("{0}.{1}", "Path", "trainline_11")));
+            Assert.That(result[1].FullPath, Is.EqualTo(string.Format("{0}.{1}", "Path", "tracs_12")));
+            Assert.That(result[2].FullPath, Is.EqualTo(string.Format("{0}.{1}", "Path", "10_20_40_50_13")));
             Assert.That(result[0].Value, Is.EqualTo(333));
             Assert.That(result[1].Value, Is.EqualTo(444));
             Assert.That(result[2].Value, Is.EqualTo(0));
@@ -140,9 +140,9 @@ namespace Plugin.Oracle.Transactions.Test
             var result = oracleTransactions.Get();
             //Assert
             Assert.That(result.Count, Is.EqualTo(5));
-            Assert.That(result[0].FullPath, Is.EqualTo(string.Format("{0}.{1}", "Path", "trainline")));
-            Assert.That(result[1].FullPath, Is.EqualTo(string.Format("{0}.{1}", "Path", "tracs")));
-            Assert.That(result[2].FullPath, Is.EqualTo(string.Format("{0}.{1}", "Path", "10_20_40_50")));
+            Assert.That(result[0].FullPath, Is.EqualTo(string.Format("{0}.{1}", "Path", "trainline_11")));
+            Assert.That(result[1].FullPath, Is.EqualTo(string.Format("{0}.{1}", "Path", "tracs_12")));
+            Assert.That(result[2].FullPath, Is.EqualTo(string.Format("{0}.{1}", "Path", "10_20_40_50_13")));
             Assert.That(result[3].FullPath, Is.EqualTo(string.Format("{0}.{1}", "Path", "SomeString")));
             Assert.That(result[4].FullPath, Is.EqualTo(string.Format("{0}.{1}", "Path", "Total")));
             Assert.That(result[0].Value, Is.EqualTo(333));
