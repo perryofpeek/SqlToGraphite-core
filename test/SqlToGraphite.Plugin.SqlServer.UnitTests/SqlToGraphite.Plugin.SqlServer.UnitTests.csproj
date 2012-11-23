@@ -59,9 +59,9 @@
     <Reference Include="Rhino.Mocks">
       <HintPath>..\..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
     </Reference>
-    <Reference Include="SqlToGraphiteInterfaces, Version=0.3.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\SqlToGraphiteInterfaces.0.3.1\lib\net40\SqlToGraphiteInterfaces.dll</HintPath>
+    <Reference Include="SqlToGraphiteInterfaces">
+      <HintPath>..\..\packages\SqlToGraphiteInterfaces.0.3.2\lib\net40\SqlToGraphiteInterfaces.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
