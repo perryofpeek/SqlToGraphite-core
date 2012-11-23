@@ -104,7 +104,9 @@ namespace SqlToGraphite.Plugin.SqlServer
             }
            
             this.Log.Debug(string.Format("Got [{1}] {0}", value, dateTime));
-            return new Result(value, name, dateTime, this.Path);
+            var r = new Result(name, dateTime, this.Path);
+            r.SetValue(value);
+            return r;
         }
 
         private static SqlDataReader GetRecords(string sql, SqlConnection connection)

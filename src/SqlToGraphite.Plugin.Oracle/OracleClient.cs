@@ -84,8 +84,9 @@ namespace SqlToGraphite.Plugin.Oracle
             }
 
             this.Log.Debug(string.Format("Got [{1}] {0}", value, dateTime));
-
-            return new Result(value, name, dateTime, this.Path);
+            var r = new Result(name, dateTime, this.Path);
+            r.SetValue(value);
+            return r;
         }
 
         public DataSet ExecuteQuery(string cs, string sql)

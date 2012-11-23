@@ -49,6 +49,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.Oracle.Transactions"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.Oracle.Transactions.Test", "test\Plugin.Oracle.Transactions.Test\Plugin.Oracle.Transactions.Test.csproj", "{945A6E47-B4CB-40B4-97BB-4CE854019A42}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graphite", "src\Graphite\Graphite.csproj", "{77EACC5C-76B2-4E73-A2C7-95747C980305}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -263,6 +265,16 @@ Global
 		{945A6E47-B4CB-40B4-97BB-4CE854019A42}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{945A6E47-B4CB-40B4-97BB-4CE854019A42}.Release|x86.ActiveCfg = Release|x86
 		{945A6E47-B4CB-40B4-97BB-4CE854019A42}.Release|x86.Build.0 = Release|x86
+		{77EACC5C-76B2-4E73-A2C7-95747C980305}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77EACC5C-76B2-4E73-A2C7-95747C980305}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77EACC5C-76B2-4E73-A2C7-95747C980305}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{77EACC5C-76B2-4E73-A2C7-95747C980305}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{77EACC5C-76B2-4E73-A2C7-95747C980305}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{77EACC5C-76B2-4E73-A2C7-95747C980305}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77EACC5C-76B2-4E73-A2C7-95747C980305}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77EACC5C-76B2-4E73-A2C7-95747C980305}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{77EACC5C-76B2-4E73-A2C7-95747C980305}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{77EACC5C-76B2-4E73-A2C7-95747C980305}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -285,5 +297,6 @@ Global
 		{2733A29E-07E8-44E0-8264-53FCAC043F40} = {18069ED3-75A2-476D-8BEF-36FF14D8745F}
 		{5F0741CE-2F7D-490D-A8FB-95383C0940B0} = {18069ED3-75A2-476D-8BEF-36FF14D8745F}
 		{0B5C577F-285E-4730-AAE4-A0AE781D5F16} = {18069ED3-75A2-476D-8BEF-36FF14D8745F}
+		{77EACC5C-76B2-4E73-A2C7-95747C980305} = {18069ED3-75A2-476D-8BEF-36FF14D8745F}
 	EndGlobalSection
 EndGlobal

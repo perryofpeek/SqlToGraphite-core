@@ -82,7 +82,9 @@ namespace SqlToGraphite.Plugin.Wmi
                     }
 
                     this.Log.Debug(string.Format("Name {0} value {1} datetime {2}", name, value, dateTime));
-                    rtn.Add(new Result(value, name, dateTime, this.Path));
+                    var r = new Result(name, dateTime, this.Path);
+                    r.SetValue(value);
+                    rtn.Add(r);
                 }
             }
             catch (ManagementException e)

@@ -72,9 +72,6 @@
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Graphite, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Graphite.NET.1.1\lib\net40\Graphite.dll</HintPath>
-    </Reference>
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
@@ -135,6 +132,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Graphite\Graphite.csproj">
+      <Project>{77EACC5C-76B2-4E73-A2C7-95747C980305}</Project>
+      <Name>Graphite</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Plugin.Oracle.Transactions\Plugin.Oracle.Transactions.csproj">
       <Project>{0B5C577F-285E-4730-AAE4-A0AE781D5F16}</Project>
       <Name>Plugin.Oracle.Transactions</Name>

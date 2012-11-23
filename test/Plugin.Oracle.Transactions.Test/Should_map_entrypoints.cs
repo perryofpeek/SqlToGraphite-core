@@ -43,7 +43,8 @@ namespace Plugin.Oracle.Transactions.Test
             int NumberOfSecondsInThePast = 123;
             var job = new OracleTransactions
                 {
-                    Path = "Path",
+                    AmountPath = "AmountPath",
+                    CountPath = "CountPath",
                     ConnectionString = this.connectionStringEncrypted,
                     NumberOfSecondsInThePast = NumberOfSecondsInThePast
                 };
@@ -59,13 +60,73 @@ namespace Plugin.Oracle.Transactions.Test
             //Test
             var result = oracleTransactions.Get();
             //Assert
-            Assert.That(result[0].FullPath, Is.EqualTo(string.Format("{0}.{1}", "Path", "trainline_11")));
-            Assert.That(result[1].FullPath, Is.EqualTo(string.Format("{0}.{1}", "Path", "tracs_12")));
-            Assert.That(result[2].FullPath, Is.EqualTo(string.Format("{0}.{1}", "Path", "10_20_40_50_13")));
-            Assert.That(result[0].Value, Is.EqualTo(333));
-            Assert.That(result[1].Value, Is.EqualTo(444));
-            Assert.That(result[2].Value, Is.EqualTo(0));
+            Assert.That(result[0].FullPath, Is.EqualTo(string.Format("{0}.{1}", "AmountPath", "Total")));
+            Assert.That(result[1].FullPath, Is.EqualTo(string.Format("{0}.{1}", "CountPath", "Total")));
+            Assert.That(result[2].FullPath, Is.EqualTo(string.Format("{0}.{1}", "CountPath", "trainline_11")));
+            Assert.That(result[3].FullPath, Is.EqualTo(string.Format("{0}.{1}", "CountPath", "tracs_12")));
+            Assert.That(result[4].FullPath, Is.EqualTo(string.Format("{0}.{1}", "CountPath", "10_20_40_50_13")));
+            Assert.That(result[5].FullPath, Is.EqualTo(string.Format("{0}.{1}", "AmountPath", "trainline_11")));
+            Assert.That(result[6].FullPath, Is.EqualTo(string.Format("{0}.{1}", "AmountPath", "tracs_12")));
+            Assert.That(result[7].FullPath, Is.EqualTo(string.Format("{0}.{1}", "AmountPath", "10_20_40_50_13")));
+            Assert.That(result[0].Value, Is.EqualTo("75.5"));
+            Assert.That(result[1].Value, Is.EqualTo("777"));            
+            Assert.That(result[2].Value, Is.EqualTo("333"));
+            Assert.That(result[3].Value, Is.EqualTo("444"));
+            Assert.That(result[4].Value, Is.EqualTo("0"));
+            Assert.That(result[5].Value, Is.EqualTo("21.2"));
+            Assert.That(result[6].Value, Is.EqualTo("54.3"));
+            Assert.That(result[7].Value, Is.EqualTo("0"));
             Assert.That(DataStore.LastMaxId, Is.EqualTo(NewMaxId));
+            oracleRepository.VerifyAllExpectations();
+        }
+
+
+        [Test]
+        public void Should_return_results_list_with_amounts()
+        {
+            int NumberOfSecondsInThePast = 123;
+            var job = new OracleTransactions
+            {
+                AmountPath = "AmountPath",
+                CountPath = "CountPath",
+                ConnectionString = this.connectionStringEncrypted,
+                NumberOfSecondsInThePast = NumberOfSecondsInThePast
+            };
+            const int MaxId = 123456;
+            const int NewMaxId = 555777;
+            DataStore.LastMaxId = 0;
+            var sql = string.Format(Sql.GetTransactionsCountSql, MaxId);
+            oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, Sql.GetEntryPoints)).Return(CreateEntryPointQueryResult()).Repeat.Once();
+            oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(MaxId)).Repeat.Once();
+            oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, sql)).Return(CreateQueryResult()).Repeat.Once();
+            oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(NewMaxId)).Repeat.Once();
+            var oracleTransactions = new OracleTransactions(log, job, oracleRepository, encryption);
+            //Test
+            var result = oracleTransactions.Get();
+            //Assert
+            Assert.That(result[0].FullPath, Is.EqualTo(string.Format("{0}.{1}", "AmountPath", "Total")));
+            Assert.That(result[1].FullPath, Is.EqualTo(string.Format("{0}.{1}", "CountPath", "Total")));
+            Assert.That(result[2].FullPath, Is.EqualTo(string.Format("{0}.{1}", "CountPath", "trainline_11")));
+            Assert.That(result[3].FullPath, Is.EqualTo(string.Format("{0}.{1}", "CountPath", "tracs_12")));
+            Assert.That(result[4].FullPath, Is.EqualTo(string.Format("{0}.{1}", "CountPath", "10_20_40_50_13")));
+            Assert.That(result[0].Value, Is.EqualTo("75.5"));
+            Assert.That(result[1].Value, Is.EqualTo("777"));
+            Assert.That(result[2].Value, Is.EqualTo("333"));
+            Assert.That(result[3].Value, Is.EqualTo("444"));
+            Assert.That(result[4].Value, Is.EqualTo("0"));
+
+            Assert.That(result[5].FullPath, Is.EqualTo(string.Format("{0}.{1}", "AmountPath", "trainline_11")));
+            Assert.That(result[6].FullPath, Is.EqualTo(string.Format("{0}.{1}", "AmountPath", "tracs_12")));
+            Assert.That(result[7].FullPath, Is.EqualTo(string.Format("{0}.{1}", "AmountPath", "10_20_40_50_13")));
+            Assert.That(result[5].Value, Is.EqualTo("21.2"));
+            Assert.That(result[6].Value, Is.EqualTo("54.3"));
+            Assert.That(result[7].Value, Is.EqualTo("0"));
+            //Assert.That(result[8].Value, Is.EqualTo("0"));
+            //And Total 
+            //Running Total
+
+
+
             oracleRepository.VerifyAllExpectations();
         }
 
@@ -74,7 +135,8 @@ namespace Plugin.Oracle.Transactions.Test
         {
             int NumberOfSecondsInThePast = 123;
             var job = new OracleTransactions();
-            job.Path = "Path";
+            job.AmountPath = "AmountPath";
+            job.CountPath = "CountPath";
             job.ConnectionString = this.connectionStringEncrypted;
             job.NumberOfSecondsInThePast = NumberOfSecondsInThePast;
             const int MaxId = 123456;
@@ -99,13 +161,14 @@ namespace Plugin.Oracle.Transactions.Test
         {
             int NumberOfSecondsInThePast = 123;
             var job = new OracleTransactions();
-            job.Path = "Path";
+            job.AmountPath = "AmountPath";
+            job.CountPath = "CountPath";
             job.ConnectionString = this.connectionStringEncrypted;
             job.NumberOfSecondsInThePast = NumberOfSecondsInThePast;
-            const int MaxId = 123456;            
+            const int MaxId = 123456;
             DataStore.LastMaxId = 1000;
             DataStore.LastRun = DateTime.Now.Subtract(new TimeSpan(0, 0, 0, NumberOfSecondsInThePast * 3));
-            var sql = string.Format(Sql.GetTransactionsCountSql, MaxId, NumberOfSecondsInThePast);
+            var sql = string.Format(Sql.GetTransactionsCountSql, MaxId);
             oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, Sql.GetEntryPoints)).Return(CreateEntryPointQueryResult()).Repeat.Once();
             oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(MaxId)).Repeat.Once();
             oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, sql)).Return(CreateQueryResult()).Throw(new ApplicationException());
@@ -121,16 +184,16 @@ namespace Plugin.Oracle.Transactions.Test
         [Test]
         public void Should_deal_with_odd_data_in_entry_point_and_total_count()
         {
-
             int NumberOfSecondsInThePast = 123;
             var job = new OracleTransactions();
-            job.Path = "Path";
+            job.AmountPath = "AmountPath";
+            job.CountPath = "CountPath";
             job.ConnectionString = this.connectionStringEncrypted;
             job.NumberOfSecondsInThePast = NumberOfSecondsInThePast;
             const int MaxId = 123456;
             const int NewMaxId = 555777;
             DataStore.LastMaxId = 0;
-            var sql = string.Format(Sql.GetTransactionsCountSql, MaxId, NumberOfSecondsInThePast);
+            var sql = string.Format(Sql.GetTransactionsCountSql, MaxId);
             oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, Sql.GetEntryPoints)).Return(CreateEntryPointQueryResult()).Repeat.Once();
             oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(MaxId)).Repeat.Once();
             oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, sql)).Return(CreateQueryResultOddData()).Repeat.Once();
@@ -139,17 +202,27 @@ namespace Plugin.Oracle.Transactions.Test
             //Test
             var result = oracleTransactions.Get();
             //Assert
-            Assert.That(result.Count, Is.EqualTo(5));
-            Assert.That(result[0].FullPath, Is.EqualTo(string.Format("{0}.{1}", "Path", "trainline_11")));
-            Assert.That(result[1].FullPath, Is.EqualTo(string.Format("{0}.{1}", "Path", "tracs_12")));
-            Assert.That(result[2].FullPath, Is.EqualTo(string.Format("{0}.{1}", "Path", "10_20_40_50_13")));
-            Assert.That(result[3].FullPath, Is.EqualTo(string.Format("{0}.{1}", "Path", "SomeString")));
-            Assert.That(result[4].FullPath, Is.EqualTo(string.Format("{0}.{1}", "Path", "Total")));
-            Assert.That(result[0].Value, Is.EqualTo(333));
-            Assert.That(result[1].Value, Is.EqualTo(999));
-            Assert.That(result[2].Value, Is.EqualTo(0));
-            Assert.That(result[3].Value, Is.EqualTo(666));
-            Assert.That(result[4].Value, Is.EqualTo(1998));
+            Assert.That(result.Count, Is.EqualTo(10));
+            Assert.That(result[0].FullPath, Is.EqualTo(string.Format("{0}.{1}", "AmountPath", "Total")));
+            Assert.That(result[1].FullPath, Is.EqualTo(string.Format("{0}.{1}", "CountPath", "Total")));
+            Assert.That(result[2].FullPath, Is.EqualTo(string.Format("{0}.{1}", "CountPath", "trainline_11")));
+            Assert.That(result[3].FullPath, Is.EqualTo(string.Format("{0}.{1}", "CountPath", "tracs_12")));
+            Assert.That(result[4].FullPath, Is.EqualTo(string.Format("{0}.{1}", "CountPath", "10_20_40_50_13")));
+            Assert.That(result[5].FullPath, Is.EqualTo(string.Format("{0}.{1}", "CountPath", "SomeString")));
+            Assert.That(result[6].FullPath, Is.EqualTo(string.Format("{0}.{1}", "AmountPath", "trainline_11")));
+            Assert.That(result[7].FullPath, Is.EqualTo(string.Format("{0}.{1}", "AmountPath", "tracs_12")));
+            Assert.That(result[8].FullPath, Is.EqualTo(string.Format("{0}.{1}", "AmountPath", "10_20_40_50_13")));
+            Assert.That(result[9].FullPath, Is.EqualTo(string.Format("{0}.{1}", "AmountPath", "SomeString")));
+            Assert.That(result[0].Value, Is.EqualTo("146.9"));
+            Assert.That(result[1].Value, Is.EqualTo("1998"));            
+            Assert.That(result[2].Value, Is.EqualTo("333"));
+            Assert.That(result[3].Value, Is.EqualTo("999"));
+            Assert.That(result[4].Value, Is.EqualTo("0"));
+            Assert.That(result[5].Value, Is.EqualTo("666"));
+            Assert.That(result[6].Value, Is.EqualTo("12.3"));
+            Assert.That(result[7].Value, Is.EqualTo("124.5"));
+            Assert.That(result[8].Value, Is.EqualTo("0"));
+            Assert.That(result[9].Value, Is.EqualTo("10.1"));
             Assert.That(DataStore.LastMaxId, Is.EqualTo(NewMaxId));
             oracleRepository.VerifyAllExpectations();
         }
@@ -159,12 +232,13 @@ namespace Plugin.Oracle.Transactions.Test
         {
             int NumberOfSecondsInThePast = 123;
             var job = new OracleTransactions();
-            job.Path = "Path";
+            job.AmountPath = "AmountPath";
+            job.CountPath = "CountPath";
             job.ConnectionString = this.connectionStringEncrypted;
             job.NumberOfSecondsInThePast = NumberOfSecondsInThePast;
             const int MaxId = 123456;
             DataStore.LastMaxId = 0;
-            var sql = string.Format(Sql.GetTransactionsCountSql, MaxId, NumberOfSecondsInThePast);
+            var sql = string.Format(Sql.GetTransactionsCountSql, MaxId);
             oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, Sql.GetEntryPoints)).Return(CreateEntryPointQueryResult()).Repeat.Once();
             oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, Sql.GetMaxIdSql)).Return(CreateMaxIdResult(MaxId));
             oracleRepository.Expect(x => x.ExecuteQuery(this.connectionStringUnEncrypted, sql)).Return(CreateQueryResult());
@@ -181,7 +255,8 @@ namespace Plugin.Oracle.Transactions.Test
         {
             int NumberOfSecondsInThePast = 123;
             var job = new OracleTransactions();
-            job.Path = "Path";
+            job.AmountPath = "AmountPath";
+            job.CountPath = "CountPath";
             job.ConnectionString = this.connectionStringEncrypted;
             job.NumberOfSecondsInThePast = NumberOfSecondsInThePast;
             const int MaxId = 123456;
@@ -222,10 +297,12 @@ namespace Plugin.Oracle.Transactions.Test
             maxIdDs.Tables.Add(dt);
             var dc0 = new DataColumn("originating_system");
             var dc1 = new DataColumn("Count(1)", typeof(int));
+            var dc2 = new DataColumn("sum(p.amount)", typeof(decimal));
             maxIdDs.Tables[0].Columns.Add(dc0);
             maxIdDs.Tables[0].Columns.Add(dc1);
-            AddRow(dt, "11", 333);
-            AddRow(dt, "12", 444);
+            maxIdDs.Tables[0].Columns.Add(dc2);
+            AddRow(dt, "11", 333, 21.2);
+            AddRow(dt, "12", 444, 54.3);
             return maxIdDs;
         }
 
@@ -236,12 +313,14 @@ namespace Plugin.Oracle.Transactions.Test
             maxIdDs.Tables.Add(dt);
             var dc0 = new DataColumn("originating_system");
             var dc1 = new DataColumn("Count(1)", typeof(int));
+            var dc2 = new DataColumn("sum(p.amount)", typeof(decimal));
             maxIdDs.Tables[0].Columns.Add(dc0);
             maxIdDs.Tables[0].Columns.Add(dc1);
-            AddRow(dt, "11", 333);
-            AddRow(dt, "12", 444);
-            AddRow(dt, "12-509", 555);
-            AddRow(dt, "SomeString", 666);
+            maxIdDs.Tables[0].Columns.Add(dc2);
+            this.AddRow(dt, "11", 333, 12.3);
+            this.AddRow(dt, "12", 444, 45.6);
+            this.AddRow(dt, "12-509", 555, 78.9);
+            this.AddRow(dt, "SomeString", 666, 10.1);
             return maxIdDs;
         }
 
@@ -254,12 +333,13 @@ namespace Plugin.Oracle.Transactions.Test
             dt.Rows.Add(row);
         }
 
-        private void AddRow(DataTable dt, string code, int value)
+        private void AddRow(DataTable dt, string code, int value, double d)
         {
             var row = dt.NewRow();
-            row.ItemArray = new object[2];
+            row.ItemArray = new object[3];
             row["originating_system"] = code;
             row["Count(1)"] = value;
+            row["sum(p.amount)"] = d;
             dt.Rows.Add(row);
         }
 

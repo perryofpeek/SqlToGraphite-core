@@ -28,7 +28,7 @@ namespace SqlToGraphite.Plugin.LogParser
         }
 
         private Result Map(ILogRecord record)
-        {            
+        {
             var value = -1;
             var dateTime = DateTime.Now;
             var name = string.Empty;
@@ -54,7 +54,7 @@ namespace SqlToGraphite.Plugin.LogParser
             {
                 value = Convert.ToInt32(r);
             }
-            
+
             //Console.WriteLine(record.getValue(0).GetType());
             //Console.WriteLine(record.getValue(1).GetType());
             try
@@ -66,7 +66,7 @@ namespace SqlToGraphite.Plugin.LogParser
 
                 var s = ex.Message;
             }
-            
+
             //Console.WriteLine(string.Format("{0} {1}", record.getValue(0), record.getValue(1)));
 
 
@@ -94,8 +94,9 @@ namespace SqlToGraphite.Plugin.LogParser
             }
 
             this.Log.Debug(string.Format("Got [{1}] {0}", value, dateTime));
-
-            return new Result(value, name, dateTime, this.Path);            
+            var result = new Result(name, dateTime, this.Path);
+            result.SetValue(value);
+            return result;
         }
 
         public override string Name { get; set; }

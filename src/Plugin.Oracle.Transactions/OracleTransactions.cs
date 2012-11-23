@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using log4net;
 using SqlToGraphiteInterfaces;
 
 namespace Plugin.Oracle.Transactions
 {
+    using System.Linq;
+
     public class OracleTransactions : PluginBase
     {
         private readonly IOracleRepository oracleRepository;
@@ -17,13 +18,13 @@ namespace Plugin.Oracle.Transactions
 
         public OracleTransactions()
         {
-            oracleRepository = new OracleRepository();
+            this.oracleRepository = new OracleRepository();
         }
 
         public OracleTransactions(ILog log, Job job, IEncryption encryption)
             : base(log, job, encryption)
         {
-            oracleRepository = new OracleRepository();
+            this.oracleRepository = new OracleRepository();
             this.WireUpProperties(job, this);
         }
 
@@ -41,27 +42,20 @@ namespace Plugin.Oracle.Transactions
         {
             get
             {
-                if (string.IsNullOrEmpty(this.cs))
-                {
-                    return string.Empty;
-                }
-                return this.Encrypt(this.cs);
+                return string.IsNullOrEmpty(this.cs) ? string.Empty : this.Encrypt(this.cs);
             }
+
             set
             {
-                if (!string.IsNullOrEmpty(value))
-                {
-                    this.cs = this.Decrypt(value);
-                }
-                else
-                {
-                    this.cs = string.Empty;
-                }
+                this.cs = !string.IsNullOrEmpty(value) ? this.Decrypt(value) : string.Empty;
             }
         }
 
+        [Help("The name space for the transaction values")]
+        public string AmountPath { get; set; }
 
-        public string Path { get; set; }
+        [Help("The name space for the transaction count")]
+        public string CountPath { get; set; }
 
         public int NumberOfSecondsInThePast { get; set; }
 
@@ -75,8 +69,8 @@ namespace Plugin.Oracle.Transactions
         {
             try
             {
-                InitialiseEntryPointsOnFirstRun();
-                InitialiseLastIdOnFirstRun();
+                this.InitialiseEntryPointsOnFirstRun();
+                this.InitialiseLastIdOnFirstRun();
                 this.ResetLastIdIfTimeDrifted();
                 var rtn = this.GetTransactionCounts();
                 this.SetLastId();
@@ -136,47 +130,110 @@ namespace Plugin.Oracle.Transactions
         private List<IResult> GetTransactionCounts()
         {
             var now = DateTime.Now;
-            var sql = string.Format(Sql.GetTransactionsCountSql, DataStore.LastMaxId, this.NumberOfSecondsInThePast);
+            var sql = string.Format(Sql.GetTransactionsCountSql, DataStore.LastMaxId);
             var dataSet = this.oracleRepository.ExecuteQuery(this.cs, sql);
-            var resultDictionary = this.LoadResponseIntoDictionary(dataSet);
-            return CreateResponseList(now, resultDictionary); ;
+            var countResultDictionary = this.LoadCountResponseIntoDictionary(dataSet);
+            var amountResultDictionary = this.LoadAmountResponseIntoDictionary(dataSet);
+
+            var rtn = new List<IResult>();
+            var amountResult = new Result("Total", now, this.AmountPath);
+            amountResult.SetValue(amountResultDictionary.Sum(amount => amount.Value));
+            rtn.Add(amountResult);
+
+            var countResult = new Result("Total", now, this.CountPath);
+            countResult.SetValue(countResultDictionary.Sum(i => i.Value));
+            rtn.Add(countResult);
+
+
+            var countList = this.CreateCountResponseList(now, countResultDictionary);
+            var amountList = this.CreateAmountResponseList(now, amountResultDictionary);
+
+            rtn.AddRange(countList.ToArray());
+            rtn.AddRange(amountList.ToArray());
+
+            return rtn;
         }
 
-        private List<IResult> CreateResponseList(DateTime now, Dictionary<string, int> resultDictionary)
+        private List<IResult> CreateAmountResponseList(DateTime now, Dictionary<string, double> amountResultDictionary)
         {
-
-            var responseList = this.CreateResultSetForEveryEntryPoint(now, resultDictionary);
-            this.AddResultsThatAreNotListedAsEntryPoints(now, resultDictionary, responseList);
-            this.AddTotalTransactionCount(now, responseList);
-
+            var responseList = this.CreateResultSetForEveryEntryPoint(now, amountResultDictionary);
+            this.AddResultsThatAreNotListedAsEntryPoints(now, amountResultDictionary, responseList);
             return responseList;
         }
 
-        private void AddTotalTransactionCount(DateTime now, List<IResult> responseList)
+        private List<IResult> CreateCountResponseList(DateTime now, Dictionary<string, int> resultDictionary)
         {
-            var total = responseList.Sum(result => result.Value);
-            responseList.Add(new Result(total, "Total", now, this.Path));
+            var responseList = this.CreateResultSetForEveryEntryPoint(now, resultDictionary);
+            this.AddResultsThatAreNotListedAsEntryPoints(now, resultDictionary, responseList);
+            return responseList;
         }
 
         private void AddResultsThatAreNotListedAsEntryPoints(DateTime now, Dictionary<string, int> resultDictionary, List<IResult> responseList)
         {
             foreach (var oddResult in resultDictionary)
             {
-                responseList.Add(new Result(oddResult.Value, this.ReplaceDotsAndSpaces(oddResult.Key), now, this.Path));
+                var r = new Result(this.ReplaceDotsAndSpaces(oddResult.Key), now, this.CountPath);
+                r.SetValue(oddResult.Value);
+                responseList.Add(r);
             }
         }
 
-        private List<IResult> CreateResultSetForEveryEntryPoint(DateTime now, Dictionary<string, int> resultDictionary)
+        private void AddResultsThatAreNotListedAsEntryPoints(DateTime now, Dictionary<string, double> resultDictionary, List<IResult> responseList)
+        {
+            foreach (var oddResult in resultDictionary)
+            {
+                var r = new Result(this.ReplaceDotsAndSpaces(oddResult.Key), now, this.AmountPath);
+                r.SetValue(oddResult.Value);
+                responseList.Add(r);
+            }
+        }
+
+
+        private List<IResult> CreateResultSetForEveryEntryPoint(DateTime now, Dictionary<string, double> resultDictionary)
         {
             var responseList = new List<IResult>();
             foreach (var entryPoint in DataStore.EntryPoints)
             {
                 var value = SetEntrypointValueIfReturnedInResultSet(resultDictionary, entryPoint);
                 var name = string.Format("{0}_{1}", this.ReplaceDotsAndSpaces(entryPoint.Value), entryPoint.Key);
-                this.Log.Debug(string.Format("Adding response {0} {1} {2} {3}", value, name, now, this.Path));
-                responseList.Add(new Result(value, name, now, this.Path));
+                this.Log.Debug(string.Format("Adding response {0} {1} {2} {3}", value, name, now, this.AmountPath));
+                var r = new Result(name, now, this.AmountPath);
+                r.SetValue(value);
+                responseList.Add(r);
             }
+
             return responseList;
+        }
+
+
+        private List<IResult> CreateResultSetForEveryEntryPoint(DateTime now, Dictionary<string, int> resultDictionary)
+        {
+            var responseList = new List<IResult>();
+            var total = 0;
+            foreach (var entryPoint in DataStore.EntryPoints)
+            {
+                var value = SetEntrypointValueIfReturnedInResultSet(resultDictionary, entryPoint);
+                var name = string.Format("{0}_{1}", this.ReplaceDotsAndSpaces(entryPoint.Value), entryPoint.Key);
+                this.Log.Debug(string.Format("Adding response {0} {1} {2} {3}", value, name, now, this.CountPath));
+                var r = new Result(name, now, this.CountPath);
+                r.SetValue(value);
+                total += value;
+                responseList.Add(r);
+            }
+
+            return responseList;
+        }
+
+        private static double SetEntrypointValueIfReturnedInResultSet(Dictionary<string, double> resultDictionary, KeyValuePair<int, string> entryPoint)
+        {
+            double value = 0;
+            if (resultDictionary.ContainsKey(entryPoint.Key.ToString()))
+            {
+                value = resultDictionary[entryPoint.Key.ToString()];
+                resultDictionary.Remove((entryPoint.Key.ToString()));
+            }
+
+            return value;
         }
 
         private static int SetEntrypointValueIfReturnedInResultSet(Dictionary<string, int> resultDictionary, KeyValuePair<int, string> entryPoint)
@@ -187,34 +244,76 @@ namespace Plugin.Oracle.Transactions
                 value = resultDictionary[entryPoint.Key.ToString()];
                 resultDictionary.Remove((entryPoint.Key.ToString()));
             }
+
             return value;
         }
 
-        private Dictionary<string, int> LoadResponseIntoDictionary(DataSet dataSet)
+        private Dictionary<string, double> LoadAmountResponseIntoDictionary(DataSet dataSet)
+        {
+            var resultDictionary = new Dictionary<string, double>();
+            foreach (DataRow row in dataSet.Tables[0].Rows)
+            {
+                Log.Debug(string.Format("Orig_system [{0}] Value[{1}]", row[0], row[2]));
+                this.AddAmountResultToDictionary(resultDictionary, this.CleanOrigSystem(row), Convert.ToDouble(row[2]));
+            }
+
+            return resultDictionary;
+        }
+
+
+        private Dictionary<string, int> LoadCountResponseIntoDictionary(DataSet dataSet)
         {
             var resultDictionary = new Dictionary<string, int>();
             foreach (DataRow row in dataSet.Tables[0].Rows)
             {
                 Log.Debug(string.Format("Orig_system [{0}] Value[{1}]", row[0], row[1]));
-                AddResultToDictionary(resultDictionary, this.CleanOrigSystem(row), Convert.ToInt32(row[1]));
+                this.AddCountResultToDictionary(resultDictionary, this.CleanOrigSystem(row), Convert.ToInt32(row[1]));
             }
+
             return resultDictionary;
         }
 
-        private static void AddResultToDictionary(Dictionary<string, int> resultDictionary, string origSystem, int count)
+        private void AddAmountResultToDictionary(Dictionary<string, double> amountResultDictionary, string origSystem, double value)
         {
-            if (resultDictionary.ContainsKey(origSystem))
+            if (amountResultDictionary.ContainsKey(origSystem))
             {
-                AddToExistingValue(resultDictionary, origSystem, count);
+                this.AddAmountToExistingValue(amountResultDictionary, origSystem, value);
             }
             else
             {
-                resultDictionary.Add(origSystem, count);
+                amountResultDictionary.Add(origSystem, value);
             }
         }
 
-        private static void AddToExistingValue(Dictionary<string, int> resultDictionary, string origSystem, int count)
+        private void AddCountResultToDictionary(Dictionary<string, int> countResultDictionary, string origSystem, int count)
         {
+            if (countResultDictionary.ContainsKey(origSystem))
+            {
+                this.AddCountToExistingValue(countResultDictionary, origSystem, count);
+            }
+            else
+            {
+                countResultDictionary.Add(origSystem, count);
+            }
+        }
+
+        private void AddAmountToExistingValue(Dictionary<string, double> resultDictionary, string origSystem, double count)
+        {
+            if (resultDictionary == null)
+            {
+                throw new ArgumentNullException("resultAmountDictionary");
+            }
+
+            resultDictionary[origSystem] += count;
+        }
+
+        private void AddCountToExistingValue(Dictionary<string, int> resultDictionary, string origSystem, int count)
+        {
+            if (resultDictionary == null)
+            {
+                throw new ArgumentNullException("resultCountDictionary");
+            }
+
             resultDictionary[origSystem] += count;
         }
 
@@ -223,8 +322,9 @@ namespace Plugin.Oracle.Transactions
             var origSystem = row[0].ToString();
             if (origSystem.Contains("-"))
             {
-                origSystem = origSystem.Substring(0, origSystem.IndexOf("-"));
+                origSystem = origSystem.Substring(0, origSystem.IndexOf("-", StringComparison.Ordinal));
             }
+
             return origSystem;
         }
 

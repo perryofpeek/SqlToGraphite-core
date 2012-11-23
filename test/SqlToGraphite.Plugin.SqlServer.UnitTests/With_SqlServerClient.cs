@@ -1,10 +1,12 @@
 ﻿using System;
 
-using SqlToGraphiteInterfaces;
-
 using log4net;
+
 using NUnit.Framework;
+
 using Rhino.Mocks;
+
+using SqlToGraphiteInterfaces;
 
 namespace SqlToGraphite.Plugin.SqlServer.UnitTests
 {
@@ -52,7 +54,7 @@ namespace SqlToGraphite.Plugin.SqlServer.UnitTests
             //Asset            
             Assert.That(results.Count, Is.EqualTo(1));
             Assert.That(results[0].Path, Is.EqualTo(SimplePath));
-            Assert.That(results[0].Value, Is.EqualTo(234));
+            Assert.That(results[0].Value, Is.EqualTo("234"));
         }
 
         [Test]
@@ -74,7 +76,7 @@ namespace SqlToGraphite.Plugin.SqlServer.UnitTests
             var futureDate = DateTime.Now.Add(new TimeSpan(11, 0, 0, 0));
             Assert.That(results.Count, Is.EqualTo(1));
             Assert.That(results[0].Path, Is.EqualTo(SimplePath));
-            Assert.That(results[0].Value, Is.EqualTo(234));
+            Assert.That(results[0].Value, Is.EqualTo("234"));
             Assert.That(results[0].TimeStamp.Day, Is.EqualTo(futureDate.Day));
             Assert.That(results[0].TimeStamp.Hour, Is.EqualTo(futureDate.Hour));
             Assert.That(results[0].TimeStamp.Minute, Is.EqualTo(futureDate.Minute));
@@ -101,7 +103,7 @@ namespace SqlToGraphite.Plugin.SqlServer.UnitTests
             Assert.That(results.Count, Is.EqualTo(1));
             Assert.That(results[0].Name, Is.EqualTo("someName"));
             Assert.That(results[0].Path, Is.EqualTo(SimplePath));
-            Assert.That(results[0].Value, Is.EqualTo(234));
+            Assert.That(results[0].Value, Is.EqualTo("234"));
         }
 
         [Test]

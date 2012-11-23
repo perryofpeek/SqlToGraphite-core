@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Graphite.NET</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://raw.github.com/ragnard/Graphite.NET/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/ragnard/Graphite.NET</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <copyright>Copyright 2011</copyright>
+    <tags>graphite statsd metrics</tags>
+  </metadata>
+</package>

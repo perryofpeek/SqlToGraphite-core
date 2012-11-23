@@ -12,7 +12,9 @@ namespace SqlToGraphite.UnitTests
         public void Should_send_message()
         {
             var statsdClient = new StatsdClient("localhost", 1234);
-            statsdClient.Send(new Result(12, "name", System.DateTime.Now, "path"));
+            var r = new Result("name", System.DateTime.Now, "path");
+            r.SetValue(12);
+            statsdClient.Send(r);
         }
     }
 }
