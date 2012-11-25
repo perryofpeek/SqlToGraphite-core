@@ -6,6 +6,8 @@ using SqlToGraphite.Config;
 
 namespace SqlToGraphite
 {
+    using System.Xml.Serialization;
+
     public class AssemblyResolver : IAssemblyResolver
     {
         public const string FilesToScan = "*.dll";
@@ -36,6 +38,11 @@ namespace SqlToGraphite
         public Type[] ResolveTypes(JobImpl job)
         {
             return this.types.Select(type => type.Value).ToArray();
+        }
+
+        public IEnumerable<Type> ResolveAllTypes(JobImpl job)
+        {
+            return this.types.Select(type => type.Value);            
         }
 
         public Dictionary<string, Type> GetJobTypes(string filesToScan)

@@ -10,6 +10,12 @@ using SqlToGraphite.Plugin.SqlServer;
 
 namespace SqlToGraphite.UnitTests
 {
+    using System.Linq;
+    using System.Xml.Linq;
+    using System.Xml.Serialization;
+
+    using SqlToGraphite.Plugin.Wmi;
+
     // ReSharper disable InconsistentNaming
     [TestFixture]
     public class With_ConfigRepository
@@ -309,6 +315,38 @@ namespace SqlToGraphite.UnitTests
             genericSerializer.VerifyAllExpectations();
         }
 
+        [Test]
+        public void Should_read_config_One_job_sucessfully()
+        {
+            IGenericSerializer gs = new GenericSerializer(Global.GetNameSpace());
+            repository = new ConfigRepository(this.reader, this.cache, this.sleep, this.log, this.sleepTime, this.configPersister, gs);            
+            reader.Expect(x => x.GetXml()).Return(Resources.knownPlugin);
+            cache.Expect(x => x.HasExpired()).Return(true).Repeat.Once();
+            //Test
+            repository.Load();
+            //Assert
+            List<Job> jobs = repository.GetJobs();            
+            Assert.That(jobs.Count, Is.EqualTo(2));
+            Assert.That(jobs[0].GetType().Name, Is.EqualTo("WmiClient"));                        
+            genericSerializer.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Should_read_config_One_job_sucessfully_with_unknownplugin()
+        {
+            IGenericSerializer gs = new GenericSerializer(Global.GetNameSpace());
+            repository = new ConfigRepository(this.reader, this.cache, this.sleep, this.log, this.sleepTime, this.configPersister, gs);
+            reader.Expect(x => x.GetXml()).Return(Resources.UnknownPlugin);
+            cache.Expect(x => x.HasExpired()).Return(true).Repeat.Once();
+            //Test
+            repository.Load();
+            //Assert
+            List<Job> jobs = repository.GetJobs();
+            Assert.That(jobs.Count, Is.EqualTo(1));
+            Assert.That(jobs[0].GetType().Name, Is.EqualTo("WmiClient"));
+            genericSerializer.VerifyAllExpectations();
+        }
+        
         [Test]
         public void Should_read_config_from_cache()
         {

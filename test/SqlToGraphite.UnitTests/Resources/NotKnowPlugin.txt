@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-16"?>
+<SqlToGraphiteConfig xmlns="SqlToGraphite_0.0.0.1">
+  <Jobs>
+    <ArrayOfJob xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="">
+      <Job xsi:type="WmiClient">
+        <Name>Wmi_Memory_AvailableMBytes</Name>
+        <ClientName>GraphiteUdpClient</ClientName>
+        <Type>SqlToGraphite.Plugin.Wmi.WmiClient</Type>
+        <Username />
+        <Hostname>localhost</Hostname>
+        <Password />
+        <Path>RtmPrd.Servers.Memory.10s.AvailableMBytes.%h</Path>
+        <Sql>SELECT AvailableMBytes FROM Win32_PerfFormattedData_PerfOS_Memory</Sql>
+      </Job>
+      <Job xsi:type="NotKnown">
+        <Name>Wmi_Memory_AvailableMBytes</Name>
+        <ClientName>GraphiteUdpClient</ClientName>
+        <Type>SqlToGraphite.Plugin.Wmi.WmiClient</Type>
+        <Username />
+        <Hostname>localhost</Hostname>
+        <Password />
+        <Path>RtmPrd.Servers.Memory.10s.AvailableMBytes.%h</Path>
+        <Sql>SELECT AvailableMBytes FROM Win32_PerfFormattedData_PerfOS_Memory</Sql>
+      </Job>
+    </ArrayOfJob>
+  </Jobs>
+  <Clients>
+    <ArrayOfClient xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="">
+      <Client xsi:type="GraphiteTcpClient" Hostname="10.244.102.55" ClientName="GraphiteTcpClient" Port="2003" />
+      <Client xsi:type="GraphiteUdpClient" Hostname="10.244.102.55" ClientName="GraphiteUdpClient" Port="2003" />
+    </ArrayOfClient>
+  </Clients>
+  <Hosts>
+    <ArrayOfHost xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <Host Name="DEFAULT">
+        <Roles>
+          <Role Name="default" />
+        </Roles>
+      </Host>
+      <Host Name="TTL001121">
+        <Roles>
+          <Role Name="default" />
+        </Roles>
+      </Host>     
+    </ArrayOfHost>
+  </Hosts>
+  <Templates>
+    <ArrayOfTemplate xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <Template>
+        <WorkItems>          
+          <WorkItems RoleName="default">
+            <TaskSet>
+              <TaskSet Frequency="10">
+                <Tasks>
+                  <Task JobName="Wmi_Memory_AvailableMBytes" />                 
+                </Tasks>
+              </TaskSet>             
+            </TaskSet>
+          </WorkItems>
+        </WorkItems>
+      </Template>
+    </ArrayOfTemplate>
+  </Templates>
+</SqlToGraphiteConfig>

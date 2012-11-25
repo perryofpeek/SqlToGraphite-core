@@ -6,6 +6,8 @@ using SqlToGraphiteInterfaces;
 
 namespace SqlToGraphite.Config
 {
+    using System.Xml.Linq;
+
     public class SqlToGraphiteConfig : IXmlSerializable
     {
         private static Type[] jobTypes;
@@ -14,11 +16,14 @@ namespace SqlToGraphite.Config
 
         private GenericSerializer genericSerializer;
 
+        private static IEnumerable<Type> alljobtypes;
+
         public SqlToGraphiteConfig()
         {
             var job = new JobImpl();
             var assemblyResolver = new AssemblyResolver(new DirectoryImpl());
             jobTypes = assemblyResolver.ResolveTypes(job);
+            alljobtypes = assemblyResolver.ResolveAllTypes(job);
             //JobTypes = GetJobTypes().ToArray();
             clientTypes = GetClientTypes().ToArray();
 
@@ -168,16 +173,13 @@ namespace SqlToGraphite.Config
             }
 
             reader.MoveToContent();
-            reader.ReadStartElement("Jobs");
-            try
-            {
-                this.Jobs = this.genericSerializer.Deserialize<List<Job>>(reader, jobTypes);
-            }
-            catch (Exception ex)
-            {
-                var s = ex.Message;
-            }
-            
+            reader.ReadStartElement("Jobs");            
+            var jobsXml = reader.ReadOuterXml();
+            // Create metadatacontainer to fill            
+            var names = alljobtypes.Select(x => x.Name);            
+            this.Jobs = (from t in XDocument.Parse(jobsXml).Descendants("Job")
+                            where names.Contains(t.Attribute(XName.Get("type", "http://www.w3.org/2001/XMLSchema-instance")).Value)
+                            select this.genericSerializer.Deserialize<Job>(t.CreateReader(), jobTypes)).ToList();                        
             reader.ReadEndElement();
 
             reader.ReadStartElement("Clients");
