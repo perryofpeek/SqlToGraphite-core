@@ -99,7 +99,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Stest.cs" />
     <Compile Include="ConfigUiTest.cs" />
     <Compile Include="Config_Clients.cs" />
     <Compile Include="Config_Hosts.cs" />
@@ -107,9 +106,6 @@
     <Compile Include="Config_Templates.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Config_generation.cs" />
-    <Compile Include="MetadataBase.cs" />
-    <Compile Include="MetadataContainer.cs" />
-    <Compile Include="ReadonlyMetadata.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
