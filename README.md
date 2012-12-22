@@ -1,4 +1,4 @@
-Sql2Graphite
+SqlToGraphite
 ============
 
-Windows service that can run SQL  Oracle and WMI Queries and post results to Graphite
+Windows Service that can run SQL, Oracle and WMI Queries and post results to Graphite directly, or via Statsd
