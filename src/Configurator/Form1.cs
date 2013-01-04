@@ -6,6 +6,8 @@ using SqlToGraphite;
 
 namespace Configurator
 {
+    using log4net;
+
     public partial class Form1 : Form
     {
         public Form1()
@@ -20,7 +22,7 @@ namespace Configurator
         private AssemblyResolver assemblyResolver;
 
         private Builder b;
-        
+
         private Builder jobAddObject;
 
         private RolesViewer rv;
@@ -31,23 +33,27 @@ namespace Configurator
 
         private HostsTreeViewer hostsTreeViewer;
 
+        private ILog log;
+
         private void SetUpDialogues()
         {
             ofgConfig.Multiselect = false;
-           // ofgConfig.FileName = @"C:\git\perryOfPeek\SqlToGraphite\src\Configurator\bin\Debug\config.xml";
+            // ofgConfig.FileName = @"C:\git\perryOfPeek\SqlToGraphite\src\Configurator\bin\Debug\config.xml";
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            log = LogManager.GetLogger("log");
+            log4net.Config.XmlConfigurator.Configure();
             selectedJob = string.Empty;
             controller = new code.Controller();
-            assemblyResolver = new AssemblyResolver(new DirectoryImpl());
+            assemblyResolver = new AssemblyResolver(new DirectoryImpl(), log);
             SetUpDialogues();
             //this.LoadTheConfig();
         }
 
         private void RenderForm()
-        {            
+        {
             DisplayJobs();
         }
 
@@ -57,14 +63,14 @@ namespace Configurator
             DisplayAddJob();
             DisplayRolesView();
             DisplayHostsView();
-        }             
+        }
 
         private void DisplayJobs()
         {
-            lbJob.Items.Clear();            
+            lbJob.Items.Clear();
             foreach (var job in controller.GetJobs())
             {
-                lbJob.Items.Add(job.Name);                
+                lbJob.Items.Add(job.Name);
             }
         }
 
@@ -75,7 +81,7 @@ namespace Configurator
             {
                 this.LoadTheConfig();
             }
-        }      
+        }
 
         // This will be called whenever the list changes.
         private void TreeViewerOnChanged(object sender, EventArgs e)
@@ -92,7 +98,7 @@ namespace Configurator
             hostsTreeViewer = new HostsTreeViewer(controller);
             roleTreeViewer.Changed += this.TreeViewerOnChanged;
             this.rv = new RolesViewer(controller, roleTreeViewer);
-            this.hv = new HostsViewer(controller, hostsTreeViewer);   
+            this.hv = new HostsViewer(controller, hostsTreeViewer);
             this.RenderForm();
             this.RefreshForm();
         }
@@ -100,17 +106,17 @@ namespace Configurator
         private void lbJob_SelectedIndexChanged(object sender, EventArgs e)
         {
             var listControl = (ListBox)sender;
-            if(listControl.SelectedItem != null)
+            if (listControl.SelectedItem != null)
             {
-                selectedJob = listControl.SelectedItem.ToString();    
-            }                       
+                selectedJob = listControl.SelectedItem.ToString();
+            }
             this.RefreshForm();
         }
 
         private void DisplayJob(string name)
         {
             jobDisplay.Controls.Clear();
-          
+
             if (!string.IsNullOrEmpty(name))
             {
                 foreach (var job in controller.GetJobs())
@@ -120,18 +126,18 @@ namespace Configurator
                         b = new Builder(jobDisplay, new DefaultJobProperties(jobDisplay.Width), controller, assemblyResolver, this.resultView);
                         jobDisplay.Controls.Clear();
                         b.DisplayJob(name);
-                        b.AddedJobEvent += BOnAddedJobEvent;                       
+                        b.AddedJobEvent += BOnAddedJobEvent;
                     }
                 }
 
                 this.Refresh();
-                
+
             }
-        }      
+        }
 
         private void DisplayAddJob()
         {
-            jobAddObject = new Builder(jobAdd, new DefaultJobProperties(jobDisplay.Width), controller, assemblyResolver,this.resultView);
+            jobAddObject = new Builder(jobAdd, new DefaultJobProperties(jobDisplay.Width), controller, assemblyResolver, this.resultView);
             jobAddObject.AddedJobEvent += BOnAddedJobEvent;
             jobAddObject.DisplayJobAdd();
             this.Refresh();
@@ -164,7 +170,7 @@ namespace Configurator
         }
 
         private void DisplayRolesView()
-        {            
+        {
             var p = new Position(this.tpRoles.Left, this.tpRoles.Width, this.tpRoles.Top, this.tpRoles.Height - 50);
             var panel = rv.Get(p);
             tpRoles.Controls.Clear();
@@ -172,11 +178,11 @@ namespace Configurator
         }
 
         private void DisplayHostsView()
-        {            
+        {
             var p = new Position(this.tpRoles.Left, this.tpRoles.Width, this.tpRoles.Top, this.tpRoles.Height - 50);
             var panel = hv.Get(p);
             tpHosts.Controls.Clear();
             tpHosts.Controls.Add(panel);
-        }      
+        }
     }
 }

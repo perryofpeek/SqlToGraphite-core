@@ -1,5 +1,3 @@
-using ConfigSpike;
-
 using Graphite;
 
 using SqlToGraphiteInterfaces;

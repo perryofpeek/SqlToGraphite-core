@@ -6,7 +6,7 @@ properties {
   $Build_Configuration = 'Release'
   $Build_Artifacts = 'output'
   $fullPath= 'src\SqlToGraphite.host\output'
-  $version = '0.3.0.6'
+  $version = '0.3.0.12'
   $Debug = 'Debug'
   $pwd = pwd
   $msbuild = "C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe"
@@ -16,11 +16,13 @@ properties {
   $TestOutput = "$pwd\BuildOutput"
   $UnitTestOutputFolder = "$TestOutput\UnitTestOutput";
   $TestReport = "";
+  $nuspecFile = "SqlToGraphite.nuspec"
 }
 
-task default -depends Report
+#task default -depends Init, Clean, Compile, Test, NugetPackage, Ilmerge, Package,  Report
+task default -depends Init, Clean, Compile, Test, NugetPackage, Report
 
-task Test -depends Init, Compile, Clean, StartOracle { 			
+task Test   { 			
 	$sinkoutput = mkdir $TestOutput -Verbose:$false;  
     $sinkoutput = mkdir $UnitTestOutputFolder -Verbose:$false;  
 	
@@ -43,7 +45,7 @@ task Test -depends Init, Compile, Clean, StartOracle {
 	cd $pwd	
 }
 
-task Compile -depends  Clean {  
+task Compile {  
    Exec {  & $msbuild /m:4 /verbosity:quiet /nologo /p:OutDir=""$Build_Artifacts\"" /t:Rebuild /p:Configuration=$Build_Configuration $Build_Solution }   	
 }
 
@@ -65,7 +67,7 @@ task Init {
 	$Description = "Graphite Service for collecting metrics";
 	$Product = "SqlToGraphite $version";
 	$Title = "SqlToGraphite $version";
-	$Copyright = "PerryOfPeek 2012";	
+	$Copyright = "PerryOfPeek 2013";	
 
 	$files = Get-ChildItem src\* -recurse | Where-Object {$_.Fullname.Contains("AssemblyInfo.cs")}
 	foreach ($file in $files)
@@ -81,29 +83,47 @@ task Init {
 	}
 }
 
-task Ilmerge -depends Test  {
-    
+task Ilmerge {
 	$sinkoutput = mkdir $Build_Artifacts;
-    #$var = "" + "$fullPath" + "" + "$fullPath" + "\log4net.dll " + "$fullPath" + "\SqlToGraphite.dll " + "$fullPath" + "\Topshelf.dll";
-    #Write-Host $var;
-    Exec { tools\ilmerge.exe /closed /t:exe /out:output\sqlToGraphite.exe /targetplatform:v4 src\SqlToGraphite.host\output\SqlToGraphite.host.exe src\SqlToGraphite.host\output\Graphite.dll src\SqlToGraphite.host\output\SqlToGraphite.Plugin.Oracle.dll src\SqlToGraphite.host\output\SqlToGraphite.Plugin.Wmi.dll src\SqlToGraphite.host\output\SqlToGraphite.Plugin.SqlServer.dll src\SqlToGraphite.host\output\SqlToGraphiteInterfaces.dll src\Plugin.Oracle.Transactions\output\Plugin.Oracle.Transactions.dll src\SqlToGraphite.host\output\Topshelf.dll src\SqlToGraphite.host\output\log4net.dll };
-    Exec { tools\ilmerge.exe /closed /t:winexe /out:output\ConfigUi.exe /targetplatform:v4 src\Configurator\output\Configurator.exe src\SqlToGraphite.host\output\SqlToGraphite.host.exe src\SqlToGraphite.host\output\Graphite.dll src\SqlToGraphite.host\output\SqlToGraphite.Plugin.Oracle.dll src\SqlToGraphite.host\output\SqlToGraphite.Plugin.Wmi.dll src\SqlToGraphite.host\output\SqlToGraphite.Plugin.SqlServer.dll src\SqlToGraphite.host\output\SqlToGraphiteInterfaces.dll src\Plugin.Oracle.Transactions\output\Plugin.Oracle.Transactions.dll src\SqlToGraphite.host\output\log4net.dll };    	
+  	Exec { tools\ilmerge.exe /closed /t:exe /out:output\sqlToGraphite.exe /targetplatform:v4 src\SqlToGraphite.host\output\SqlToGraphite.host.exe src\SqlToGraphite.host\output\Graphite.dll src\SqlToGraphite.host\output\SqlToGraphite.Plugin.Wmi.dll  src\SqlToGraphite.host\output\Topshelf.dll src\SqlToGraphite.host\output\log4net.dll };
+    Exec { tools\ilmerge.exe /closed /t:winexe /out:output\ConfigUi.exe /targetplatform:v4 src\Configurator\output\Configurator.exe src\SqlToGraphite.host\output\SqlToGraphite.host.exe src\SqlToGraphite.host\output\Graphite.dll  src\SqlToGraphite.host\output\SqlToGraphite.Plugin.Wmi.dll src\SqlToGraphite.host\output\SqlToGraphiteInterfaces.dll src\SqlToGraphite.host\output\log4net.dll };    	
 	Copy-Item  $fullPath\app.config.Template output\SqlToGraphite.exe.config;
 	Copy-Item  src\ConfigPatcher\output\configpatcher.exe output\configpatcher.exe;	
 	Copy-Item  src\Configurator\output\Configurator.exe.config output\ConfigUi.exe.config;
+	Copy-Item  src\SqlToGraphite.host\output\DefaultConfig.xml output\DefaultConfig.xml;
 }
-# -depends Ilmerge
-task Package -depends Ilmerge {
+
+task NugetPackage {
+    if ((Test-path -path $Build_Artifacts -pathtype container) -eq $false)
+    {		
+		mkdir $Build_Artifacts
+    }
+    write-host $nuspecFile $Build_Artifacts
+	Copy-item src\SqlToGraphite.host\output\SqlToGraphite.host.exe  $Build_Artifacts\
+	Copy-item src\SqlToGraphite.host\output\SqlToGraphite.dll  $Build_Artifacts\
+	Copy-item src\SqlToGraphite.host\output\app.config.Template $Build_Artifacts\SqlToGraphite.host.exe.config
+	Copy-item src\SqlToGraphite.host\output\Graphite.dll  $Build_Artifacts\
+	Copy-item src\SqlToGraphite.host\output\SqlToGraphite.Plugin.Wmi.dll  $Build_Artifacts\
+    Copy-item src\SqlToGraphite.host\output\Topshelf.dll  $Build_Artifacts\
+	Copy-item src\SqlToGraphite.host\output\log4net.dll  $Build_Artifacts\	
+	Copy-item src\Configurator\output\Configurator.exe	$Build_Artifacts\ConfigUi.exe
+	Copy-Item  src\ConfigPatcher\output\configpatcher.exe $Build_Artifacts\configpatcher.exe;	
+	Copy-Item  src\Configurator\output\Configurator.exe.config $Build_Artifacts\ConfigUi.exe.config;
+	Copy-Item  src\SqlToGraphite.host\output\DefaultConfig.xml $Build_Artifacts\DefaultConfig.xml;
+
+	write-host $nuspecFile $Build_Artifacts
+	Copy-item $nuspecFile $Build_Artifacts\
+	Exec { packages\NuGet.CommandLine.1.7.0\tools\NuGet.exe Pack $nuspecFile -BasePath $Build_Artifacts -outputdirectory .  -Version  $version }		
+	#Exec { c:\Apps\NSIS\makensis.exe /p4 /v2 sqlToGraphite.nsi }
+    #Move-item -Force SqlToGraphite-Setup.exe "SqlToGraphite-Setup-$version.exe"	
+}
+
+task Package {   
 	Exec { c:\Apps\NSIS\makensis.exe /p4 /v2 sqlToGraphite.nsi }
     Move-item -Force SqlToGraphite-Setup.exe "SqlToGraphite-Setup-$version.exe"	
 }
 
-task StartOracle {
-     Start-Service "OracleServiceXE";
-     Start-Service "OracleXETNSListener";
-}
-
-task Report -depends package {
+task Report {
 	write-host "================================================================="	
 	$xmldata = [xml](get-content BuildOutput\UnitTestOutput\testresult.xml)
 	

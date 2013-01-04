@@ -1,5 +1,3 @@
-using ConfigSpike;
-
 using log4net;
 using SqlToGraphiteInterfaces;
 

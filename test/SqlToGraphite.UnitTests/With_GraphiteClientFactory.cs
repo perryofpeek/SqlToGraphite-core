@@ -1,6 +1,4 @@
-﻿using ConfigSpike;
-
-using log4net;
+﻿using log4net;
 using NUnit.Framework;
 using Rhino.Mocks;
 using SqlToGraphiteInterfaces;

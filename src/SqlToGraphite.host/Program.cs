@@ -19,7 +19,7 @@ namespace SqlToGraphite.host
             var cacheLength = new TimeSpan(0, configuration.ConfigCacheLengthMinutes, 0);
             var stop = new Stop();
             var directoryImpl = new DirectoryImpl();
-            var assemblyResolver = new AssemblyResolver(directoryImpl);
+            var assemblyResolver = new AssemblyResolver(directoryImpl, log);
             IEncryption encryption = new Encryption();
             IDataClientFactory dataClientFactory = new DataClientFactory(log, assemblyResolver, encryption);
             IGraphiteClientFactory graphiteClientFactory = new GraphiteClientFactory(log);

@@ -124,43 +124,7 @@ namespace SqlToGraphite
         public T Deserialize<T>(XmlReader reader, Type[] extraTypes)
         {
             XmlSerializer xs = new XmlSerializer(typeof(T), extraTypes);
-           // xs.UnknownElement += new XmlElementEventHandler(Serializer_UnknownElement);
-           // xs.UnknownAttribute += new XmlAttributeEventHandler(Serializer_UnknownAttribute);
-           // xs.UnreferencedObject += new UnreferencedObjectEventHandler(Serializer_UnknownObject);
             return (T)xs.Deserialize(reader);
-        }
-
-        private void Serializer_UnknownObject(object sender, UnreferencedObjectEventArgs e)
-        {
-            Console.WriteLine("Unknown Element");
-            Console.WriteLine("\t" + e.UnreferencedId + " " + e.UnreferencedObject);
-            //Group x = (Group)e.ObjectBeingDeserialized;
-            //Console.WriteLine(x.GroupName);
-            Console.WriteLine(sender.ToString());
-        }
-        
-        private void Serializer_UnknownAttribute(object sender, XmlAttributeEventArgs e)
-        {
-            Console.WriteLine("Unknown Element");
-            Console.WriteLine("\t" + e.Attr.Name + " " + e.Attr.InnerXml);
-            Console.WriteLine("\t LineNumber: " + e.LineNumber);
-            Console.WriteLine("\t LinePosition: " + e.LinePosition);
-
-            //Group x = (Group)e.ObjectBeingDeserialized;
-            //Console.WriteLine(x.GroupName);
-            Console.WriteLine(sender.ToString());
-        }
-
-        private void Serializer_UnknownElement(object sender, XmlElementEventArgs e)
-        {
-            Console.WriteLine("Unknown Element");
-            Console.WriteLine("\t" + e.Element.Name + " " + e.Element.InnerXml);
-            Console.WriteLine("\t LineNumber: " + e.LineNumber);
-            Console.WriteLine("\t LinePosition: " + e.LinePosition);
-
-            //Group x = (Group)e.ObjectBeingDeserialized;
-            //Console.WriteLine(x.GroupName);
-            Console.WriteLine(sender.ToString());
         }
 
         /// <summary>

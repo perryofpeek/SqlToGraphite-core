@@ -8,6 +8,8 @@ namespace SqlToGraphite.Config
 {
     using System.Xml.Linq;
 
+    using log4net;
+
     public class SqlToGraphiteConfig : IXmlSerializable
     {
         private static Type[] jobTypes;
@@ -18,10 +20,13 @@ namespace SqlToGraphite.Config
 
         private static IEnumerable<Type> alljobtypes;
 
+        private ILog log;
+
         public SqlToGraphiteConfig()
         {
             var job = new JobImpl();
-            var assemblyResolver = new AssemblyResolver(new DirectoryImpl());
+            this.WireUpLog4Net();
+            var assemblyResolver = new AssemblyResolver(new DirectoryImpl(), log);
             jobTypes = assemblyResolver.ResolveTypes(job);
             alljobtypes = assemblyResolver.ResolveAllTypes(job);
             //JobTypes = GetJobTypes().ToArray();
@@ -34,8 +39,15 @@ namespace SqlToGraphite.Config
             this.genericSerializer = new GenericSerializer(Global.GetNameSpace());
         }
 
-        public SqlToGraphiteConfig(IAssemblyResolver assemblyResolver)
-        {            
+        private void WireUpLog4Net()
+        {
+            this.log = LogManager.GetLogger("log");
+            log4net.Config.XmlConfigurator.Configure();
+        }
+
+        public SqlToGraphiteConfig(IAssemblyResolver assemblyResolver, ILog log)
+        {
+            this.log = log;
             var job = new JobImpl();
             jobTypes = assemblyResolver.ResolveTypes(job);
             //JobTypes = GetJobTypes().ToArray();
@@ -87,7 +99,7 @@ namespace SqlToGraphite.Config
                 {
                     foreach (var task in taskset.Tasks.Where(task => !this.CheckJobNameExists(task)))
                     {
-                        throw new JobNotDefinedForTaskException(string.Format("The job named {0} has not been defined for the task in role {1}", task.JobName, wi.RoleName));
+                        log.Error(string.Format("The job named {0} has not been defined for the task in role {1}", task.JobName, wi.RoleName));
                     }
                 }
             }
@@ -173,13 +185,13 @@ namespace SqlToGraphite.Config
             }
 
             reader.MoveToContent();
-            reader.ReadStartElement("Jobs");            
+            reader.ReadStartElement("Jobs");
             var jobsXml = reader.ReadOuterXml();
             // Create metadatacontainer to fill            
-            var names = alljobtypes.Select(x => x.Name);            
+            var names = alljobtypes.Select(x => x.Name);
             this.Jobs = (from t in XDocument.Parse(jobsXml).Descendants("Job")
-                            where names.Contains(t.Attribute(XName.Get("type", "http://www.w3.org/2001/XMLSchema-instance")).Value)
-                            select this.genericSerializer.Deserialize<Job>(t.CreateReader(), jobTypes)).ToList();                        
+                         where names.Contains(t.Attribute(XName.Get("type", "http://www.w3.org/2001/XMLSchema-instance")).Value)
+                         select this.genericSerializer.Deserialize<Job>(t.CreateReader(), jobTypes)).ToList();
             reader.ReadEndElement();
 
             reader.ReadStartElement("Clients");

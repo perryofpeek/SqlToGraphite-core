@@ -1,12 +1,12 @@
-﻿using NUnit.Framework;
-
-using SqlToGraphite;
-using SqlToGraphite.Config;
-using SqlToGraphite.Plugin.SqlServer;
-using SqlToGraphite.UnitTests;
-
-namespace ConfigSpike
+﻿namespace SqlToGraphite.UnitTests
 {
+    using log4net;
+    using NUnit.Framework;
+    using Rhino.Mocks;
+    using SqlToGraphite;
+    using SqlToGraphite.Config;
+    using SqlToGraphite.Plugin.Wmi;
+
     [TestFixture]
     // ReSharper disable InconsistentNaming
     public class Config_Templates
@@ -20,27 +20,31 @@ namespace ConfigSpike
         private int freq2 = 100;
 
         private SqlToGraphiteConfig config;
-        private Template template;        
+        private Template template;
 
-        private IAssemblyResolver assemblyResolver;    
+        private IAssemblyResolver assemblyResolver;
+
+        private ILog log;
 
         [SetUp]
         public void SetUp()
         {
-            assemblyResolver = new AssemblyResolver(new DirectoryImpl());
-            config = new SqlToGraphiteConfig(assemblyResolver);
-            template = new Template();
+            this.log = MockRepository.GenerateMock<ILog>();
+            this.assemblyResolver = new AssemblyResolver(new DirectoryImpl(), log);
+            this.config = new SqlToGraphiteConfig(this.assemblyResolver, log);
+            this.template = new Template();
         }
 
         [Test]
-        public void Should_not_validate_if_role_does_not_exist()
+        public void Should_validate_if_job_does_not_exist()
         {
-            template.WorkItems.Add(CreateWorkItems(jobName1, roleName1, freq1));
-            config.Templates.Add(template);
+            this.template.WorkItems.Add(CreateWorkItems(this.jobName1, this.roleName1, this.freq1));
+            this.config.Templates.Add(this.template);
+            log.Expect(x => x.Error(string.Format("The job named {0} has not been defined for the task in role {1}", this.jobName1, this.roleName1)));
 
-            var ex = Assert.Throws<JobNotDefinedForTaskException>(() => config.Validate());
+            this.config.Validate();
             //Test
-            Assert.That(ex.Message, Is.EqualTo(string.Format("The job named {0} has not been defined for the task in role {1}", jobName1, roleName1)));
+            log.VerifyAllExpectations();
         }
 
         //Freq Cannot be 0 or less 
@@ -48,25 +52,25 @@ namespace ConfigSpike
         public void Should_validate_job_if_client_exist()
         {
             var name = "Name";
-            var clientName = "SomeClient";            
+            var clientName = "SomeClient";
             var c = new GraphiteTcpClient { ClientName = clientName };
-            config.Clients.Add(c);
-            config.Jobs.Add(new SqlServerClient { ClientName = clientName, Name = name });
+            this.config.Clients.Add(c);
+            this.config.Jobs.Add(new WmiClient { ClientName = clientName, Name = name });
             //Test
-            config.Validate();
+            this.config.Validate();
         }
 
         [Test]
         public void Should_add_single_task()
         {
-            template.WorkItems.Add(CreateWorkItems(this.jobName1, roleName1, freq1));
-            config.Templates.Add(template);
+            this.template.WorkItems.Add(CreateWorkItems(this.jobName1, this.roleName1, this.freq1));
+            this.config.Templates.Add(this.template);
             //Test
-            var sqlToGraphiteConfig = Helper.SerialiseDeserialise(config);
+            var sqlToGraphiteConfig = Helper.SerialiseDeserialise(this.config);
             //Assert
-            Assert.That(sqlToGraphiteConfig.Templates[0].WorkItems[0].RoleName, Is.EqualTo(roleName1));
+            Assert.That(sqlToGraphiteConfig.Templates[0].WorkItems[0].RoleName, Is.EqualTo(this.roleName1));
             Assert.That(sqlToGraphiteConfig.Templates[0].WorkItems[0].TaskSet[0].Tasks[0].JobName, Is.EqualTo(this.jobName1));
-            Assert.That(sqlToGraphiteConfig.Templates[0].WorkItems[0].TaskSet[0].Frequency, Is.EqualTo(freq1));
+            Assert.That(sqlToGraphiteConfig.Templates[0].WorkItems[0].TaskSet[0].Frequency, Is.EqualTo(this.freq1));
         }
 
         private static WorkItems CreateWorkItems(string taskName, string roleName, int freq)
@@ -82,19 +86,19 @@ namespace ConfigSpike
         [Test]
         public void Should_add_multiple_taskset_of_same_type()
         {
-            template.WorkItems.Add(CreateWorkItems(this.jobName1, roleName1, freq1));
-            template.WorkItems.Add(CreateWorkItems(taskName2, roleName2, freq2));
-            config.Templates.Add(template);
+            this.template.WorkItems.Add(CreateWorkItems(this.jobName1, this.roleName1, this.freq1));
+            this.template.WorkItems.Add(CreateWorkItems(this.taskName2, this.roleName2, this.freq2));
+            this.config.Templates.Add(this.template);
             //Test
-            var sqlToGraphiteConfig = Helper.SerialiseDeserialise(config);
+            var sqlToGraphiteConfig = Helper.SerialiseDeserialise(this.config);
             //Assert
-            Assert.That(sqlToGraphiteConfig.Templates[0].WorkItems[0].RoleName, Is.EqualTo(roleName1));
+            Assert.That(sqlToGraphiteConfig.Templates[0].WorkItems[0].RoleName, Is.EqualTo(this.roleName1));
             Assert.That(sqlToGraphiteConfig.Templates[0].WorkItems[0].TaskSet[0].Tasks[0].JobName, Is.EqualTo(this.jobName1));
-            Assert.That(sqlToGraphiteConfig.Templates[0].WorkItems[0].TaskSet[0].Frequency, Is.EqualTo(freq1));
+            Assert.That(sqlToGraphiteConfig.Templates[0].WorkItems[0].TaskSet[0].Frequency, Is.EqualTo(this.freq1));
 
-            Assert.That(sqlToGraphiteConfig.Templates[0].WorkItems[1].RoleName, Is.EqualTo(roleName1));
+            Assert.That(sqlToGraphiteConfig.Templates[0].WorkItems[1].RoleName, Is.EqualTo(this.roleName1));
             Assert.That(sqlToGraphiteConfig.Templates[0].WorkItems[1].TaskSet[0].Tasks[0].JobName, Is.EqualTo(this.jobName1));
-            Assert.That(sqlToGraphiteConfig.Templates[0].WorkItems[1].TaskSet[0].Frequency, Is.EqualTo(freq1));
+            Assert.That(sqlToGraphiteConfig.Templates[0].WorkItems[1].TaskSet[0].Frequency, Is.EqualTo(this.freq1));
         }
 
         //[Test]

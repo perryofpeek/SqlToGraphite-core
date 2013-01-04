@@ -6,7 +6,7 @@ using SqlToGraphite.Config;
 
 namespace SqlToGraphite
 {
-    using System.Xml.Serialization;
+    using log4net;
 
     public class AssemblyResolver : IAssemblyResolver
     {
@@ -14,9 +14,12 @@ namespace SqlToGraphite
 
         private readonly IDirectory directory;
 
-        public AssemblyResolver(IDirectory directory)
+        private readonly ILog log;
+
+        public AssemblyResolver(IDirectory directory, ILog log)
         {
             this.directory = directory;
+            this.log = log;
             types = new Dictionary<string, Type>();
             this.GetJobTypes(FilesToScan);
             this.GetJobTypes("*.exe");
@@ -42,16 +45,19 @@ namespace SqlToGraphite
 
         public IEnumerable<Type> ResolveAllTypes(JobImpl job)
         {
-            return this.types.Select(type => type.Value);            
+            return this.types.Select(type => type.Value);
         }
 
         public Dictionary<string, Type> GetJobTypes(string filesToScan)
         {
-            var files = directory.GetFilesInCurrentDirectory(filesToScan);           
+            log.Debug(string.Format("Files to scan : {0}", filesToScan));
+            var files = directory.GetFilesInCurrentDirectory(filesToScan);
             if (files != null)
             {
+                log.Debug(string.Format("Files is not null"));
                 foreach (var dll in files)
                 {
+                    log.Debug(string.Format("Importing File : {0}", dll));
                     this.ImportTypes(dll);
                 }
             }
@@ -63,12 +69,13 @@ namespace SqlToGraphite
         {
             try
             {
+                log.Debug(string.Format("Loading {0}", dll));
                 this.LoadTypes(Assembly.LoadFile(dll), typeof(Job));
             }
-            catch (BadImageFormatException badImageFormat)
+            catch (BadImageFormatException badImageFormatException)
             {
-                var s = "a";
-                var y = badImageFormat.Message;
+                log.Error(string.Format("Bad image {0} {1}", dll, badImageFormatException.Message));
+                log.Error(badImageFormatException);
             }
         }
 

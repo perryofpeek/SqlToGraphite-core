@@ -2,11 +2,13 @@
 using log4net;
 using NUnit.Framework;
 using Rhino.Mocks;
-using SqlToGraphite.Plugin.SqlServer;
+using SqlToGraphite.Plugin.Wmi;
 using SqlToGraphiteInterfaces;
 
 namespace SqlToGraphite.UnitTests
 {
+    using System;
+
     // ReSharper disable InconsistentNaming
     [TestFixture]
     public class With_task
@@ -37,7 +39,7 @@ namespace SqlToGraphite.UnitTests
             var result = MockRepository.GenerateMock<IResult>();
             var resultList = new List<IResult> { result };
            // var param = new Job("path", "sql", "cs", "SqlServer", "name", "client");
-            var param = new SqlServerClient();
+            var param = new WmiClient();
             var client = new GraphiteTcpClient();
             this.dataClientFactory.Expect(x => x.Create(param)).Return(this.sqlClient);
             this.sqlClient.Expect(x => x.Get()).Return(resultList);
@@ -54,9 +56,53 @@ namespace SqlToGraphite.UnitTests
         }
 
         [Test]
+        public void Should_run_task_sending_one_result_not_fail_on_exception()
+        {
+            var result = MockRepository.GenerateMock<IResult>();
+            var resultList = new List<IResult> { result };            
+            var param = new WmiClient();
+            var client = new GraphiteTcpClient();
+            this.dataClientFactory.Expect(x => x.Create(param)).Return(this.sqlClient);
+            this.sqlClient.Expect(x => x.Get()).Return(resultList);
+            statsClient.Expect(x => x.Send(result)).Throw(new ApplicationException());
+            this.graphiteClientFactory.Expect(x => x.Create(client)).Return(this.statsClient);
+            IRunTask runTask = new RunableRunTask(param, this.dataClientFactory, this.graphiteClientFactory, this.log, client);
+            //Test
+            runTask.Process();
+            //Assert
+            this.sqlClient.VerifyAllExpectations();
+            this.dataClientFactory.VerifyAllExpectations();
+            this.graphiteClientFactory.VerifyAllExpectations();
+            statsClient.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Should_run_task_sending_two_results_exception_on_sending_the_first()
+        {
+            var job = new WmiClient();
+            var client = new GraphiteTcpClient();
+            var result1 = MockRepository.GenerateMock<IResult>();
+            var result2 = MockRepository.GenerateMock<IResult>();
+            var resultList = new List<IResult> { result1, result2 };
+            this.dataClientFactory.Expect(x => x.Create(job)).Return(this.sqlClient);
+            this.graphiteClientFactory.Expect(x => x.Create(client)).Return(this.statsClient);
+            this.sqlClient.Expect(x => x.Get()).Return(resultList);
+            statsClient.Expect(x => x.Send(result1)).Throw(new ApplicationException());
+            statsClient.Expect(x => x.Send(result2)).Repeat.Once();
+            IRunTask runTask = new RunableRunTask(job, this.dataClientFactory, this.graphiteClientFactory, this.log, client);
+            //Test
+            runTask.Process();
+            //Assert
+            this.sqlClient.VerifyAllExpectations();
+            this.dataClientFactory.VerifyAllExpectations();
+            this.graphiteClientFactory.VerifyAllExpectations();
+            statsClient.VerifyAllExpectations();
+        }
+
+        [Test]
         public void Should_run_task_sending_two_results()
         {
-            var job = new SqlServerClient();
+            var job = new WmiClient();
             var client = new GraphiteTcpClient();
             var result1 = MockRepository.GenerateMock<IResult>();
             var result2 = MockRepository.GenerateMock<IResult>();

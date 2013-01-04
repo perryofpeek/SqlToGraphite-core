@@ -4,35 +4,41 @@ using System.Reflection;
 using log4net;
 using NUnit.Framework;
 using SqlToGraphite.Config;
-using SqlToGraphite.Plugin.SqlServer;
 using SqlToGraphiteInterfaces;
 
 namespace SqlToGraphite.UnitTests
 {
+    using Rhino.Mocks;
+
+    using SqlToGraphite.Plugin.Wmi;
+
     [TestFixture]
     // ReSharper disable InconsistentNaming
     public class Config_generation
     {
+        private ILog log;
+
         [Test]
         public void Should_generate_test_config_file()
         {
             try
             {
+                var log = LogManager.GetLogger("log");
                 Encryption encryption = new Encryption();
                 var simpleCs = encryption.Encrypt("some Cs");
-                var log = LogManager.GetLogger("log");
+
                 log4net.Config.XmlConfigurator.Configure();
 
-                Assembly assembly = Assembly.LoadFrom("SqlToGraphite.Plugin.SqlServer.dll");
+                Assembly assembly = Assembly.LoadFrom("SqlToGraphite.Plugin.Wmi.dll");
 
-                Type type = assembly.GetType("SqlToGraphite.Plugin.SqlServer.SqlServer");
+                Type type = assembly.GetType("SqlToGraphite.Plugin.Wmi.Wmi");
 
-                var job1 = new SqlServerClient { ClientName = "GraphiteTcpClient", Name = "GetNumberOfTransactionsASecond", ConnectionString = simpleCs, Sql = "some sql" };
-                var job2 = new SqlServerClient { ClientName = "GraphiteUdpClient", Name = "GetNumberOfDeliveryies", ConnectionString = simpleCs, Sql = "some sql1" };
-               var client1 = new GraphiteTcpClient { ClientName = "GraphiteTcpClient", Port = 2003, Hostname = "metrics.london.ttldev.local" };
+                var job1 = new WmiClient { ClientName = "GraphiteTcpClient", Name = "GetNumberOfTransactionsASecond", Hostname = simpleCs, Sql = "some sql" };
+                var job2 = new WmiClient { ClientName = "GraphiteUdpClient", Name = "GetNumberOfDeliveryies", Hostname = simpleCs, Sql = "some sql1" };
+                var client1 = new GraphiteTcpClient { ClientName = "GraphiteTcpClient", Port = 2003, Hostname = "metrics.london.ttldev.local" };
                 var client2 = new GraphiteUdpClient { ClientName = "GraphiteUdpClient", Port = 2003, Hostname = "metrics.london.ttldev.local" };
 
-                var config = new SqlToGraphiteConfig(new AssemblyResolver(new DirectoryImpl()));
+                var config = new SqlToGraphiteConfig(new AssemblyResolver(new DirectoryImpl(), log), log);
                 config.Jobs.Add(job1);
                 config.Jobs.Add(job2);
 

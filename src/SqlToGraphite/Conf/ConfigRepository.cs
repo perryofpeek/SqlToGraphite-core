@@ -43,7 +43,8 @@ namespace SqlToGraphite.Conf
             this.errorReadingConfigSleepTime = errorReadingConfigSleepTime;
             this.genericSerializer = genericSerializer;
             clientList = new GraphiteClients();
-            this.masterConfig = new SqlToGraphiteConfig(new AssemblyResolver(new DirectoryImpl()));
+            var dir = new DirectoryImpl();
+            this.masterConfig = new SqlToGraphiteConfig(new AssemblyResolver(dir, log), log);
         }
 
         public ConfigRepository(IConfigReader configReader, ICache cache, ISleep sleep, ILog log, int errorReadingConfigSleepTime, IConfigPersister configPersister, IGenericSerializer genericSerializer)

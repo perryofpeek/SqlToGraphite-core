@@ -5,11 +5,12 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using SqlToGraphite.Conf;
 using SqlToGraphite.Config;
-using SqlToGraphite.Plugin.SqlServer;
 
 // ReSharper disable InconsistentNaming
 namespace SqlToGraphite.UnitTests
 {
+    using SqlToGraphite.Plugin.Wmi;
+
     [TestFixture]
     public class With_ConfigMapper
     {
@@ -38,7 +39,7 @@ namespace SqlToGraphite.UnitTests
         {
             string clientName = "notKnown";
             string jobName = "someJob";
-            var job = new SqlServerClient();
+            var job = new WmiClient();
             var msg = "some exception message";
             job.ClientName = clientName;
             job.Name = jobName;
@@ -69,7 +70,7 @@ namespace SqlToGraphite.UnitTests
             var taskSets = new List<TaskSet>();
             var taskSet = new TaskSet { Frequency = freq, Tasks = new List<Task>() };
             string name = new Guid().ToString();
-            Job job = new SqlServerClient();
+            Job job = new WmiClient();
             job.ClientName = clientName;
 
             configRepository.Expect(y => y.GetJob(name)).Return(job);

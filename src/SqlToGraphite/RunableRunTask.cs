@@ -1,7 +1,5 @@
 using System;
 
-using ConfigSpike;
-
 using log4net;
 using SqlToGraphiteInterfaces;
 
@@ -32,34 +30,34 @@ namespace SqlToGraphite
         {
             try
             {
-                //this.LogTaskParams();
                 var dataClient = this.dataClientFactory.Create(this.job);
                 var graphiteClient = this.graphiteClientFactory.Create(this.client);
                 var results = dataClient.Get();
                 foreach (var result in results)
                 {
-                    log.Debug(string.Format("{0} [{1}] @ {2} ({3}) {4}", result.FullPath, result.Value, result.TimeStamp, result.Name, graphiteClient.GetType().Name));
-                    graphiteClient.Send(result);
+                    this.SendResult(graphiteClient, result);
                 }
             }
             catch (Exception ex)
             {
-                var s = ex.Message;
                 // Catch all errors so we keep going. 
+                log.Error(ex.Message);
                 log.Error(ex);
             }
         }
 
-        //private void LogTaskParams()
-        //{
-        //    this.log.Debug(
-        //        string.Format(
-        //            "CLient[{0}] ConStr[{1}] Path[{2}] Sql[{3}] Type[{4}]",
-        //            this.job.Client,
-        //            this.job.ConnectionString,
-        //            this.job.Path,
-        //            this.job.Sql,
-        //            this.job.Type));
-        //}
+        private void SendResult(IStatsClient graphiteClient, IResult result)
+        {
+            this.log.Debug(string.Format("{0} [{1}] @ {2} ({3}) {4}", result.FullPath, result.Value, result.TimeStamp, result.Name, graphiteClient.GetType().Name));
+            try
+            {
+                graphiteClient.Send(result);
+            }
+            catch (Exception ex)
+            {
+                this.log.Error(ex.Message);
+                this.log.Error(ex);
+            }
+        }
     }
 }

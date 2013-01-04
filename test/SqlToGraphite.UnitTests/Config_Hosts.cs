@@ -1,7 +1,8 @@
-﻿using NUnit.Framework;
+﻿using log4net;
+using NUnit.Framework;
 using Rhino.Mocks;
 using SqlToGraphite.Config;
-using SqlToGraphite.Plugin.SqlServer;
+using SqlToGraphite.Plugin.Wmi;
 
 namespace SqlToGraphite.UnitTests
 {
@@ -18,11 +19,14 @@ namespace SqlToGraphite.UnitTests
 
         private IAssemblyResolver assemblyResolver;
 
+        private ILog log;
+
         [SetUp]
         public void SetUP()
         {
+            log = MockRepository.GenerateMock<ILog>();
             this.assemblyResolver = MockRepository.GenerateMock<IAssemblyResolver>();
-            this.config = new SqlToGraphiteConfig(this.assemblyResolver);
+            this.config = new SqlToGraphiteConfig(this.assemblyResolver, log);
         }
 
         [Test]
@@ -46,7 +50,7 @@ namespace SqlToGraphite.UnitTests
             c.ClientName = clientName;
 
             var jobName = "jobName";
-            var job = new SqlServerClient();
+            var job = new WmiClient();
             job.Name = jobName;
             job.ClientName = clientName;
 

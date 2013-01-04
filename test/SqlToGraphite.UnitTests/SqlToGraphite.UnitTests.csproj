@@ -146,14 +146,6 @@
       <Project>{380F6AFF-E6EC-4F56-B35C-D73042724D21}</Project>
       <Name>SqlToGraphite.host</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Src\SqlToGraphite.Plugin.Oracle\SqlToGraphite.Plugin.Oracle.csproj">
-      <Project>{22C76B9E-DA37-4DF9-9A02-F4F1636AEDDE}</Project>
-      <Name>SqlToGraphite.Plugin.Oracle</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\SqlToGraphite.Plugin.SqlServer\SqlToGraphite.Plugin.SqlServer.csproj">
-      <Project>{1EE73A57-4649-40CE-8DDD-17B3CAE8EBD9}</Project>
-      <Name>SqlToGraphite.Plugin.SqlServer</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\SqlToGraphite.Plugin.Wmi\SqlToGraphite.Plugin.Wmi.csproj">
       <Project>{574D9188-DD86-41DB-A141-9542A84B2B46}</Project>
       <Name>SqlToGraphite.Plugin.Wmi</Name>

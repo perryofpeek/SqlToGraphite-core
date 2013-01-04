@@ -35,8 +35,8 @@ namespace Configurator.code
             log4net.Config.XmlConfigurator.Configure();
 
             var sleepTime = 0;
-            assemblyResolver = new AssemblyResolver(new DirectoryImpl());
-            var config = new SqlToGraphiteConfig(assemblyResolver);
+            assemblyResolver = new AssemblyResolver(new DirectoryImpl(), log);
+            var config = new SqlToGraphiteConfig(assemblyResolver, log);
             encryption = new Encryption();
             var reader = new ConfigHttpReader(path, "", "");
             var cache = new Cache(new TimeSpan(0, 0, 1, 0), log);

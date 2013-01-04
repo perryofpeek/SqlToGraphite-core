@@ -3,11 +3,12 @@ using System.IO;
 using log4net;
 using NUnit.Framework;
 using Rhino.Mocks;
-using SqlToGraphite.Plugin.SqlServer;
 using SqlToGraphiteInterfaces;
 
 namespace SqlToGraphite.UnitTests
 {
+    using SqlToGraphite.Plugin.Wmi;
+
     // ReSharper disable InconsistentNaming
     [TestFixture]
     public class With_AssemblyResolver
@@ -28,11 +29,11 @@ namespace SqlToGraphite.UnitTests
         [Test]
         public void Should_Resolve_type_sucessfuly()
         {
-            var job = new SqlServerClient();
-            var files = new List<string>() { string.Format(@"{0}\SqlToGraphite.Plugin.SqlServer.dll", Directory.GetCurrentDirectory()) };
+            var job = new WmiClient();
+            var files = new List<string>() { string.Format(@"{0}\SqlToGraphite.Plugin.Wmi.dll", Directory.GetCurrentDirectory()) };
             dir.Expect(x => x.GetFilesInCurrentDirectory(AssemblyResolver.FilesToScan)).Return(files);
             //Test
-            assemblyResolver = new AssemblyResolver(this.dir);
+            assemblyResolver = new AssemblyResolver(this.dir, log);
             var rtn = assemblyResolver.ResolveType(job);
             //Assert
             Assert.That(rtn.FullName, Is.EqualTo(job.GetType().FullName));
@@ -43,7 +44,7 @@ namespace SqlToGraphite.UnitTests
         public void Should_exception_if_type_not_found()
         {
             var job = new PrivateJob { Type = "someType" };
-            assemblyResolver = new AssemblyResolver(this.dir);
+            assemblyResolver = new AssemblyResolver(this.dir, log);
             //Test
             var ex = Assert.Throws<PluginNotFoundOrLoadedException>(() => assemblyResolver.ResolveType(job));
             //Assert
@@ -54,11 +55,11 @@ namespace SqlToGraphite.UnitTests
         public void Should_ignore_bad_image_exception_for_not_dot_net_dlls()
         {
             File.WriteAllText("bad.dll", "abc");
-            var job = new SqlServerClient() { Type = "SqlToGraphite.Plugin.SqlServer.SqlServerClient" };
-            var files = new List<string>() { string.Format(@"{0}\bad.dll", Directory.GetCurrentDirectory()), string.Format(@"{0}\SqlToGraphite.Plugin.SqlServer.dll", Directory.GetCurrentDirectory()) };
+            var job = new WmiClient() { Type = "SqlToGraphite.Plugin.Wmi.WmiClient" };
+            var files = new List<string>() { string.Format(@"{0}\bad.dll", Directory.GetCurrentDirectory()), string.Format(@"{0}\SqlToGraphite.Plugin.Wmi.dll", Directory.GetCurrentDirectory()) };
             dir.Expect(x => x.GetFilesInCurrentDirectory(AssemblyResolver.FilesToScan)).Return(files);
             //Test
-            assemblyResolver = new AssemblyResolver(this.dir);
+            assemblyResolver = new AssemblyResolver(this.dir, log);
             //Test
             var type = assemblyResolver.ResolveType(job);
             //Assert

@@ -2,21 +2,16 @@
 <configuration>
 
   <configSections>
-    <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler, SqlToGraphite"/>
-    <section name="SqlToGraphite" type=" SqlToGraphite.host.SqlToGraphiteSection,  SqlToGraphite"  />
+    <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler, log4net"/>
+    <section name="SqlToGraphite" type=" SqlToGraphite.host.SqlToGraphiteSection,  SqlToGraphite.host"  />
   </configSections>
-
-  <!-- ConfigUri = "file://C:/git/metrics/src/SqlToGraphite/src/SqlToGraphite.host/bin/x86/Debug/config.xml" -->
-  <!-- ConfigUri = "http://tl-svn1/svn/play/trunk/Farringdon/config.xml"      
-       ConfigUsername = "owainp"
-       ConfigPassword= "*Fish55"
-  -->
+ 
   <SqlToGraphite
-      Hostname = "metrics.london.ttldev.local"      
-      ConfigUri = "file://C:/git/metrics/src/SqlToGraphite/src/SqlToGraphite.host/bin/x86/Debug/config.xml"
-      CheckConfigUpdatedEveryMinutes = "1"
-      MinutesBetweenRetryToGetConfigOnError = "1"
-      ConfigCacheLengthMinutes = "1"
+      Hostname = "metrics"      
+      ConfigUri = "file://C:/Program Files (x86)/SqlToGraphite/DefaultConfig.xml"
+      CheckConfigUpdatedEveryMinutes = "10"
+      MinutesBetweenRetryToGetConfigOnError = "10"
+      ConfigCacheLengthMinutes = "10"
     />
     <log4net>
     <appender name="ConsoleAppender" type="log4net.Appender.ConsoleAppender">

@@ -2,7 +2,6 @@
 using NUnit.Framework;
 using Rhino.Mocks;
 using SqlToGraphite.Config;
-using SqlToGraphite.Plugin.SqlServer;
 using SqlToGraphite.Plugin.Wmi;
 
 namespace SqlToGraphite.UnitTests
@@ -22,7 +21,7 @@ namespace SqlToGraphite.UnitTests
         {
             this.directory = MockRepository.GenerateMock<IDirectory>();
             this.log = MockRepository.GenerateMock<ILog>();
-            this.config = new SqlToGraphiteConfig(new AssemblyResolver(new DirectoryImpl()));
+            this.config = new SqlToGraphiteConfig(new AssemblyResolver(new DirectoryImpl(), log), log);
         }
 
         [Test]
@@ -31,7 +30,7 @@ namespace SqlToGraphite.UnitTests
             var name = "Name";
             var client = "SomeClient";
 
-            this.config.Jobs.Add(new SqlServerClient { ClientName = client, Name = name });
+            this.config.Jobs.Add(new WmiClient { ClientName = client, Name = name });
 
             var ex = Assert.Throws<ClientNotDefinedException>(() => this.config.Validate());
             //Test
@@ -45,7 +44,7 @@ namespace SqlToGraphite.UnitTests
             var clientName = "SomeClient";
             var c = new GraphiteTcpClient { ClientName = clientName };
             this.config.Clients.Add(c);
-            this.config.Jobs.Add(new SqlServerClient { ClientName = clientName, Name = name });
+            this.config.Jobs.Add(new WmiClient { ClientName = clientName, Name = name });
             //Test
             this.config.Validate();
         }
@@ -55,7 +54,7 @@ namespace SqlToGraphite.UnitTests
         {
             var name = "Name";
             var client = "SomeClient";
-            this.config.Jobs.Add(new SqlServerClient { ClientName = client, Name = name });
+            this.config.Jobs.Add(new WmiClient { ClientName = client, Name = name });
             //Test
             var sqlToGraphiteConfig = Helper.SerialiseDeserialise(this.config);
             //Assert
@@ -71,8 +70,8 @@ namespace SqlToGraphite.UnitTests
             var name2 = "Name2";
             var client2 = "SomeClient2";
 
-            this.config.Jobs.Add(new SqlServerClient { ClientName = client1, Name = name1 });
-            this.config.Jobs.Add(new SqlServerClient { ClientName = client2, Name = name2 });
+            this.config.Jobs.Add(new WmiClient { ClientName = client1, Name = name1 });
+            this.config.Jobs.Add(new WmiClient { ClientName = client2, Name = name2 });
             //Test
             var sqlToGraphiteConfig = Helper.SerialiseDeserialise(this.config);
             //Assert
@@ -90,14 +89,14 @@ namespace SqlToGraphite.UnitTests
             var name2 = "Name2";
             var client2 = "SomeClient2";
 
-            this.config.Jobs.Add(new SqlServerClient { ClientName = client1, Name = name1 });
+            this.config.Jobs.Add(new WmiClient { ClientName = client1, Name = name1 });
             this.config.Jobs.Add(new WmiClient { ClientName = client2, Name = name2 });
             //Test
             var sqlToGraphiteConfig = Helper.SerialiseDeserialise(this.config);
             //Assert
             Assert.That(sqlToGraphiteConfig.Jobs[0].ClientName, Is.EqualTo(client1));
             Assert.That(sqlToGraphiteConfig.Jobs[0].Name, Is.EqualTo(name1));
-            Assert.That(sqlToGraphiteConfig.Jobs[0], Is.TypeOf<SqlServerClient>());
+            Assert.That(sqlToGraphiteConfig.Jobs[0], Is.TypeOf<WmiClient>());
             Assert.That(sqlToGraphiteConfig.Jobs[1].ClientName, Is.EqualTo(client2));
             Assert.That(sqlToGraphiteConfig.Jobs[1].Name, Is.EqualTo(name2));
             Assert.That(sqlToGraphiteConfig.Jobs[1], Is.TypeOf<WmiClient>());
