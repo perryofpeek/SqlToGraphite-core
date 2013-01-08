@@ -32,7 +32,7 @@ _ReSharper*/
 [tT]est[rR]esults
 BuildArtifacts/
 BuildOutput.txt
-AssemblyInfo.cs
+#AssemblyInfo.cs
 TestResult.xml
 output
 SqlToGraphite-Setup.exe
