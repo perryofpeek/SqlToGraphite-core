@@ -5,6 +5,8 @@ using SqlToGraphiteInterfaces;
 
 namespace SqlToGraphite
 {
+    using System.Threading;
+
     public class RunableRunTask : IRunTask
     {
         private readonly Job job;
@@ -36,6 +38,7 @@ namespace SqlToGraphite
                 foreach (var result in results)
                 {
                     this.SendResult(graphiteClient, result);
+                    SleepToPreventNetworkFlooding();
                 }
             }
             catch (Exception ex)
@@ -44,6 +47,11 @@ namespace SqlToGraphite
                 log.Error(ex.Message);
                 log.Error(ex);
             }
+        }
+
+        private static void SleepToPreventNetworkFlooding()
+        {
+            Thread.Sleep(1);
         }
 
         private void SendResult(IStatsClient graphiteClient, IResult result)
