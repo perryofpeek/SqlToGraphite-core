@@ -36,11 +36,32 @@ namespace SqlToGraphite.UnitTests
             int time = 1000;
             var taskBag = MockRepository.GenerateMock<ITaskBag>();
             configController.Expect(x => x.GetTaskBag(path)).Return(taskBag);
+            configController.Expect(x => x.IsNewConfig()).Return(true);
             var taskManager = new TaskManager(log, configController, path, stop, sleeper, time);
             stop.Expect(x => x.ShouldStop()).Return(false).Repeat.Once();
             stop.Expect(x => x.ShouldStop()).Return(true).Repeat.Once();
             sleeper.Expect(x => x.Sleep(time));
             taskBag.Expect(x => x.Start());
+            //Test
+            taskManager.Start();
+            //Assert
+            taskBag.VerifyAllExpectations();
+            stop.VerifyAllExpectations();
+            sleeper.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Should_not_start_all_controller()
+        {
+            int time = 1000;
+            var taskBag = MockRepository.GenerateMock<ITaskBag>();
+            configController.Expect(x => x.GetTaskBag(path)).Return(taskBag);
+            configController.Expect(x => x.IsNewConfig()).Return(false);
+            var taskManager = new TaskManager(log, configController, path, stop, sleeper, time);
+            stop.Expect(x => x.ShouldStop()).Return(false).Repeat.Once();
+            stop.Expect(x => x.ShouldStop()).Return(true).Repeat.Once();
+            sleeper.Expect(x => x.Sleep(time));
+            taskBag.AssertWasNotCalled(x => x.Start());
             //Test
             taskManager.Start();
             //Assert

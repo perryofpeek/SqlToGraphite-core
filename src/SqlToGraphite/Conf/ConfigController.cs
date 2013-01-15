@@ -20,6 +20,8 @@ namespace SqlToGraphite.Conf
 
         private readonly ITaskSetBuilder taskSetBuilder;
 
+        private bool newConfig;
+
         public ConfigController(IConfigMapper configMapper, ILog log, IConfigRepository configRepository, IRoleConfigFactory roleConfigFactory, IEnvironment environment, ITaskSetBuilder taskSetBuilder)
         {
             this.configMapper = configMapper;
@@ -30,21 +32,27 @@ namespace SqlToGraphite.Conf
             this.taskSetBuilder = taskSetBuilder;
         }
 
+        private IList<IRunTaskSet> currentTaskSet;
+
         public IList<IRunTaskSet> GetTaskList(string path)
         {
-            newConfig = false;
+           newConfig = false;
             configRepository.Load();
-            if (configRepository.Validate())
+            if (configRepository.IsNewConfig)
             {
-                newConfig = true;
-                var roleConfig = roleConfigFactory.Create(configRepository, environment);
-                var templates = configRepository.GetTemplates();
-                var setList = taskSetBuilder.BuildTaskSet(templates, roleConfig);
-                var taskList = configMapper.Map(setList);
-                return taskList;
+                log.Debug("New configuration");
+                if (configRepository.Validate())
+                {
+                    log.Debug("configuration validated");
+                    newConfig = true;
+                    var roleConfig = roleConfigFactory.Create(configRepository, environment);
+                    var templates = configRepository.GetTemplates();
+                    var setList = taskSetBuilder.BuildTaskSet(templates, roleConfig);
+                    currentTaskSet = configMapper.Map(setList);                   
+                }
             }
 
-            return null;
+            return currentTaskSet;
         }
 
         public IList<IThread> GetTaskThreads(string path)
@@ -56,8 +64,6 @@ namespace SqlToGraphite.Conf
         {
             return new TaskBag(this.GetTaskThreads(path));
         }
-
-        private bool newConfig;
 
         public bool IsNewConfig()
         {

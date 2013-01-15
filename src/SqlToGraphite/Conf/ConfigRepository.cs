@@ -61,7 +61,7 @@ namespace SqlToGraphite.Conf
                 log.Debug("Cache has expired");
                 var newRemoteConfig = this.GetRemoteConfig();
                 var newHash = configReader.GetHash();
-                if (this.Hash != newHash)
+                if (this.IsNewHash(newHash))
                 {
                     log.Debug("remote configuration has changed " + newHash);
                     this.masterConfig = newRemoteConfig;
@@ -77,6 +77,11 @@ namespace SqlToGraphite.Conf
 
                 cache.ResetCache();
             }
+        }
+
+        private bool IsNewHash(string newHash)
+        {
+            return this.Hash != newHash;
         }
 
         private SqlToGraphiteConfig GetRemoteConfig()

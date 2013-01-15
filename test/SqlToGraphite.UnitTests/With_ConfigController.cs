@@ -44,7 +44,23 @@ namespace SqlToGraphite.UnitTests
         {
             string path = "somePath";
             configRepository.Expect(x => x.Load());
+            configRepository.Expect(x => x.IsNewConfig).Return(true);
             configRepository.Expect(x => x.Validate()).Return(false);
+            //Test
+            var rtn = configController.GetTaskList(path);
+            //Assert
+            Assert.That(rtn, Is.EqualTo(null));
+            log.VerifyAllExpectations();
+            configRepository.VerifyAllExpectations();
+            configMapper.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Should_return_exsisting_task_list_as_config_has_not_change()
+        {
+            string path = "somePath";
+            configRepository.Expect(x => x.Load());
+            configRepository.Expect(x => x.IsNewConfig).Return(false);
             //Test
             var rtn = configController.GetTaskList(path);
             //Assert
@@ -61,6 +77,7 @@ namespace SqlToGraphite.UnitTests
             var templates = new List<Template>();           
 
             configRepository.Expect(x => x.Load());
+            configRepository.Expect(x => x.IsNewConfig).Return(true);
             configRepository.Expect(x => x.Validate()).Return(true);
             var roleConfig = MockRepository.GenerateMock<IRoleConfig>();           
             roleConfigFactory.Expect(x => x.Create(configRepository, environment)).Return(roleConfig);            
@@ -68,6 +85,33 @@ namespace SqlToGraphite.UnitTests
             taskSetBuilder.Expect(x => x.BuildTaskSet(templates, roleConfig));
             //Test
             var rtn = configController.GetTaskList(path);
+            //Assert
+            Assert.That(rtn, Is.EqualTo(null));
+            log.VerifyAllExpectations();
+            configRepository.VerifyAllExpectations();
+            configMapper.VerifyAllExpectations();
+            roleConfigFactory.VerifyAllExpectations();
+            roleConfig.VerifyAllExpectations();
+            environment.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Should_Generate_A_Task_List_again()
+        {
+            string path = "somePath";
+            var templates = new List<Template>();
+
+            configRepository.Expect(x => x.Load());
+            configRepository.Expect(x => x.IsNewConfig).Return(true).Repeat.Once();
+            configRepository.Expect(x => x.IsNewConfig).Return(false).Repeat.Once();
+            configRepository.Expect(x => x.Validate()).Return(true).Repeat.Once();
+            var roleConfig = MockRepository.GenerateMock<IRoleConfig>();
+            roleConfigFactory.Expect(x => x.Create(configRepository, environment)).Return(roleConfig);
+            configRepository.Expect(x => x.GetTemplates()).Return(templates);
+            taskSetBuilder.Expect(x => x.BuildTaskSet(templates, roleConfig));
+            //Test
+            var rtn = configController.GetTaskList(path);
+            var rtn1 = configController.GetTaskList(path);
             //Assert
             Assert.That(rtn, Is.EqualTo(null));
             log.VerifyAllExpectations();

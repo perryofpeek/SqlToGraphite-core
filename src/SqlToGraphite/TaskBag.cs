@@ -14,7 +14,7 @@ namespace SqlToGraphite
         public void Start()
         {
             foreach (var thread in Threads)
-            {
+            {                
                 thread.Start();
             }
         }

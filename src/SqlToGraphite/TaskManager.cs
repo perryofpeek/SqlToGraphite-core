@@ -39,9 +39,7 @@ namespace SqlToGraphite
             while (!stop.ShouldStop())
             {
                 var newTaskBag = configController.GetTaskBag(path);
-                this.IfConfigurationHasBeenReloadedStopThreads();
-                TaskBag = newTaskBag;
-                this.StartTasks();
+                this.IfConfigurationHasBeenReloadedStopThreads(newTaskBag);
                 sleep.Sleep(this.configurationReReadTime);
             }
         }
@@ -52,15 +50,15 @@ namespace SqlToGraphite
             this.TaskBag.Start();
         }
 
-        private void IfConfigurationHasBeenReloadedStopThreads()
+        private void IfConfigurationHasBeenReloadedStopThreads(ITaskBag newTaskBag)
         {
             if (this.configController.IsNewConfig())
             {
                 this.log.Debug(string.Format("New Configuration detected stopping threads"));
-                this.TaskBag.Stop();
+                this.TaskBag.Stop();                
+                TaskBag = newTaskBag;
+                this.StartTasks();
             }
-
-            this.TaskBag = null;
         }
 
         public void Stop()

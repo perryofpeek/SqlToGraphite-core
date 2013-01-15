@@ -15,6 +15,7 @@ namespace SqlToGraphite
         public void Start()
         {
             thread.Start();
+            Console.WriteLine("****" + thread.ManagedThreadId);
         }
 
         public void Abort()
