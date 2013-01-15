@@ -114,8 +114,15 @@
     <Compile Include="Config\TaskSet.cs" />
     <Compile Include="Config\Template.cs" />
     <Compile Include="Config\WorkItems.cs" />
+    <Compile Include="Conf\Environment.cs" />
+    <Compile Include="Conf\IEnvironment.cs" />
+    <Compile Include="Conf\IRoleConfig.cs" />
+    <Compile Include="Conf\IRoleConfigFactory.cs" />
+    <Compile Include="Conf\ITaskSetBuilder.cs" />
     <Compile Include="Conf\JobNotFoundException.cs" />
+    <Compile Include="Conf\RoleConfigFactory.cs" />
     <Compile Include="Conf\TaskDetails.cs" />
+    <Compile Include="Conf\TaskSetBuilder.cs" />
     <Compile Include="DirectoryImpl.cs" />
     <Compile Include="GenericSerializer.cs" />
     <Compile Include="ClientNotFoundException.cs" />

@@ -1,23 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿using System.Collections.Generic;
 using NUnit.Framework;
-
 using SqlToGraphite.Conf;
 using SqlToGraphite.Config;
 
 namespace SqlToGraphite.UnitTests
 {
+    using Rhino.Mocks;
+
     // ReSharper disable InconsistentNaming
     [TestFixture]
     public class With_RolesConfig
     {
         private string hostName;
 
+        private IEnvironment environment;
+
         [SetUp]
         public void SetUp()
-        {
-            this.hostName = Environment.MachineName;
+        {            
+            //this.hostName = Environment.MachineName;
+            hostName = "someHost";
+            environment = MockRepository.GenerateMock<IEnvironment>();
+            environment.Expect(x => x.GetMachineName()).Return(hostName);            
         }
 
         [Test]
@@ -29,7 +33,7 @@ namespace SqlToGraphite.UnitTests
             host.Roles.Add(new Role { Name = "a2" });
             sqlToGraphiteConfigHosts.Add(host);
 
-            var roleConfig = new RoleConfig(sqlToGraphiteConfigHosts, Environment.MachineName);
+            var roleConfig = new RoleConfig(sqlToGraphiteConfigHosts, environment);
             var roleList = roleConfig.GetRoleListToRunOnThisMachine();
 
             Assert.That(roleList.Count, Is.EqualTo(2));
@@ -49,7 +53,7 @@ namespace SqlToGraphite.UnitTests
 
             sqlToGraphiteConfigHosts.Add(hosta);
             sqlToGraphiteConfigHosts.Add(hostb);
-            var roleConfig = new RoleConfig(sqlToGraphiteConfigHosts, Environment.MachineName);
+            var roleConfig = new RoleConfig(sqlToGraphiteConfigHosts, environment);
             var roleList = roleConfig.GetRoleListToRunOnThisMachine();
 
             Assert.That(roleList.Count, Is.EqualTo(2));
@@ -72,7 +76,7 @@ namespace SqlToGraphite.UnitTests
             sqlToGraphiteConfigHosts.Add(hosta);
             sqlToGraphiteConfigHosts.Add(hostb);
             sqlToGraphiteConfigHosts.Add(hostc);
-            var roleConfig = new RoleConfig(sqlToGraphiteConfigHosts, Environment.MachineName);
+            var roleConfig = new RoleConfig(sqlToGraphiteConfigHosts, environment);
             var roleList = roleConfig.GetRoleListToRunOnThisMachine();
 
             Assert.That(roleList.Count, Is.EqualTo(3));
@@ -99,7 +103,10 @@ namespace SqlToGraphite.UnitTests
             sqlToGraphiteConfigHosts.Add(hosta);
             sqlToGraphiteConfigHosts.Add(hostb);
             sqlToGraphiteConfigHosts.Add(hostc);
-            var roleConfig = new RoleConfig(sqlToGraphiteConfigHosts, machineName);
+
+            environment = MockRepository.GenerateMock<IEnvironment>();
+            environment.Expect(x => x.GetMachineName()).Return(machineName); 
+            var roleConfig = new RoleConfig(sqlToGraphiteConfigHosts, environment);
             var roleList = roleConfig.GetRoleListToRunOnThisMachine();
 
             Assert.That(roleList.Count, Is.EqualTo(3));
@@ -124,7 +131,9 @@ namespace SqlToGraphite.UnitTests
             sqlToGraphiteConfigHosts.Add(hosta);
             sqlToGraphiteConfigHosts.Add(hostb);
             sqlToGraphiteConfigHosts.Add(hostc);
-            var roleConfig = new RoleConfig(sqlToGraphiteConfigHosts, machineName);
+            environment = MockRepository.GenerateMock<IEnvironment>();
+            environment.Expect(x => x.GetMachineName()).Return(machineName); 
+            var roleConfig = new RoleConfig(sqlToGraphiteConfigHosts, environment);
             var roleList = roleConfig.GetRoleListToRunOnThisMachine();
 
             Assert.That(roleList.Count, Is.EqualTo(3));
@@ -150,7 +159,7 @@ namespace SqlToGraphite.UnitTests
             sqlToGraphiteConfigHosts.Add(hostb);
             sqlToGraphiteConfigHosts.Add(hostc);
 
-            var roleConfig = new RoleConfig(sqlToGraphiteConfigHosts, Environment.MachineName);
+            var roleConfig = new RoleConfig(sqlToGraphiteConfigHosts, environment);
             var roleList = roleConfig.GetRoleListToRunOnThisMachine();
 
             Assert.That(roleList.Count, Is.EqualTo(4));

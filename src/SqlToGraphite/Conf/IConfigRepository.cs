@@ -35,5 +35,9 @@ namespace SqlToGraphite.Conf
         Job GetJob(string jobName);
 
         Client GetClient(string clientName);
+
+        bool IsNewConfig { get; set; }
+
+        string Hash { get; set; }
     }
 }

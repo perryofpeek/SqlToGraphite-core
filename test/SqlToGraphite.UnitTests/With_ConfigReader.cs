@@ -63,5 +63,17 @@ namespace SqlToGraphite.UnitTests
             Assert.That(xmlDocument, Is.EqualTo("<root />"));
             File.Delete(diskPath);
         }
+
+        [Test]
+        public void Should_return_hash_of_xml()
+        {
+            File.WriteAllText(diskPath, "<root />");
+            var xmlDocument = this.configHttpRepository.GetXml();
+            Assert.That(this.configHttpRepository.HasChanged(), Is.EqualTo(true));
+            // Test
+            xmlDocument = this.configHttpRepository.GetXml();
+            Assert.That(this.configHttpRepository.GetHash(), Is.EqualTo("EDD2208619E0E0884A536014611A1FD4"));
+            File.Delete(diskPath);
+        }
     }
 }

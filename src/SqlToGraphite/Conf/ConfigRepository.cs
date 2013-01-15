@@ -45,6 +45,7 @@ namespace SqlToGraphite.Conf
             clientList = new GraphiteClients();
             var dir = new DirectoryImpl();
             this.masterConfig = new SqlToGraphiteConfig(new AssemblyResolver(dir, log), log);
+            this.Hash = "NotSet";
         }
 
         public ConfigRepository(IConfigReader configReader, ICache cache, ISleep sleep, ILog log, int errorReadingConfigSleepTime, IConfigPersister configPersister, IGenericSerializer genericSerializer)
@@ -56,32 +57,51 @@ namespace SqlToGraphite.Conf
         public void Load()
         {
             if (cache.HasExpired())
-            {
+            {                 
                 log.Debug("Cache has expired");
-                SqlToGraphiteConfig graphiteConfig = null;
-                while (graphiteConfig == null)
+                var newRemoteConfig = this.GetRemoteConfig();
+                var newHash = configReader.GetHash();
+                if (this.Hash != newHash)
                 {
-                    try
+                    log.Debug("remote configuration has changed " + newHash);
+                    this.masterConfig = newRemoteConfig;
+                    Init();
+                    this.Hash = newHash;
+                    this.IsNewConfig = true;
+                }
+                else
+                {
+                    log.Debug("remote configuration has not changed " + Hash);
+                    this.IsNewConfig = false;
+                }
+
+                cache.ResetCache();
+            }
+        }
+
+        private SqlToGraphiteConfig GetRemoteConfig()
+        {
+            SqlToGraphiteConfig graphiteConfig = null;
+            while (graphiteConfig == null)
+            {
+                try
+                {
+                    graphiteConfig = this.GetConfig(this.configReader);
+                    if (graphiteConfig == null)
                     {
-                        graphiteConfig = GetConfig(configReader);
-                        if (graphiteConfig == null)
-                        {
-                            log.Error(FailedToLoadAnyConfiguration);
-                            this.errors.Add(FailedToLoadAnyConfiguration);
-                            this.RestForAwhile();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        log.Error(ex);
+                        this.log.Error(FailedToLoadAnyConfiguration);
+                        this.errors.Add(FailedToLoadAnyConfiguration);
                         this.RestForAwhile();
                     }
                 }
-
-                this.masterConfig = graphiteConfig;
-                Init();
-                cache.ResetCache();
+                catch (Exception ex)
+                {
+                    this.log.Error(ex);
+                    this.RestForAwhile();
+                }
             }
+
+            return graphiteConfig;
         }
 
         private void RestForAwhile()
@@ -463,5 +483,9 @@ namespace SqlToGraphite.Conf
                 throw new RoleNotFoundException(string.Format("Role {0} is not found", roleName));
             }
         }
+
+        public string Hash { get; set; }
+
+        public bool IsNewConfig { get; set; }
     }
 }

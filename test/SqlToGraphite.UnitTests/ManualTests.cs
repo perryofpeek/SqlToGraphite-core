@@ -40,11 +40,18 @@ namespace SqlToGraphite.UnitTests
             //graphiteUdp.Send("Test.Owain.Servers.two.udp", 33, DateTime.Now);
             //graphiteUdp.Send("Test.Owain.Servers.One.5m", 33, DateTime.Now);
             //graphiteUdp.Send("Test.Owain.Servers.2m.abc", 33, DateTime.Now);
-            graphiteUdp.Send("Test.Owain.Servers.Udp.2m", 33, DateTime.Now);
-            graphiteUdp.Send("Test.Owain.Servers.Udp.1m", 33, DateTime.Now);
-            graphiteUdp.Send("Test.Owain.Servers.Udpp.1m", 33, DateTime.Now);
-            graphiteUdp.Send("Test.Owain.Servers.1m.Udp.", 33, DateTime.Now);
-            graphiteUdp.Send("Test.Owain.Servers.30s.Udp.", 33, DateTime.Now);
+            graphiteUdp.Send("Test.Owain1.Servers.Udp.2m", 33, DateTime.Now);
+            graphiteUdp.Send("Test.Owain1.Servers.Udp.1m", 33, DateTime.Now);
+            graphiteUdp.Send("Test.Owain1.Servers.Udpp.1m", 33, DateTime.Now);
+            graphiteUdp.Send("Test.Owain1.Servers.1m.Udp.", 33, DateTime.Now);
+            graphiteUdp.Send("Test.Owain1.Servers.30s.Udp.", 33, DateTime.Now);
+        }
+
+        [Test, Explicit]
+        public void Should_send_list_to_graphite_udp()
+        {
+            var graphiteUdp = new Graphite.GraphiteUdpClient("metrics.london.ttldev.local");
+            graphiteUdp.SendList();
         }
 
         [Test, Explicit]

@@ -123,6 +123,20 @@ namespace SqlToGraphite.UnitTests
             cache.VerifyAllExpectations();
         }
 
+        [Test]
+        public void Should_load_config_and_set_new_config_loaded_status()
+        {
+            this.AddTwoClientsToConfig();
+            string configXml = this.Add(Blank, TwoClients);
+            genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(config);
+            reader.Expect(x => x.GetXml()).Return(configXml);
+            cache.Expect(x => x.HasExpired()).Return(true).Repeat.Once();
+            repository.Load();
+            Assert.That(repository.IsNewConfig, Is.EqualTo(true));
+            reader.VerifyAllExpectations();
+            cache.VerifyAllExpectations();
+        }
+
         private void AddTwoClientsToConfig()
         {
             var c1 = new GraphiteTcpClient { ClientName = "ClientName" };
@@ -344,6 +358,26 @@ namespace SqlToGraphite.UnitTests
 
         [Test]
         public void Should_read_config_from_cache()
+        {
+            config.Templates.Add(new Template());
+            config.Templates.Add(new Template());
+            string configXml = this.Add(Blank, Templates);
+            genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(config).Repeat.Once();
+            reader.Expect(x => x.GetXml()).Return(configXml).Repeat.Once();
+            cache.Expect(x => x.HasExpired()).Return(true).Repeat.Once();
+            cache.Expect(x => x.HasExpired()).Return(false).Repeat.Once();
+            //Test
+            repository.Load();
+            repository.Load();
+            //Assert
+            Assert.That(repository.GetTemplates().Count, Is.EqualTo(2));
+            reader.VerifyAllExpectations();
+            cache.VerifyAllExpectations();
+            genericSerializer.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Should_not_read_config_from_cache()
         {
             config.Templates.Add(new Template());
             config.Templates.Add(new Template());
@@ -777,6 +811,29 @@ namespace SqlToGraphite.UnitTests
             reader.VerifyAllExpectations();
             cache.VerifyAllExpectations();
             genericSerializer.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Should_Not_init_because_hash_is_same()
+        {
+            string configXml = this.Add(Add(Add(Blank, TwoHosts), Templates), TwoClients);
+            genericSerializer.Expect(x => x.Deserialize<SqlToGraphiteConfig>(configXml)).Return(config);
+            this.AddTwoClientsToConfig();
+
+            reader.Expect(x => x.GetXml()).Return(configXml);
+            reader.Expect(x => x.GetHash()).Return(repository.Hash);
+            cache.Expect(x => x.HasExpired()).Return(true).Repeat.Once();
+            log.Expect(x => x.Debug("remote configuration has not changed " + repository.Hash));
+           
+            //Test
+            repository.Load();
+
+            //Assert     
+            Assert.That(repository.IsNewConfig, Is.EqualTo(false));
+            reader.VerifyAllExpectations();
+            cache.VerifyAllExpectations();
+            genericSerializer.VerifyAllExpectations();
+            log.VerifyAllExpectations();
         }
 
         [Test]

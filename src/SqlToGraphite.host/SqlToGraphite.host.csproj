@@ -133,6 +133,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\SqlToGraphitePlugin-TracsTransactionCount\src\SqlToGraphitePlugin-TracsTransactionCount\SqlToGraphitePlugin-TracsTransactionCount.csproj">
+      <Project>{0B5C577F-285E-4730-AAE4-A0AE781D5F16}</Project>
+      <Name>SqlToGraphitePlugin-TracsTransactionCount</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Graphite\Graphite.csproj">
       <Project>{77EACC5C-76B2-4E73-A2C7-95747C980305}</Project>
       <Name>Graphite</Name>

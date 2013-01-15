@@ -5,16 +5,16 @@ using SqlToGraphite.Config;
 
 namespace SqlToGraphite.Conf
 {
-    public class RoleConfig
+    public class RoleConfig : IRoleConfig
     {
         private List<Host> sqlToGraphiteConfigHosts;
 
         private readonly string hostname;
 
-        public RoleConfig(List<Host> sqlToGraphiteConfigHosts, string hostname)
+        public RoleConfig(List<Host> sqlToGraphiteConfigHosts, IEnvironment environment)
         {
             this.sqlToGraphiteConfigHosts = sqlToGraphiteConfigHosts;
-            this.hostname = hostname;
+            this.hostname = environment.GetMachineName();
         }
 
         public List<string> GetRoleListToRunOnThisMachine()

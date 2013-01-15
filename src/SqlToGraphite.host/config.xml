@@ -2,119 +2,15 @@
 <SqlToGraphiteConfig xmlns="SqlToGraphite_0.0.0.1">
   <Jobs>
     <ArrayOfJob xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="">
-      <Job xsi:type="SqlServerClient">
-        <Name>GetNumberOfTransactionsASecond</Name>
-        <ClientName>GraphiteTcpClient</ClientName>
-        <Type>SqlToGraphite.Plugin.SqlServer.SqlServerClient</Type>
-        <ConnectionString>VxlQquob6hdGuNh7t2LfZf5PQhBnlZlefBTu1HMv2t/h0jEgLw9nk/30ydNtERmkerRX0ghjjIqXBiU8pwGV5M4aFQBRL1Bei1G7DgIfX/lojxuiqCX9KygtqEVzUba6TWIbOkU955D7VNzBUinADjZUDHgWA3IsgjWQVHlBgw4ekFr90B28H9hNaCXVj/kxdrC8CPMvaJwaRTiLJOMWYA==</ConnectionString>
-        <Sql>some sql</Sql>
-      </Job>
-      <Job xsi:type="SqlServerClient">
-        <Name>GetNumberOfDeliveryies</Name>
-        <ClientName>GraphiteUdpClient</ClientName>
-        <Type>SqlToGraphite.Plugin.SqlServer.SqlServerClient</Type>
-        <ConnectionString>VxlQquob6hdGuNh7t2LfZf5PQhBnlZlefBTu1HMv2t/h0jEgLw9nk/30ydNtERmkerRX0ghjjIqXBiU8pwGV5M4aFQBRL1Bei1G7DgIfX/lojxuiqCX9KygtqEVzUba6TWIbOkU955D7VNzBUinADjZUDHgWA3IsgjWQVHlBgw4ekFr90B28H9hNaCXVj/kxdrC8CPMvaJwaRTiLJOMWYA==</ConnectionString>
-        <Sql>SELECT 234 , DATEADD(day,11,GETDATE())</Sql>
-      </Job>     
       <Job xsi:type="OracleTransactions">
         <Name>E03_TracsTransactionCounter</Name>
         <ClientName>GraphiteUdpClient</ClientName>
-        <Type>Plugin.Oracle.Transactions.OracleTransactions</Type>
+        <Type>SqlToGraphitePlugin.TracsTransactionCount.OracleTransactions</Type>
         <MetricName>MetricName</MetricName>
         <ConnectionString>VxlQquob6hdGuNh7t2LfZTBqxDjBhrOfScw7Kn4UfRv0cyXGgrk5E5Ar9VFQEndJQhRt5j7u9vObtpWzKlB/4DOAFRwVI2fGOIGfX7OS0wVII8Ft8wnUMFxkKkeb/mXmD91zKh7AcUrsqaonTgJduq4D3NnUYEWbyoPfEWTNzHRxIV3FejA53OHzp7Jm8yNE</ConnectionString>
         <Path>Test.Tracs.Transactions.1m</Path>
         <NumberOfSecondsInThePast>60</NumberOfSecondsInThePast>
-      </Job>
-      <Job xsi:type="WmiClient">
-        <Name>Wmi_Memory_AvailableMBytes</Name>
-        <ClientName>GraphiteUdpClient</ClientName>
-        <Type>SqlToGraphite.Plugin.Wmi.WmiClient</Type>
-        <Username />
-        <Hostname>localhost</Hostname>
-        <Path>London.Dev.Servers.Memory.AvailableMBytes.%h</Path>
-        <Sql>SELECT AvailableMBytes FROM Win32_PerfFormattedData_PerfOS_Memory</Sql>
-        <Password />
-      </Job>
-      <Job xsi:type="WmiClient">
-        <Name>Wmi_Disk_AvgDiskQueueLength</Name>
-        <ClientName>GraphiteUdpClient</ClientName>
-        <Type>SqlToGraphite.Plugin.Wmi.WmiClient</Type>
-        <Username />
-        <Hostname>localhost</Hostname>
-        <Path>London.Dev.Servers.Disk.AvgDiskQueueLength.%h</Path>
-        <Sql>SELECT AvgDiskQueueLength FROM Win32_PerfFormattedData_PerfDisk_LogicalDisk where name ="_Total"</Sql>
-        <Password />
-      </Job>
-      <Job xsi:type="WmiClient">
-        <Name>Wmi_Disk_PercentFreeSpace</Name>
-        <ClientName>GraphiteUdpClient</ClientName>
-        <Type>SqlToGraphite.Plugin.Wmi.WmiClient</Type>
-        <Username />
-        <Hostname>localhost</Hostname>
-        <Path>London.Dev.Servers.Disk.PercentFreeSpace.%h</Path>
-        <Sql>SELECT PercentFreeSpace, Name FROM Win32_PerfFormattedData_PerfDisk_LogicalDisk Where Name &lt;&gt; "_Total"</Sql>
-        <Password />
-      </Job>
-      <Job xsi:type="WmiClient">
-        <Name>Wmi_Network_NetworkBytePerSecond</Name>
-        <ClientName>GraphiteUdpClient</ClientName>
-        <Type>SqlToGraphite.Plugin.Wmi.WmiClient</Type>
-        <Username />
-        <Hostname>localhost</Hostname>
-        <Path>London.Dev.Servers.Network.BytesTotalPersec.%h</Path>
-        <Sql>select BytesTotalPersec , Name from Win32_PerfFormattedData_Tcpip_NetworkInterface</Sql>
-        <Password />
-      </Job>
-      <Job xsi:type="WmiClient">
-        <Name>Wmi_Network_ConnectionsEstablished</Name>
-        <ClientName>GraphiteUdpClient</ClientName>
-        <Type>SqlToGraphite.Plugin.Wmi.WmiClient</Type>
-        <Username />
-        <Hostname>localhost</Hostname>
-        <Path>London.Dev.Servers.Network.ConnectionsEstablished.%h</Path>
-        <Sql>select ConnectionsEstablished from Win32_PerfFormattedData_Tcpip_TCPv4</Sql>
-        <Password />
-      </Job>
-      <Job xsi:type="WmiClient">
-        <Name>Wmi_Cpu_NumberOfThreads</Name>
-        <ClientName>GraphiteUdpClient</ClientName>
-        <Type>SqlToGraphite.Plugin.Wmi.WmiClient</Type>
-        <Username />
-        <Hostname>localhost</Hostname>
-        <Path>London.Dev.Servers.Cpu.NumberOfThreads.%h</Path>
-        <Sql>select Threads from Win32_PerfRawData_PerfOS_System</Sql>
-        <Password />
-      </Job>
-      <Job xsi:type="WmiClient">
-        <Name>Wmi_Cpu_NumberOfProcesses</Name>
-        <ClientName>GraphiteUdpClient</ClientName>
-        <Type>SqlToGraphite.Plugin.Wmi.WmiClient</Type>
-        <Username />
-        <Hostname>localhost</Hostname>
-        <Path>London.Dev.Servers.Cpu.NumberOfThreads.%h</Path>
-        <Sql>select Processes from Win32_PerfRawData_PerfOS_System</Sql>
-        <Password />
-      </Job>
-      <Job xsi:type="WmiClient">
-        <Name>Wmi_Cpu_Sophos</Name>
-        <ClientName>GraphiteUdpClient</ClientName>
-        <Type>SqlToGraphite.Plugin.Wmi.WmiClient</Type>
-        <Username />
-        <Hostname>localhost</Hostname>
-        <Path>London.Dev.Servers.Cpu.Sophos.%h</Path>
-        <Sql>SELECT PercentProcessorTime FROM win32_perfformatteddata_perfproc_process WHERE Name="SavService"</Sql>
-        <Password />
-      </Job>
-      <Job xsi:type="WmiClient">
-        <Name>Wmi_Cpu_PercentProcessorTime</Name>
-        <ClientName>GraphiteUdpClient</ClientName>
-        <Type>SqlToGraphite.Plugin.Wmi.WmiClient</Type>
-        <Username />
-        <Hostname>localhost</Hostname>
-        <Path>London.Dev.Servers.Cpu.Sophos.%h</Path>
-        <Sql>SELECT PercentProcessorTime FROM Win32_PerfFormattedData_PerfOS_Processor WHERE Name="_Total"</Sql>
-        <Password />
-      </Job>
+      </Job>	  	  
     </ArrayOfJob>
   </Jobs>
   <Clients>
@@ -130,34 +26,13 @@
           <Role Name="default" />
           <Role Name="OracleTransactionCounter" />
         </Roles>
-      </Host>
-      <Host Name="Server1">
-        <Roles>
-          <Role Name="default" />
-          <Role Name="SqlTests" />
-        </Roles>
-      </Host>
+      </Host>     
     </ArrayOfHost>
   </Hosts>
   <Templates>
     <ArrayOfTemplate xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
       <Template>
-        <WorkItems>
-          <WorkItems RoleName="ProductionTests">
-            <TaskSet>
-              <TaskSet Frequency="30">
-                <Tasks>
-                  <Task JobName="GetNumberOfTransactionsASecond" />                  
-                  <Task JobName="GetNumberOfDeliveryies" />
-                </Tasks>
-              </TaskSet>
-              <TaskSet Frequency="10">
-                <Tasks>
-                  <Task JobName="GetNumberOfTransactionsASecond" />                  
-                </Tasks>
-              </TaskSet>
-            </TaskSet>
-          </WorkItems>
+        <WorkItems>         
           <WorkItems RoleName="OracleTransactionCounter">
             <TaskSet>
               <TaskSet Frequency="60">
@@ -171,7 +46,7 @@
             <TaskSet>
               <TaskSet Frequency="10">
                 <Tasks>
-                  <Task JobName="GetNumberOfDeliveryies" />
+                 <!-- <Task JobName="GetNumberOfDeliveryies" />
                   <Task JobName="Wmi_Memory_AvailableMBytes" />
                   <Task JobName="Wmi_Disk_AvgDiskQueueLength" />
                   <Task JobName="Wmi_Disk_PercentFreeSpace" />
@@ -180,20 +55,11 @@
                   <Task JobName="Wmi_Cpu_NumberOfThreads" />
                   <Task JobName="Wmi_Cpu_NumberOfProcesses" />
                   <Task JobName="Wmi_Cpu_Sophos" />
-                  <Task JobName="Wmi_Cpu_PercentProcessorTime" />
+                  <Task JobName="Wmi_Cpu_PercentProcessorTime" />-->
                 </Tasks>
               </TaskSet>
             </TaskSet>
-          </WorkItems>
-          <WorkItems RoleName="SqlTests">
-            <TaskSet>
-              <TaskSet Frequency="60">
-                <Tasks>
-                  <Task JobName="GetNumberOfDeliveryies" />
-                </Tasks>
-              </TaskSet>
-            </TaskSet>
-          </WorkItems>
+          </WorkItems>         
         </WorkItems>
       </Template>
     </ArrayOfTemplate>

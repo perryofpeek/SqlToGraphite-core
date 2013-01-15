@@ -3,6 +3,8 @@ using System.Net.Sockets;
 
 namespace Graphite
 {
+    using System.Text;
+
     public class GraphiteUdpClient : IGraphiteClient, IDisposable
     {
         public string Hostname { get; private set; }
@@ -30,6 +32,24 @@ namespace Graphite
         {
             var message = new PlaintextMessage(SetKeyPrefix(path), value.ToString(), timeStamp).ToByteArray();
             _udpClient.Send(message, message.Length);
+        }
+
+        public void SendList()
+        {
+            var line1 = makeLine("Test.p1", 10, DateTime.Now);
+
+            var line2 = makeLine("Test.p2", 20, DateTime.Now);
+            var line3 = makeLine("Test.p3", 30, DateTime.Now);
+            var msg = string.Format("{0} {1} {2}", line1, line2, line3);
+            var v = Encoding.UTF8.GetBytes(msg);
+            
+            _udpClient.Send(v, v.Length);
+        }
+
+        private static string makeLine(string path1, int value1, DateTime timeStamp1)
+        {
+            var line1 = string.Format("{0} {1} {2}\n", path1, value1, timeStamp1.ToUnixTime());
+            return line1;
         }
 
         private string SetKeyPrefix(string path)

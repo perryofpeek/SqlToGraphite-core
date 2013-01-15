@@ -111,6 +111,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="With_ConfigController.cs" />
     <Compile Include="With_genericSerializer.cs" />
     <Compile Include="With_PluginBase.cs" />
     <Compile Include="With_AssemblyResolver.cs" />
@@ -120,6 +121,7 @@
     <Compile Include="With_ConfigWriter.cs" />
     <Compile Include="With_DirectoryImpl.cs" />
     <Compile Include="With_GraphiteClients.cs" />
+    <Compile Include="With_RoleConfigFactory.cs" />
     <Compile Include="With_Rolesconfig.cs" />
     <Compile Include="With_KnownDataClients.cs" />
     <Compile Include="With_ConfigMapper.cs" />

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using log4net;
-using SqlToGraphite.Config;
 
 namespace SqlToGraphite.Conf
 {
@@ -14,11 +14,20 @@ namespace SqlToGraphite.Conf
 
         private readonly IConfigRepository configRepository;
 
-        public ConfigController(IConfigMapper configMapper, ILog log, IConfigRepository configRepository)
+        private readonly IRoleConfigFactory roleConfigFactory;
+
+        private readonly IEnvironment environment;
+
+        private readonly ITaskSetBuilder taskSetBuilder;
+
+        public ConfigController(IConfigMapper configMapper, ILog log, IConfigRepository configRepository, IRoleConfigFactory roleConfigFactory, IEnvironment environment, ITaskSetBuilder taskSetBuilder)
         {
             this.configMapper = configMapper;
             this.log = log;
             this.configRepository = configRepository;
+            this.roleConfigFactory = roleConfigFactory;
+            this.environment = environment;
+            this.taskSetBuilder = taskSetBuilder;
         }
 
         public IList<IRunTaskSet> GetTaskList(string path)
@@ -28,22 +37,9 @@ namespace SqlToGraphite.Conf
             if (configRepository.Validate())
             {
                 newConfig = true;
-                var roleConfig = new RoleConfig(this.configRepository.GetHosts(), Environment.MachineName);
+                var roleConfig = roleConfigFactory.Create(configRepository, environment);
                 var templates = configRepository.GetTemplates();
-                var roleList = roleConfig.GetRoleListToRunOnThisMachine();
-
-                var setList = new List<TaskSet>();
-                foreach (var template in templates)
-                {
-                    foreach (var wi in template.WorkItems)
-                    {
-                        if (roleList.Contains(wi.RoleName))
-                        {
-                            setList.AddRange(wi.TaskSet.ToArray());
-                        }
-                    }
-                }
-
+                var setList = taskSetBuilder.BuildTaskSet(templates, roleConfig);
                 var taskList = configMapper.Map(setList);
                 return taskList;
             }

@@ -10,6 +10,8 @@ using log4net;
 
 namespace SqlToGraphite.host
 {
+    using Environment = SqlToGraphite.Conf.Environment;
+
     public class Program
     {
         private static ILog log;
@@ -30,7 +32,10 @@ namespace SqlToGraphite.host
             var genericSer = new GenericSerializer(Global.GetNameSpace());
             var cr = new ConfigRepository(configReader, cache, sleeper, log, configuration.MinutesBetweenRetryToGetConfigOnError, genericSer);
             var configMapper = new ConfigMapper(configuration.Hostname, stop, dataClientFactory, graphiteClientFactory, log, cr);
-            var configController = new ConfigController(configMapper, log, cr);
+            var roleConfigFactory = new RoleConfigFactory();
+            var environment = new Environment();
+            var taskSetBuilder = new TaskSetBuilder();
+            var configController = new ConfigController(configMapper, log, cr, roleConfigFactory, environment, taskSetBuilder);
             return new TaskManager(log, configController, configuration.ConfigUri, stop, sleeper, configuration.CheckConfigUpdatedEveryMinutes);
         }
 

@@ -3,6 +3,9 @@ using System.Net;
 
 namespace SqlToGraphite
 {
+    using System.Security.Cryptography;
+    using System.Text;
+
     public class ConfigHttpReader : IConfigReader
     {
         private const string UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)";
@@ -59,7 +62,29 @@ namespace SqlToGraphite
             }
 
             reader.Close();
+            hash = this.CalculateMD5Hash(s);
             return s;
+        }
+
+        private string hash;
+
+        public string GetHash()
+        {
+            return hash;
+        }
+
+        private string CalculateMD5Hash(string input)
+        {
+            var md5 = MD5.Create();
+            var inputBytes = Encoding.ASCII.GetBytes(input);
+            var hash = md5.ComputeHash(inputBytes);
+            var sb = new StringBuilder();
+            for (int i = 0; i < hash.Length; i++)
+            {
+                sb.Append(hash[i].ToString("X2"));
+            }
+
+            return sb.ToString();
         }
 
         private bool hasChanged;
