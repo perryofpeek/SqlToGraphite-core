@@ -81,9 +81,9 @@
     <Reference Include="Rhino.Mocks">
       <HintPath>..\..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
     </Reference>
-    <Reference Include="SqlToGraphiteInterfaces, Version=0.3.2.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="SqlToGraphiteInterfaces, Version=0.3.5.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\SqlToGraphiteInterfaces.0.3.2\lib\net40\SqlToGraphiteInterfaces.dll</HintPath>
+      <HintPath>..\..\packages\SqlToGraphiteInterfaces.0.3.5\lib\net40\SqlToGraphiteInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -104,6 +104,7 @@
     <Compile Include="Config_Hosts.cs" />
     <Compile Include="Config_Jobs.cs" />
     <Compile Include="Config_Templates.cs" />
+    <Compile Include="With_GraphiteMetrics.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Config_generation.cs" />
     <Compile Include="Resources.Designer.cs">
@@ -113,6 +114,7 @@
     </Compile>
     <Compile Include="With_ConfigController.cs" />
     <Compile Include="With_genericSerializer.cs" />
+    <Compile Include="With_GraphiteMetric.cs" />
     <Compile Include="With_PluginBase.cs" />
     <Compile Include="With_AssemblyResolver.cs" />
     <Compile Include="With_Cache.cs" />

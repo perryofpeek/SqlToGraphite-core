@@ -4,6 +4,10 @@ using SqlToGraphiteInterfaces;
 
 namespace SqlToGraphite
 {
+    using System.Collections.Generic;
+
+    using Graphite;
+
     public class GraphiteUdpClient : Client
     {
         public GraphiteUdpClient()
@@ -29,6 +33,13 @@ namespace SqlToGraphite
         {
             var client = new Graphite.GraphiteUdpClient(Hostname, Port);
             client.Send(result.FullPath, result.Value, result.TimeStamp);
+        }
+
+        public override void Send(IList<IResult> result)
+        {
+            var client = new Graphite.GraphiteUdpClient(Hostname, Port);
+            var gs = new GraphiteMetrics(result);
+            client.Send(gs);
         }
     }
 }

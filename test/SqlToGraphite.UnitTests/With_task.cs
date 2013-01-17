@@ -38,12 +38,11 @@ namespace SqlToGraphite.UnitTests
         {
             var result = MockRepository.GenerateMock<IResult>();
             var resultList = new List<IResult> { result };
-           // var param = new Job("path", "sql", "cs", "SqlServer", "name", "client");
             var param = new WmiClient();
             var client = new GraphiteTcpClient();
             this.dataClientFactory.Expect(x => x.Create(param)).Return(this.sqlClient);
             this.sqlClient.Expect(x => x.Get()).Return(resultList);
-            statsClient.Expect(x => x.Send(result));
+            statsClient.Expect(x => x.Send(resultList));
             this.graphiteClientFactory.Expect(x => x.Create(client)).Return(this.statsClient);
             IRunTask runTask = new RunableRunTask(param, this.dataClientFactory, this.graphiteClientFactory, this.log, client);
             //Test
@@ -64,7 +63,7 @@ namespace SqlToGraphite.UnitTests
             var client = new GraphiteTcpClient();
             this.dataClientFactory.Expect(x => x.Create(param)).Return(this.sqlClient);
             this.sqlClient.Expect(x => x.Get()).Return(resultList);
-            statsClient.Expect(x => x.Send(result)).Throw(new ApplicationException());
+            statsClient.Expect(x => x.Send(resultList)).Throw(new ApplicationException());
             this.graphiteClientFactory.Expect(x => x.Create(client)).Return(this.statsClient);
             IRunTask runTask = new RunableRunTask(param, this.dataClientFactory, this.graphiteClientFactory, this.log, client);
             //Test
@@ -87,8 +86,7 @@ namespace SqlToGraphite.UnitTests
             this.dataClientFactory.Expect(x => x.Create(job)).Return(this.sqlClient);
             this.graphiteClientFactory.Expect(x => x.Create(client)).Return(this.statsClient);
             this.sqlClient.Expect(x => x.Get()).Return(resultList);
-            statsClient.Expect(x => x.Send(result1)).Throw(new ApplicationException());
-            statsClient.Expect(x => x.Send(result2)).Repeat.Once();
+            statsClient.Expect(x => x.Send(resultList)).Throw(new ApplicationException());            
             IRunTask runTask = new RunableRunTask(job, this.dataClientFactory, this.graphiteClientFactory, this.log, client);
             //Test
             runTask.Process();
@@ -110,8 +108,7 @@ namespace SqlToGraphite.UnitTests
             this.dataClientFactory.Expect(x => x.Create(job)).Return(this.sqlClient);
             this.graphiteClientFactory.Expect(x => x.Create(client)).Return(this.statsClient);
             this.sqlClient.Expect(x => x.Get()).Return(resultList);
-            statsClient.Expect(x => x.Send(result1)).Repeat.Once();
-            statsClient.Expect(x => x.Send(result2)).Repeat.Once();
+            statsClient.Expect(x => x.Send(resultList)).Repeat.Once();            
             IRunTask runTask = new RunableRunTask(job, this.dataClientFactory, this.graphiteClientFactory, this.log, client);
             //Test
             runTask.Process();

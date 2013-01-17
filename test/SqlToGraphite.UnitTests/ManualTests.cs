@@ -5,7 +5,13 @@ using NUnit.Framework;
 
 namespace SqlToGraphite.UnitTests
 {
+    using Graphite;
+
     using SqlToGraphite.Plugin.Wmi;
+
+    using SqlToGraphiteInterfaces;
+
+    using GraphiteTcpClient = SqlToGraphite.GraphiteTcpClient;
 
     // ReSharper disable InconsistentNaming
     [TestFixture]
@@ -51,7 +57,17 @@ namespace SqlToGraphite.UnitTests
         public void Should_send_list_to_graphite_udp()
         {
             var graphiteUdp = new Graphite.GraphiteUdpClient("metrics.london.ttldev.local");
-            graphiteUdp.SendList();
+            var res = new List<IResult>();
+            var p1 = new Result("name", DateTime.Now, "test.path1");
+            p1.SetValue(20);
+            var p2 = new Result("name", DateTime.Now, "test.path2");
+            p2.SetValue(20);
+            var p3 = new Result("name", DateTime.Now, "test.path3");
+            p3.SetValue(30);
+            res.Add(p1);
+            //res.Add(p2);
+            //res.Add(p3);
+            graphiteUdp.Send(new GraphiteMetrics(res));
         }
 
         [Test, Explicit]

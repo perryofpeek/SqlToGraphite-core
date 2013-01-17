@@ -5,6 +5,7 @@ using SqlToGraphiteInterfaces;
 
 namespace SqlToGraphite
 {
+    using System.Collections.Generic;
     using System.Threading;
 
     public class RunableRunTask : IRunTask
@@ -34,12 +35,19 @@ namespace SqlToGraphite
             {
                 var dataClient = this.dataClientFactory.Create(this.job);
                 var graphiteClient = this.graphiteClientFactory.Create(this.client);
-                var results = dataClient.Get();
-                foreach (var result in results)
+                try
                 {
-                    this.SendResult(graphiteClient, result);
-                    SleepToPreventNetworkFlooding();
+                    var results = dataClient.Get();
+                    this.DisplayResultsInLog(results);
+                    graphiteClient.Send(results);
                 }
+                catch (Exception ex)
+                {
+                    this.log.Error(ex.Message);
+                    this.log.Error(ex);
+                }
+
+                SleepToPreventNetworkFlooding();
             }
             catch (Exception ex)
             {
@@ -49,23 +57,18 @@ namespace SqlToGraphite
             }
         }
 
+        private void DisplayResultsInLog(IList<IResult> results)
+        {
+            log.Debug(string.Format("sending {0} results", results.Count));
+            foreach (var result in results)
+            {
+                this.log.Debug(string.Format("{0} [{1}] @ {2} ({3})", result.FullPath, result.Value, result.TimeStamp, result.Name));
+            }
+        }
+
         private static void SleepToPreventNetworkFlooding()
         {
             Thread.Sleep(1);
-        }
-
-        private void SendResult(IStatsClient graphiteClient, IResult result)
-        {
-            this.log.Debug(string.Format("{0} [{1}] @ {2} ({3}) {4}", result.FullPath, result.Value, result.TimeStamp, result.Name, graphiteClient.GetType().Name));
-            try
-            {
-                graphiteClient.Send(result);
-            }
-            catch (Exception ex)
-            {
-                this.log.Error(ex.Message);
-                this.log.Error(ex);
-            }
-        }
+        }        
     }
 }

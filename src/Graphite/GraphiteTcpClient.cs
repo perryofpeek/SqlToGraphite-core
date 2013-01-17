@@ -3,6 +3,9 @@ using System.Net.Sockets;
 
 namespace Graphite
 {
+    using System.Collections.Generic;
+    using System.Text;
+
     public class GraphiteTcpClient : IGraphiteClient, IDisposable
     {
         public string Hostname { get; private set; }
@@ -57,6 +60,13 @@ namespace Graphite
         public void Send(string path, float value, DateTime timeStamp)
         {
             this.WriteToStream(new PlaintextMessage(SetKeyPrefix(path), value.ToString(), timeStamp).ToByteArray());
+        }
+
+        public void Send(GraphiteMetrics graphiteMetrics)
+        {
+            var msg = graphiteMetrics.ToGraphiteMessageList();
+            var v = Encoding.UTF8.GetBytes(msg);
+            this.WriteToStream(v);
         }
 
         #region IDisposable

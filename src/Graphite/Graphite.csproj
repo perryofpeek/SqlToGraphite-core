@@ -31,6 +31,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="SqlToGraphiteInterfaces, Version=0.3.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\SqlToGraphiteInterfaces.0.3.5\lib\net40\SqlToGraphiteInterfaces.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -43,9 +50,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GraphiteClientExtensions.cs" />
+    <Compile Include="GraphiteMetric.cs" />
+    <Compile Include="GraphiteMetrics.cs" />
     <Compile Include="GraphiteTcpClient.cs" />
     <Compile Include="DateTimeExtensions.cs" />
     <Compile Include="IGraphiteClient.cs" />
+    <Compile Include="IGraphiteMetric.cs" />
     <Compile Include="PlaintextMessage.cs" />
     <Compile Include="GraphiteUdpClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -56,6 +66,9 @@
     <Compile Include="WCF\OperationTimingCallContextInitializer.cs" />
     <Compile Include="WCF\OperationTimingEndpointBehavior.cs" />
     <Compile Include="WCF\OperationTimingParamaterInspector.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -6,6 +6,8 @@ using SqlToGraphiteInterfaces;
 
 namespace SqlToGraphite
 {
+    using System.Collections.Generic;
+
     public class StatsdClient : Client
     {
         [XmlAttribute]
@@ -31,6 +33,11 @@ namespace SqlToGraphite
         public override void Send(IResult result)
         {
             pipe.Timing(result.FullPath, result.Value);
+        }
+
+        public override void Send(IList<IResult> result)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

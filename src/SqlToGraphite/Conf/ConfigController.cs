@@ -44,11 +44,18 @@ namespace SqlToGraphite.Conf
                 if (configRepository.Validate())
                 {
                     log.Debug("configuration validated");
-                    newConfig = true;
-                    var roleConfig = roleConfigFactory.Create(configRepository, environment);
-                    var templates = configRepository.GetTemplates();
-                    var setList = taskSetBuilder.BuildTaskSet(templates, roleConfig);
-                    currentTaskSet = configMapper.Map(setList);                   
+                    try
+                    {
+                        newConfig = true;
+                        var roleConfig = roleConfigFactory.Create(configRepository, environment);
+                        var templates = configRepository.GetTemplates();
+                        var setList = taskSetBuilder.BuildTaskSet(templates, roleConfig);
+                        currentTaskSet = configMapper.Map(setList);                   
+                    }
+                    catch (Exception ex)
+                    {
+                        log.Error(ex);                        
+                    }
                 }
             }
 
