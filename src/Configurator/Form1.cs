@@ -13,6 +13,11 @@ namespace Configurator
         public Form1()
         {
             InitializeComponent();
+            log = LogManager.GetLogger("log");
+            log4net.Config.XmlConfigurator.Configure();
+            selectedJob = string.Empty;
+            controller = new code.Controller();           
+            assemblyResolver = new AssemblyResolver(new DirectoryImpl(), log);
         }
 
         private code.Controller controller;
@@ -35,19 +40,14 @@ namespace Configurator
 
         private ILog log;
 
-        private void SetUpDialogues()
+       private void SetUpDialogues()
         {
             ofgConfig.Multiselect = false;
             // ofgConfig.FileName = @"C:\git\perryOfPeek\SqlToGraphite\src\Configurator\bin\Debug\config.xml";
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {
-            log = LogManager.GetLogger("log");
-            log4net.Config.XmlConfigurator.Configure();
-            selectedJob = string.Empty;
-            controller = new code.Controller();
-            assemblyResolver = new AssemblyResolver(new DirectoryImpl(), log);
+        {           
             SetUpDialogues();
             //this.LoadTheConfig();
         }
@@ -86,7 +86,7 @@ namespace Configurator
         // This will be called whenever the list changes.
         private void TreeViewerOnChanged(object sender, EventArgs e)
         {
-            RefreshTheForm();
+           // RefreshTheForm();
         }
 
         private void LoadTheConfig()

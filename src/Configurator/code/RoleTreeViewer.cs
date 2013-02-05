@@ -91,9 +91,11 @@ namespace Configurator.code
             this.docMenu = new ContextMenuStrip();
             var deleteLabel = new ToolStripMenuItem { Text = "Delete" };
             var addLabel = new ToolStripMenuItem { Text = "Add" };
+            var editLabel = new ToolStripMenuItem { Text = "Edit" };
             deleteLabel.Click += DeleteLabelOnClick;
             addLabel.Click += AddLabelOnClick;
-            this.docMenu.Items.AddRange(new ToolStripMenuItem[] { addLabel, deleteLabel });
+            editLabel.Click += EditLabelOnClick;
+            this.docMenu.Items.AddRange(new ToolStripMenuItem[] { addLabel, deleteLabel, editLabel });
             this.treeView.ContextMenuStrip = this.docMenu;
             treeView.LabelEdit = true;
         }
@@ -104,7 +106,7 @@ namespace Configurator.code
             {
                 if (e.Label.Length > 0)
                 {
-                    if (this.nodeMouseClickSelectedNode.Level == RoleNodePosition)
+                    if (e.Node.Level == FrequencyNodePosition)
                     {
                         var roleNode = this.nodeMouseClickSelectedNode;
                         int frequency = 0;
@@ -122,7 +124,7 @@ namespace Configurator.code
                     }
 
 
-                    if (this.nodeMouseClickSelectedNode.Level == 0)
+                    if (e.Node.Level == 0)
                     {
                         var roleNode = e;
                         controller.AddNewRole(roleNode.Label);
@@ -143,24 +145,59 @@ namespace Configurator.code
 
         private void AddLabelOnClick(object sender, EventArgs e)
         {
-            if (this.nodeMouseClickSelectedNode.Level == RoleNodePosition)
+            if (this.IsAFrequency())
             {                
                 this.nodeMouseClickSelectedNode.ExpandAll();
                 var treeNode = new TreeNode("120");
                 this.nodeMouseClickSelectedNode.Nodes.Add(treeNode);
-                treeNode.ExpandAll();
-                treeNode.BeginEdit();
-                this.nodeMouseClickSelectedNode.ExpandAll();
-                this.nodeMouseClickSelectedNode.Parent.ExpandAll();
+                //treeNode.ExpandAll();
+                treeNode.BeginEdit();                
+                // this.nodeMouseClickSelectedNode.ExpandAll();
+                //  this.nodeMouseClickSelectedNode.Parent.ExpandAll();
             }
 
-            if (this.nodeMouseClickSelectedNode.Level == 0)
+            if (this.IsARole())
             {                
                 var treeNode = new TreeNode("NewRole");
                 this.nodeMouseClickSelectedNode.Nodes.Add(treeNode);
-                treeNode.ExpandAll();
+                //treeNode.ExpandAll();
                 treeNode.BeginEdit();                
             }            
+        }
+
+        private void EditLabelOnClick(object sender, EventArgs e)
+        {
+
+            var node = this.nodeMouseClickSelectedNode;
+            node.BeginEdit();
+            //if (this.IsAFrequency())
+            //{
+            //    this.nodeMouseClickSelectedNode.ExpandAll();
+            //    var treeNode = new TreeNode("120");
+            //    this.nodeMouseClickSelectedNode.Nodes.Add(treeNode);
+            //    //treeNode.ExpandAll();
+            //    treeNode.BeginEdit();
+            //    // this.nodeMouseClickSelectedNode.ExpandAll();
+            //    //  this.nodeMouseClickSelectedNode.Parent.ExpandAll();
+            //}
+
+            //if (this.IsARole())
+            //{
+            //    var treeNode = new TreeNode("NewRole");
+            //    this.nodeMouseClickSelectedNode.Nodes.Add(treeNode);
+            //    //treeNode.ExpandAll();
+            //    treeNode.BeginEdit();
+            //}
+        }
+
+        private bool IsARole()
+        {
+            return this.nodeMouseClickSelectedNode.Level == 0;
+        }
+
+        private bool IsAFrequency()
+        {
+            return this.nodeMouseClickSelectedNode.Level == RoleNodePosition;
         }
 
         private void DeleteLabelOnClick(object sender, EventArgs e)

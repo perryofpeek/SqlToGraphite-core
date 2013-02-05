@@ -37,7 +37,7 @@ namespace SqlToGraphite.Plugin.Wmi
         public override string Type { get; set; }
 
         public WmiClient()
-        {
+        {         
         }
 
         public WmiClient(ILog log, Job job, IEncryption encryption) : base(log, job, encryption)
@@ -119,9 +119,10 @@ namespace SqlToGraphite.Plugin.Wmi
                     conn.Username = this.Username;
                 }
 
-                if (!string.IsNullOrEmpty(this.Password))
+                var pwd = this.Decrypt(this.Password);
+                if (!string.IsNullOrEmpty(pwd))
                 {
-                    conn.Password = this.Password;
+                    conn.Password = pwd;
                 }
 
                 path = string.Format(@"\\{0}\{1}", Hostname, rootPath);

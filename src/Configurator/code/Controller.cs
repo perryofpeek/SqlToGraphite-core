@@ -14,6 +14,8 @@ using log4net;
 
 namespace Configurator.code
 {
+    using System.Diagnostics;
+
     public class Controller
     {
         private ILog log;
@@ -26,11 +28,13 @@ namespace Configurator.code
 
         public Controller()
         {
-            this.Initialise(Directory.GetCurrentDirectory());
+            var dir = Directory.GetCurrentDirectory();
+            
+            this.Initialise(dir);
         }
 
         public void Initialise(string path)
-        {
+        {            
             log = LogManager.GetLogger("log");
             log4net.Config.XmlConfigurator.Configure();
 
