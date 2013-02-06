@@ -303,6 +303,7 @@ namespace Configurator.code
             }
             HelpPanel();
             this.AddButton(typedJob, "Test", this.TestButtonClick);
+            this.client = typedJob;
             this.DisplayResultsPannel();
         }
 
