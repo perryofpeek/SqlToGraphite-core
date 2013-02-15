@@ -78,7 +78,6 @@
       <HintPath>..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="SqlToGraphiteInterfaces, Version=0.3.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\SqlToGraphiteInterfaces.0.3.5\lib\net40\SqlToGraphiteInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -133,6 +132,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\SqlToGraphitePlugin-Netstat\src\SqlToGraphitePlugin-Netstat\SqlToGraphitePlugin-Netstat.csproj">
+      <Project>{1F45C053-D10E-4FFA-95DE-D4290E4C006D}</Project>
+      <Name>SqlToGraphitePlugin-Netstat</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Graphite\Graphite.csproj">
       <Project>{77EACC5C-76B2-4E73-A2C7-95747C980305}</Project>
       <Name>Graphite</Name>

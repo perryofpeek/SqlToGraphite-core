@@ -59,7 +59,6 @@
       <HintPath>..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="SqlToGraphiteInterfaces, Version=0.3.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\SqlToGraphiteInterfaces.0.3.5\lib\net40\SqlToGraphiteInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="System" />
