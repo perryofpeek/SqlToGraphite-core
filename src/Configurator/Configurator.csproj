@@ -125,10 +125,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\SqlToGraphitePlugin-Netstat\src\SqlToGraphitePlugin-Netstat\SqlToGraphitePlugin-Netstat.csproj">
-      <Project>{1F45C053-D10E-4FFA-95DE-D4290E4C006D}</Project>
-      <Name>SqlToGraphitePlugin-Netstat</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SqlToGraphite.Plugin.Wmi\SqlToGraphite.Plugin.Wmi.csproj">
       <Project>{574D9188-DD86-41DB-A141-9542A84B2B46}</Project>
       <Name>SqlToGraphite.Plugin.Wmi</Name>

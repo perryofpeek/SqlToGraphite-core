@@ -36,8 +36,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Configurator", "src\Configu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graphite", "src\Graphite\Graphite.csproj", "{77EACC5C-76B2-4E73-A2C7-95747C980305}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlToGraphitePlugin-Netstat", "..\..\SqlToGraphitePlugin-Netstat\src\SqlToGraphitePlugin-Netstat\SqlToGraphitePlugin-Netstat.csproj", "{1F45C053-D10E-4FFA-95DE-D4290E4C006D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -167,16 +165,6 @@ Global
 		{77EACC5C-76B2-4E73-A2C7-95747C980305}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{77EACC5C-76B2-4E73-A2C7-95747C980305}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{77EACC5C-76B2-4E73-A2C7-95747C980305}.Release|x86.ActiveCfg = Release|Any CPU
-		{1F45C053-D10E-4FFA-95DE-D4290E4C006D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1F45C053-D10E-4FFA-95DE-D4290E4C006D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1F45C053-D10E-4FFA-95DE-D4290E4C006D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{1F45C053-D10E-4FFA-95DE-D4290E4C006D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{1F45C053-D10E-4FFA-95DE-D4290E4C006D}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{1F45C053-D10E-4FFA-95DE-D4290E4C006D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1F45C053-D10E-4FFA-95DE-D4290E4C006D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1F45C053-D10E-4FFA-95DE-D4290E4C006D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{1F45C053-D10E-4FFA-95DE-D4290E4C006D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{1F45C053-D10E-4FFA-95DE-D4290E4C006D}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -192,6 +180,5 @@ Global
 		{A95A5501-392A-4ED7-AA0D-9D4B9BA2532F} = {18069ED3-75A2-476D-8BEF-36FF14D8745F}
 		{5F0741CE-2F7D-490D-A8FB-95383C0940B0} = {18069ED3-75A2-476D-8BEF-36FF14D8745F}
 		{77EACC5C-76B2-4E73-A2C7-95747C980305} = {18069ED3-75A2-476D-8BEF-36FF14D8745F}
-		{1F45C053-D10E-4FFA-95DE-D4290E4C006D} = {18069ED3-75A2-476D-8BEF-36FF14D8745F}
 	EndGlobalSection
 EndGlobal

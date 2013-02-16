@@ -132,10 +132,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\SqlToGraphitePlugin-Netstat\src\SqlToGraphitePlugin-Netstat\SqlToGraphitePlugin-Netstat.csproj">
-      <Project>{1F45C053-D10E-4FFA-95DE-D4290E4C006D}</Project>
-      <Name>SqlToGraphitePlugin-Netstat</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Graphite\Graphite.csproj">
       <Project>{77EACC5C-76B2-4E73-A2C7-95747C980305}</Project>
       <Name>Graphite</Name>
