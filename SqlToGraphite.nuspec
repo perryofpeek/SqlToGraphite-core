@@ -10,7 +10,7 @@
 	<requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>SqlToGraphite</description>
     <releaseNotes>none.</releaseNotes>
-    <copyright>Copyright PerryOfPeek 2012</copyright>
+    <copyright>Copyright PerryOfPeek 2013</copyright>
     <tags>SqlToGraphite</tags>
   </metadata>
   <files>    

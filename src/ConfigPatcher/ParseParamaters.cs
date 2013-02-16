@@ -87,7 +87,7 @@ namespace ConfigPatcher
             this.ConfigUpdate = "10";
             this.ConfigRetry = "10";
             this.CacheLength = "10";
-            this.Path = "SqlToGraphite.exe.config";
+            this.Path = "SqlToGraphite.host.exe.config";
         }
     }
 }

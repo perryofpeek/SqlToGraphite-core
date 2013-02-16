@@ -6,7 +6,7 @@ properties {
   $Build_Configuration = 'Release'
   $Build_Artifacts = 'output'
   $fullPath= 'src\SqlToGraphite.host\output'
-  $version = '0.3.0.15'
+  $version = '0.3.0.16'
   $Debug = 'Debug'
   $pwd = pwd
   $msbuild = "C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe"
@@ -85,9 +85,9 @@ task Init {
 
 task Ilmerge {
 	$sinkoutput = mkdir $Build_Artifacts;
-  	Exec { tools\ilmerge.exe /closed /t:exe /out:output\sqlToGraphite.exe /targetplatform:v4 src\SqlToGraphite.host\output\SqlToGraphite.host.exe src\SqlToGraphite.host\output\Graphite.dll src\SqlToGraphite.host\output\SqlToGraphite.Plugin.Wmi.dll  src\SqlToGraphite.host\output\Topshelf.dll src\SqlToGraphite.host\output\log4net.dll };
+  	Exec { tools\ilmerge.exe /closed /t:exe /out:output\sqltographite.host.exe /targetplatform:v4 src\SqlToGraphite.host\output\SqlToGraphite.host.exe src\SqlToGraphite.host\output\Graphite.dll src\SqlToGraphite.host\output\SqlToGraphite.Plugin.Wmi.dll  src\SqlToGraphite.host\output\Topshelf.dll src\SqlToGraphite.host\output\log4net.dll };
     Exec { tools\ilmerge.exe /closed /t:winexe /out:output\ConfigUi.exe /targetplatform:v4 src\Configurator\output\Configurator.exe src\SqlToGraphite.host\output\SqlToGraphite.host.exe src\SqlToGraphite.host\output\Graphite.dll  src\SqlToGraphite.host\output\SqlToGraphite.Plugin.Wmi.dll src\SqlToGraphite.host\output\SqlToGraphiteInterfaces.dll src\SqlToGraphite.host\output\log4net.dll };    	
-	Copy-Item  $fullPath\app.config.Template output\SqlToGraphite.exe.config;
+	Copy-Item  $fullPath\app.config.Template output\sqltographite.host.exe.config;
 	Copy-Item  src\ConfigPatcher\output\configpatcher.exe output\configpatcher.exe;	
 	Copy-Item  src\Configurator\output\Configurator.exe.config output\ConfigUi.exe.config;
 	Copy-Item  src\SqlToGraphite.host\output\DefaultConfig.xml output\DefaultConfig.xml;

@@ -1,7 +1,7 @@
 VIProductVersion              "1.0.0.0" ; set version here
 VIAddVersionKey "FileVersion" "1.0.0.0" ; and here!
 VIAddVersionKey "CompanyName" "peek.org.uk"
-VIAddVersionKey "LegalCopyright" "© peek.org.uk 2012"
+VIAddVersionKey "LegalCopyright" "© peek.org.uk 2013"
 VIAddVersionKey "FileDescription" "SqlToGraphite installer"
 OutFile SqlToGraphite-Setup.exe
 RequestExecutionLevel admin
@@ -190,8 +190,8 @@ Section Main
 		ExecWait '"$OUTDIR\uninstall.exe " _?=$OUTDIR /s '		
 			
 	DetailPrint "Now installing"				
-		File output\sqltographite.exe
-		File output\sqltographite.exe.config 
+		File output\sqltographite.host.exe
+		File output\sqltographite.host.exe.config 
 		File output\ConfigPatcher.exe
 		File output\ConfigUi.exe
 		File output\ConfigUi.exe.config
@@ -259,7 +259,7 @@ Section Main
 		DetailPrint "Value of configuri parameter is '$configuri'"
 
 		Push "PATH"   
-		Push "$OUTDIR\sqltographite.exe.config"   
+		Push "$OUTDIR\sqltographite.host.exe.config"   
 		Call GetParameterValue
 		Pop $2
 		Var /GLOBAL path 
@@ -270,7 +270,7 @@ Section Main
 		DetailPrint '"$OUTDIR\ConfigPatcher.exe" $hostname $username $password $configuri $cachelength $configretry $configupdate "$path"'
 		ExecWait '"$OUTDIR\ConfigPatcher.exe" $hostname $username $password $configuri $cachelength $configretry $configupdate "$path"' $0
 
-		ExecWait '"$OUTDIR\sqltographite.exe" install' $0
+		ExecWait '"$OUTDIR\sqltographite.host.exe" install' $0
 		DetailPrint "Returned $0"
 		ExecWait '"Net" start SqlToGraphite' $0
 		DetailPrint "Returned $0"
@@ -279,14 +279,14 @@ SectionEnd
 Section "Uninstall"  
   ExecWait '"Net" stop SqlToGraphite' $0
   DetailPrint "Returned $0"
-  ExecWait '"taskkill" /f /IM sqltographite.exe' $0
+  ExecWait '"taskkill" /f /IM sqltographite.host.exe' $0
   DetailPrint "Returned $0"  
-  ExecWait '"$INSTDIR\sqltographite.exe" uninstall'
-  Delete $INSTDIR\sqltographite.exe
+  ExecWait '"$INSTDIR\sqltographite.host.exe" uninstall'
+  Delete $INSTDIR\sqltographite.host.exe
   Delete $INSTDIR\configpatcher.exe
   Delete $INSTDIR\ConfigUi.exe
   Delete $INSTDIR\ConfigUi.exe.config
-  Delete $INSTDIR\sqltographite.exe.config
+  Delete $INSTDIR\sqltographite.host.exe.config
   RMDir $INSTDIR\logs
   Delete $INSTDIR\uninstall.exe ; delete self (see explanation below why this works)
   RMDir $INSTDIR  
