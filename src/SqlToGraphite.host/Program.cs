@@ -1,10 +1,6 @@
 using System;
-
-using SqlToGraphite.Clients;
 using SqlToGraphite.Conf;
-
 using SqlToGraphiteInterfaces;
-
 using Topshelf;
 using log4net;
 

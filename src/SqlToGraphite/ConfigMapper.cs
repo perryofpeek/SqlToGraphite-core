@@ -49,15 +49,15 @@ namespace SqlToGraphite
             {
                 var job = repository.GetJob(item.JobName);
                 var client = repository.GetClient(job.ClientName);
-                tasks.Add(this.CreateTask(hostName, client, job));
+                tasks.Add(this.CreateTask(client, job));
             }
 
             return tasks;
         }
 
-        private RunableRunTask CreateTask(string hostName, Client client, Job job)
-        {                        
-            return new RunableRunTask(job, this.dataClientFactory, this.graphiteClientFactory, log, client);                        
+        private RunableRunTask CreateTask(Client client, Job job)
+        {
+            return new RunableRunTask(job, this.dataClientFactory, this.graphiteClientFactory, log, client);
         }
     }
 }

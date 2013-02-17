@@ -37,7 +37,8 @@ namespace SqlToGraphite.host
         {
             try
             {
-                workerThread.Abort();
+                taskManager.Stop();
+                workerThread.Abort();                
             }
             catch (Exception ex)
             {

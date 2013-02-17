@@ -9,7 +9,7 @@ namespace SqlToGraphite
         
         public ThreadImpl(ThreadStart process)
         {
-           thread = new Thread(process);
+           thread = new Thread(process);            
         }
 
         public void Start()
@@ -18,7 +18,7 @@ namespace SqlToGraphite
         }
 
         public void Abort()
-        {
+        {            
             thread.Abort();
         }
     }
