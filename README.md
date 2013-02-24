@@ -1,7 +1,8 @@
 Sql2Graphite
 ============
 
-Windows service that can run SQL  Oracle and WMI Queries and post results to Graphite
+Windows service that can uses centralised configuration to execute various plugins e.g. SQL Oracle and WMI Queries and send the results to Graphite, this enables monitoring most systems in a windows envrionment. 
+
 
 Licence
 =======
@@ -10,10 +11,11 @@ All Original Software is licensed under the MIT Licence and does not apply to an
 Overview 
 ========
 
-SqlToGraphite is a windows service that supports a framework for getting centralised configuration and running configured plugins with the configuration. 
+SqlToGraphite is a windows service that supports a framework for getting centralised configuration and running configured plugins with the configuration, to collect metrics and send to a running graphite server.  
 
 Each plugin polls for metrics , e.g. by running a wmi or sql query, and sends the metric to a graphite server. 
 
+There is a configuration user interface to modify the configuration xml. 
 
 Installation 
 ============
@@ -45,6 +47,7 @@ Application configuration settings.
  User interface
  ==============
 
+ The userinterface tool allows modification of the configuration xml utilising a drag and drop approach. 
 
 
 

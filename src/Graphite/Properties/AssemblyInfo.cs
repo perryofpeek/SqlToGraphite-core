@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProductAttribute("SqlToGraphite 0.3.0.18")]
 [assembly: AssemblyCopyrightAttribute("PerryOfPeek 2013")]
 [assembly: AssemblyVersionAttribute("0.3.0.18")]
-[assembly: AssemblyInformationalVersionAttribute("0.3.0.18 / 59c2395")]
+[assembly: AssemblyInformationalVersionAttribute("0.3.0.18 / 24dea7b")]
 [assembly: AssemblyFileVersionAttribute("0.3.0.18")]
 [assembly: AssemblyDelaySignAttribute(false)]
 
