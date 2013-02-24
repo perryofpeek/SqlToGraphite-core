@@ -277,9 +277,12 @@ Section Main
 SectionEnd
 
 Section "Uninstall"  
+  DetailPrint "Installed at: $INSTDIR"
   ExecWait '"Net" stop SqlToGraphite' $0
   DetailPrint "Returned $0"
   ExecWait '"taskkill" /f /IM sqltographite.host.exe' $0
+  DetailPrint "Returned $0"  
+  ExecWait '"taskkill" /f /IM ConfigUi.exe' $0
   DetailPrint "Returned $0"  
   ExecWait '"$INSTDIR\sqltographite.host.exe" uninstall'
   Delete $INSTDIR\sqltographite.host.exe
@@ -287,8 +290,9 @@ Section "Uninstall"
   Delete $INSTDIR\ConfigUi.exe
   Delete $INSTDIR\ConfigUi.exe.config
   Delete $INSTDIR\sqltographite.host.exe.config
+  Delete $INSTDIR\*.dll
   RMDir $INSTDIR\logs
-  Delete $INSTDIR\uninstall.exe ; delete self (see explanation below why this works)
+  Delete $INSTDIR\uninstall.exe ; delete self 
   RMDir $INSTDIR  
   Quit  
 SectionEnd
