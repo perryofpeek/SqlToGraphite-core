@@ -18,7 +18,7 @@ namespace SqlToGraphite.Conf
 
         private readonly ISleep sleep;
 
-        private readonly ILog log;
+        private static ILog log;
 
         private readonly int errorReadingConfigSleepTime;
 
@@ -33,22 +33,29 @@ namespace SqlToGraphite.Conf
         public const string UnknownClient = "unknown client defined";
 
         private SqlToGraphiteConfig masterConfig;
+        private static AssemblyResolver ar;
 
-        public ConfigRepository(IConfigReader configReader, ICache cache, ISleep sleep, ILog log, int errorReadingConfigSleepTime, IGenericSerializer genericSerializer)
+        public ConfigRepository(IConfigReader configReader, ICache cache, ISleep sleep, ILog log,
+            int errorReadingConfigSleepTime, IGenericSerializer genericSerializer)
         {
             this.configReader = configReader;
             this.cache = cache;
             this.sleep = sleep;
-            this.log = log;
+            ConfigRepository.log = log;
             this.errorReadingConfigSleepTime = errorReadingConfigSleepTime;
             this.genericSerializer = genericSerializer;
             clientList = new GraphiteClients();
             var dir = new DirectoryImpl();
-            this.masterConfig = new SqlToGraphiteConfig(new AssemblyResolver(dir, log), log);
+            if (ar == null)
+            {
+                ar = new AssemblyResolver(dir, log);
+            }
+            this.masterConfig = new SqlToGraphiteConfig(ar, log);
             this.Hash = "NotSet";
         }
 
-        public ConfigRepository(IConfigReader configReader, ICache cache, ISleep sleep, ILog log, int errorReadingConfigSleepTime, IConfigPersister configPersister, IGenericSerializer genericSerializer)
+        public ConfigRepository(IConfigReader configReader, ICache cache, ISleep sleep, ILog log,
+            int errorReadingConfigSleepTime, IConfigPersister configPersister, IGenericSerializer genericSerializer)
             : this(configReader, cache, sleep, log, errorReadingConfigSleepTime, genericSerializer)
         {
             this.configPersister = configPersister;
@@ -57,24 +64,25 @@ namespace SqlToGraphite.Conf
         public void Load()
         {
             if (cache.HasExpired())
-            {                 
+            {
                 log.Debug("Cache has expired");
-                var newRemoteConfig = this.GetRemoteConfig();
+                var configXml = this.GetRemoteConfigXml();
                 var newHash = configReader.GetHash();
                 if (this.IsNewHash(newHash))
                 {
+                    var newRemoteConfig = this.GetRemoteConfigObject();
                     log.Debug("remote configuration has changed " + newHash);
                     this.masterConfig = newRemoteConfig;
                     Init();
                     this.Hash = newHash;
                     this.IsNewConfig = true;
+                    newRemoteConfig = null;
                 }
                 else
                 {
                     log.Debug("remote configuration has not changed " + Hash);
                     this.IsNewConfig = false;
                 }
-
                 cache.ResetCache();
             }
         }
@@ -84,7 +92,7 @@ namespace SqlToGraphite.Conf
             return this.Hash != newHash;
         }
 
-        private SqlToGraphiteConfig GetRemoteConfig()
+        private SqlToGraphiteConfig GetRemoteConfigObject()
         {
             SqlToGraphiteConfig graphiteConfig = null;
             while (graphiteConfig == null)
@@ -94,19 +102,34 @@ namespace SqlToGraphite.Conf
                     graphiteConfig = this.GetConfig(this.configReader);
                     if (graphiteConfig == null)
                     {
-                        this.log.Error(FailedToLoadAnyConfiguration);
+                        log.Error(FailedToLoadAnyConfiguration);
                         this.errors.Add(FailedToLoadAnyConfiguration);
                         this.RestForAwhile();
                     }
                 }
                 catch (Exception ex)
                 {
-                    this.log.Error(ex);
+                    log.Error(ex);
                     this.RestForAwhile();
                 }
             }
 
             return graphiteConfig;
+        }
+
+        private string GetRemoteConfigXml()
+        {
+            var rtn = string.Empty;
+            try
+            {
+                return configReader.GetXml();
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                this.RestForAwhile();
+            }
+            return rtn;
         }
 
         private void RestForAwhile()
@@ -370,6 +393,7 @@ namespace SqlToGraphite.Conf
         /*
         This needs to be better should should be able to not have to loop so much. 
         */
+
         private static bool RemoveJob(string jobName, TaskSet ts)
         {
             bool found = false;
