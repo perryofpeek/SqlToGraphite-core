@@ -4,7 +4,7 @@ namespace SqlToGraphite.UnitTests
 {
     using Rhino.Mocks;
 
-    using SqlToGraphite.Conf;
+    using Conf;
 
     // ReSharper disable InconsistentNaming
     [TestFixture]
@@ -16,7 +16,6 @@ namespace SqlToGraphite.UnitTests
             var environment = MockRepository.GenerateMock<IEnvironment>();
             var configRepository = MockRepository.GenerateMock<IConfigRepository>();
             var roleConfigFactory = new RoleConfigFactory();
-            string machineName = "fred";
 
             //Test
             var roleconfig = roleConfigFactory.Create(configRepository, environment);

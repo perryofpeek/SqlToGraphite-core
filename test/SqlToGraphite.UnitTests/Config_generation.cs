@@ -1,37 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using log4net;
 using NUnit.Framework;
 using SqlToGraphite.Config;
 using SqlToGraphiteInterfaces;
+using SqlToGraphite.Plugin.Wmi;
 
 namespace SqlToGraphite.UnitTests
 {
-    using Rhino.Mocks;
-
-    using SqlToGraphite.Plugin.Wmi;
-
-    [TestFixture]
     // ReSharper disable InconsistentNaming
+ 
+    [TestFixture]
     public class Config_generation
     {
-        private ILog log;
-
         [Test]
         public void Should_generate_test_config_file()
         {
             try
             {
                 var log = LogManager.GetLogger("log");
-                Encryption encryption = new Encryption();
+                var encryption = new Encryption();
                 var simpleCs = encryption.Encrypt("some Cs");
 
                 log4net.Config.XmlConfigurator.Configure();
 
-                Assembly assembly = Assembly.LoadFrom("SqlToGraphite.Plugin.Wmi.dll");
-
-                Type type = assembly.GetType("SqlToGraphite.Plugin.Wmi.Wmi");
 
                 var job1 = new WmiClient { ClientName = "GraphiteTcpClient", Name = "GetNumberOfTransactionsASecond", Hostname = simpleCs, Sql = "some sql" };
                 var job2 = new WmiClient { ClientName = "GraphiteUdpClient", Name = "GetNumberOfDeliveryies", Hostname = simpleCs, Sql = "some sql1" };
@@ -75,14 +67,14 @@ namespace SqlToGraphite.UnitTests
 
                 config.Templates.Add(template);
                 config.Clients = new ListOfUniqueType<Client> { client1, client2 };
-                var genericSerializer = new GenericSerializer(Global.GetNameSpace());
-                string xml = genericSerializer.Serialize(config);
+                //var genericSerializer = new GenericSerializer(Global.GetNameSpace());
+                //string xml = genericSerializer.Serialize(config);
                 //Console.WriteLine(xml);
-                var sqlToGraphiteConfig = genericSerializer.Deserialize<SqlToGraphiteConfig>(xml);
-                foreach (var job in sqlToGraphiteConfig.Jobs)
-                {
+                //var sqlToGraphiteConfig = genericSerializer.Deserialize<SqlToGraphiteConfig>(xml);
+                //foreach (var job in sqlToGraphiteConfig.Jobs)
+                //{
                     //Console.WriteLine(job.Type);
-                }
+                //}
             }
             catch (Exception ex)
             {
