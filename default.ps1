@@ -6,7 +6,7 @@ properties {
   $Build_Configuration = 'Release'
   $Build_Artifacts = 'output'
   $fullPath= 'src\SqlToGraphite.host\output'
-  $version = '0.3.0.19'
+  $version = '0.3.0.21'
   $Debug = 'Debug'
   $pwd = pwd
   $msbuild = "C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe"
@@ -63,11 +63,11 @@ task Clean {
 
 task Init {
 
-	$Company = "peek.org.uk";
+	$Company = "www.owainperry.com";
 	$Description = "Graphite Service for collecting metrics";
 	$Product = "SqlToGraphite $version";
 	$Title = "SqlToGraphite $version";
-	$Copyright = "PerryOfPeek 2013";	
+	$Copyright = "owainperry 2013";	
 
 	$files = Get-ChildItem src\* -recurse | Where-Object {$_.Fullname.Contains("AssemblyInfo.cs")}
 	foreach ($file in $files)
